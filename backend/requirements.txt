@@ -15,3 +15,7 @@ transformers
 aiofiles
 groq
 pypdf
+loguru
+pytest
+httpx
+pytest-asyncio

@@ -68,3 +68,10 @@ class Project(Document):
 
     class Settings:
         name = "projects"
+        indexes = [
+            "status",
+            "created_at",
+            "faculty",
+            "team.leader",
+            "team.members"
+        ]

@@ -34,3 +34,8 @@ class User(Document):
 
     class Settings:
         name = "users"
+        indexes = [
+            "email",
+            "role",
+            "created_at"
+        ]

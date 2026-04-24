@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createProject, analyzeSDG } from '../api/projects';
+import MainLayout from '../layouts/MainLayout';
+import Card from '../components/ui/Card';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import Badge from '../components/ui/Badge';
 
 export default function CreateProject() {
     const navigate = useNavigate();
@@ -16,21 +21,12 @@ export default function CreateProject() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // ===============================
-    // ANALYZE SDG
-    // ===============================
     const handleAnalyze = async () => {
         setLoading(true);
         setError('');
-
         try {
             const data = await analyzeSDG(formData.problem_statement);
-
-            console.log("API Response:", data);
-
-            // ✅ FIXED FIELD NAME
             setAnalysisResults(data.most_suitable_sdgs || []);
-
             setStep(2);
         } catch (err) {
             setError('Analysis failed. Please try again.');
@@ -39,9 +35,6 @@ export default function CreateProject() {
         }
     };
 
-    // ===============================
-    // CONFIRM SDG
-    // ===============================
     const handleConfirm = async (selectedSuggestion) => {
         const finalData = {
             title: formData.title,
@@ -63,118 +56,117 @@ export default function CreateProject() {
     };
 
     return (
-        <div className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-            <div className="card" style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <MainLayout>
+            <div className="container py-12 max-w-4xl mx-auto">
+                <div className="mb-12">
+                    <h1 className="text-3xl font-bold tracking-tight mb-2">Create New Project</h1>
+                    <p className="text-gray-500">Define your project and let AI align it with Global Sustainable Development Goals.</p>
+                </div>
 
-                <h2 className="mb-4">Create New Project</h2>
-
-                {error && <div className="alert alert-error">{error}</div>}
-
-                {/* ================= STEP 1 ================= */}
-                {step === 1 && (
-                    <div className="flex-col gap-4">
-
-                        <div className="form-group">
-                            <label className="form-label">Project Title</label>
-                            <input
-                                className="form-control"
-                                value={formData.title}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, title: e.target.value })
-                                }
-                                placeholder="E.g., Solar Powered Water Purification"
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Problem Statement</label>
-                            <textarea
-                                className="form-control"
-                                value={formData.problem_statement}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        problem_statement: e.target.value
-                                    })
-                                }
-                                rows={6}
-                                placeholder="Describe the problem you are solving..."
-                            />
-                        </div>
-
-                        <button
-                            onClick={handleAnalyze}
-                            disabled={!formData.title || !formData.problem_statement || loading}
-                            className="btn btn-primary"
-                        >
-                            {loading ? 'Analyzing with SDG-BERT...' : 'Analyze for SDG Alignment'}
-                        </button>
-
+                {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm">
+                        {error}
                     </div>
                 )}
 
-                {/* ================= STEP 2 ================= */}
-                {step === 2 && (
-                    <div>
+                <div className="relative">
+                    {/* Step Indicator */}
+                    <div className="flex items-center gap-8 mb-8 border-b border-gray-100 dark:border-gray-800">
+                        <button 
+                            className={`pb-4 text-xs font-bold uppercase tracking-widest transition-colors ${step === 1 ? 'text-gray-900 dark:text-white border-b-2 border-gray-900' : 'text-gray-400'}`}
+                            onClick={() => step === 2 && setStep(1)}
+                        >
+                            01. Definition
+                        </button>
+                        <button 
+                            className={`pb-4 text-xs font-bold uppercase tracking-widest transition-colors ${step === 2 ? 'text-gray-900 dark:text-white border-b-2 border-gray-900' : 'text-gray-400'}`}
+                            disabled={step === 1}
+                        >
+                            02. SDG Alignment
+                        </button>
+                    </div>
 
-                        <h3>AI Analysis Results</h3>
-                        <p className="text-muted">
-                            The system suggests the following SDGs based on your problem statement:
-                        </p>
+                    {step === 1 && (
+                        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                            <Card className="p-8 space-y-6">
+                                <Input 
+                                    label="Project Title"
+                                    placeholder="Enter a descriptive title..."
+                                    value={formData.title}
+                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                    required
+                                />
 
-                        <div className="flex-col gap-4 mt-4">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Problem Statement</label>
+                                    <textarea
+                                        className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-1 focus:ring-gray-900 outline-none transition-all min-h-[200px] text-sm"
+                                        value={formData.problem_statement}
+                                        onChange={(e) => setFormData({ ...formData, problem_statement: e.target.value })}
+                                        placeholder="Describe the research problem or social challenge you are addressing..."
+                                    />
+                                    <p className="text-[10px] text-gray-400">Be as detailed as possible for better AI analysis.</p>
+                                </div>
+                            </Card>
 
-                            {/* ✅ SAFE RENDER */}
+                            <div className="flex justify-end">
+                                <Button 
+                                    onClick={handleAnalyze} 
+                                    isLoading={loading}
+                                    disabled={!formData.title || !formData.problem_statement}
+                                    className="!px-12"
+                                >
+                                    Analyze Alignment
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+
+                    {step === 2 && (
+                        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {analysisResults.map((suggestion, idx) => (
+                                    <Card key={idx} className="p-8 flex flex-col justify-between border-t-4 border-t-gray-900">
+                                        <div>
+                                            <div className="flex justify-between items-center mb-6">
+                                                <Badge variant={`sdg-${suggestion.sdg_number || '1'}`}>
+                                                    SDG {suggestion.sdg_number || idx + 1}
+                                                </Badge>
+                                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                                    Confidence: {suggestion.confidence.toFixed(1)}%
+                                                </span>
+                                            </div>
+                                            <h3 className="text-lg font-bold mb-4">{suggestion.sdg}</h3>
+                                            <p className="text-sm text-gray-500 leading-relaxed mb-8">
+                                                Based on your problem statement, this goal has a high relevance score for impact measurement.
+                                            </p>
+                                        </div>
+                                        <Button 
+                                            variant="secondary" 
+                                            onClick={() => handleConfirm(suggestion)}
+                                            className="w-full"
+                                        >
+                                            Confirm & Launch
+                                        </Button>
+                                    </Card>
+                                ))}
+                            </div>
+
                             {analysisResults.length === 0 && (
-                                <div>No suitable SDGs found.</div>
+                                <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                    <p className="text-gray-500">No suitable SDG alignment found. Try refining your problem statement.</p>
+                                </div>
                             )}
 
-                            {analysisResults.map((suggestion, idx) => (
-                                <div
-                                    key={idx}
-                                    className="card"
-                                    style={{
-                                        padding: '1.5rem',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center'
-                                    }}
-                                >
-
-                                    <div>
-                                        <div style={{ fontWeight: '600', fontSize: '1.1rem' }}>
-                                            {suggestion.sdg}
-                                        </div>
-
-                                        {/* ✅ FIXED CONFIDENCE */}
-                                        <div className="text-muted" style={{ fontSize: '0.9rem' }}>
-                                            Confidence: {suggestion.confidence.toFixed(1)}%
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        onClick={() => handleConfirm(suggestion)}
-                                        className="btn btn-success"
-                                        style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
-                                    >
-                                        Confirm & Create
-                                    </button>
-
-                                </div>
-                            ))}
-
+                            <div className="flex justify-start">
+                                <Button variant="secondary" onClick={() => setStep(1)}>
+                                    Back to Edit
+                                </Button>
+                            </div>
                         </div>
-
-                        <button
-                            onClick={() => setStep(1)}
-                            className="btn btn-secondary mt-4"
-                        >
-                            Back to Edit
-                        </button>
-
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
+        </MainLayout>
     );
 }

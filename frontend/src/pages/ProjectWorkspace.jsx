@@ -17,11 +17,16 @@ import {
     downloadAttachment,
 } from '../api/projects';
 import { useAuth } from '../context/AuthContext';
+import MainLayout from '../layouts/MainLayout';
+import Button from '../components/ui/Button';
+import Card from '../components/ui/Card';
+import Badge from '../components/ui/Badge';
+import Input from '../components/ui/Input';
 
 const BOARD_COLUMNS = [
-    { key: 'TODO', label: 'To Do' },
-    { key: 'IN_PROGRESS', label: 'In Progress' },
-    { key: 'DONE', label: 'Done' }
+    { key: 'TODO', label: 'To Do', color: 'gray' },
+    { key: 'IN_PROGRESS', label: 'In Progress', color: 'blue' },
+    { key: 'DONE', label: 'Done', color: 'green' }
 ];
 
 export default function ProjectWorkspace() {
@@ -45,31 +50,9 @@ export default function ProjectWorkspace() {
         description: '',
         status: 'TODO'
     });
-    // attachment upload state: { [taskId]: { uploading: bool, error: string } }
     const [attachState, setAttachState] = useState({});
     const fileInputRefs = useRef({});
-
-    // Drag and Drop state
     const [dragOverCol, setDragOverCol] = useState(null);
-
-    const handleDragStart = (e, taskId) => {
-        e.dataTransfer.setData("taskId", taskId);
-    };
-    const handleDragOver = (e, colKey) => {
-        e.preventDefault();
-        setDragOverCol(colKey);
-    };
-    const handleDragLeave = () => {
-        setDragOverCol(null);
-    };
-    const handleDrop = (e, colKey) => {
-        e.preventDefault();
-        setDragOverCol(null);
-        const taskId = e.dataTransfer.getData("taskId");
-        if (taskId) {
-            handleMoveTask(taskId, colKey);
-        }
-    };
 
     useEffect(() => {
         loadWorkspace();
@@ -82,7 +65,7 @@ export default function ProjectWorkspace() {
                 const data = await getProjectChat(projectId);
                 setChatMessages(data);
             } catch {
-                // Keep workspace usable even if chat polling fails transiently.
+                // Ignore transient errors
             }
         };
         loadChat();
@@ -109,7 +92,7 @@ export default function ProjectWorkspace() {
             const data = await getProjectWorkspace(projectId);
             setWorkspace(data);
         } catch (err) {
-            setError(err.message || 'Failed to load project workspace');
+            setError(err.message || 'Failed to load workspace');
         } finally {
             setLoading(false);
         }
@@ -125,20 +108,15 @@ export default function ProjectWorkspace() {
 
     const progress = useMemo(() => {
         const total = (workspace?.tasks || []).length;
-        if (total === 0) return { done: 0, inProgress: 0 };
+        if (total === 0) return 0;
         const done = workspace.tasks.filter((t) => t.status === 'DONE').length;
-        const inProgress = workspace.tasks.filter((t) => t.status === 'IN_PROGRESS').length;
-        return {
-            done: Math.round((done / total) * 100),
-            inProgress: Math.round((inProgress / total) * 100),
-        };
+        return Math.round((done / total) * 100);
     }, [workspace]);
 
     const handleCreateTask = async (e) => {
         e.preventDefault();
         if (!newTask.title.trim()) return;
         setSaving(true);
-        setError('');
         try {
             await createProjectTask(projectId, {
                 title: newTask.title.trim(),
@@ -155,7 +133,6 @@ export default function ProjectWorkspace() {
     };
 
     const handleMoveTask = async (taskId, status) => {
-        setError('');
         try {
             const updatedTask = await updateProjectTask(projectId, taskId, { status });
             setWorkspace((prev) => ({
@@ -163,7 +140,7 @@ export default function ProjectWorkspace() {
                 tasks: prev.tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t))
             }));
         } catch (err) {
-            setError(err.message || 'Failed to update task');
+            setError(err.message || 'Failed to move task');
         }
     };
 
@@ -198,14 +175,8 @@ export default function ProjectWorkspace() {
                 ),
             }));
         } catch (err) {
-            setError(err.message || 'Failed to delete attachment');
+            setError(err.message);
         }
-    };
-
-    const formatBytes = (bytes) => {
-        if (bytes < 1024) return `${bytes} B`;
-        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     };
 
     const handleSendMessage = async (e) => {
@@ -218,7 +189,7 @@ export default function ProjectWorkspace() {
             setChatMessages((prev) => [...prev, saved]);
             setChatText('');
         } catch (err) {
-            setError(err.message || 'Failed to send message');
+            setError(err.message);
         } finally {
             setChatSending(false);
         }
@@ -226,17 +197,14 @@ export default function ProjectWorkspace() {
 
     const handleAskRag = async (e) => {
         e.preventDefault();
-        const question = ragQuery.trim();
-        if (!question) return;
-
+        if (!ragQuery.trim()) return;
         setRagLoading(true);
         setRagAnswer('');
-        setError('');
         try {
-            const answer = await queryRagAnswer(projectId, question, 4);
+            const answer = await queryRagAnswer(projectId, ragQuery.trim(), 4);
             setRagAnswer(answer);
         } catch (err) {
-            setError(err.message || 'Failed to get AI answer');
+            setError(err.message);
         } finally {
             setRagLoading(false);
         }
@@ -244,365 +212,283 @@ export default function ProjectWorkspace() {
 
     const handleLiteratureUpload = async (e) => {
         const file = e.target.files?.[0];
-        e.target.value = '';
         if (!file) return;
         setRagUploadLoading(true);
-        setError('');
         try {
             await uploadLiteratureDocument(projectId, file);
             const docs = await listLiteratureDocuments(projectId);
             setRagDocs(docs);
         } catch (err) {
-            setError(err.message || 'Failed to upload literature document');
+            setError(err.message);
         } finally {
             setRagUploadLoading(false);
+            e.target.value = '';
         }
     };
 
-    const handleDeleteLiteratureDoc = async (documentId) => {
-        try {
-            await deleteLiteratureDocument(projectId, documentId);
-            setRagDocs((prev) => prev.filter((d) => d.id !== documentId));
-        } catch (err) {
-            setError(err.message || 'Failed to delete literature document');
-        }
-    };
+    if (loading) return (
+        <MainLayout>
+            <div className="flex justify-center py-20">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+        </MainLayout>
+    );
 
-    if (loading) return <div className="text-center mt-8">Loading workspace...</div>;
-    if (!workspace) return <div className="text-center mt-8">Workspace unavailable.</div>;
+    if (!workspace) return <MainLayout><div className="container py-20 text-center">Workspace not found</div></MainLayout>;
 
     return (
-        <motion.div
-            className="container workspace-shell"
-            style={{ paddingBottom: '2rem' }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-        >
-            <div className="workspace-header card mb-4">
-                <h2 style={{ marginBottom: '0.5rem' }}>{workspace.title}</h2>
-                <p className="text-muted"><strong>Problem Statement:</strong> {workspace.problem_statement}</p>
-                <div className="d-flex gap-4 mt-2" style={{ flexWrap: 'wrap' }}>
-                    <span><strong>Faculty:</strong> {workspace.faculty_name || 'N/A'}</span>
-                    <span><strong>Team:</strong> {workspace.team_name || 'Not assigned'}</span>
-                    <span><strong>Project Status:</strong> {workspace.status}</span>
-                </div>
-                <div className="mt-2">
-                    <strong>Team Members:</strong>{' '}
-                    {workspace.member_names && workspace.member_names.length > 0
-                        ? workspace.member_names.join(', ')
-                        : 'No members yet'}
-                </div>
-            </div>
-
-            <div className="card mb-4">
-                <h3 style={{ fontSize: '1.2rem' }}>Project Progress</h3>
-                <div className="progress-track mt-2">
-                    <div className="progress-done" style={{ width: `${progress.done}%` }} />
-                </div>
-                <div className="d-flex gap-4 mt-2 text-muted">
-                    <span>Done: {progress.done}%</span>
-                    <span>In Progress: {progress.inProgress}%</span>
-                    <span>Total Tasks: {(workspace.tasks || []).length}</span>
-                </div>
-            </div>
-
-            <div className="card mb-4">
-                <h3 style={{ fontSize: '1.2rem' }}>AI Assistant</h3>
-                <div className="mb-3">
-                    <label className="form-label">Upload literature file (PDF/TXT/MD)</label>
-                    <input
-                        type="file"
-                        className="form-control"
-                        accept=".pdf,.txt,.md"
-                        onChange={handleLiteratureUpload}
-                        disabled={ragUploadLoading}
-                    />
-                    <div className="text-muted" style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
-                        {ragUploadLoading ? 'Indexing document...' : `Indexed documents: ${ragDocs.length}`}
+        <MainLayout>
+            <div className="container py-12">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div className="max-w-3xl">
+                        <div className="flex items-center gap-3 mb-4">
+                            <Badge variant={`sdg-${Object.keys(workspace.sdg_mapping)[0] || '1'}`}>
+                                {workspace.status}
+                            </Badge>
+                            <span className="text-xs text-gray-400 font-mono">PROJECT_ID: {projectId.slice(-6).toUpperCase()}</span>
+                        </div>
+                        <h1 className="text-4xl font-bold tracking-tight mb-4">{workspace.title}</h1>
+                        <p className="text-gray-500 leading-relaxed">{workspace.problem_statement}</p>
                     </div>
-                    {ragDocs.length > 0 && (
-                        <div style={{ marginTop: '0.5rem' }}>
-                            {ragDocs.map((d) => (
-                                <div key={d.id} className="d-flex items-center gap-2" style={{ marginBottom: '0.35rem' }}>
-                                    <span className="text-muted" style={{ fontSize: '0.85rem' }}>{d.filename}</span>
-                                    <button
-                                        type="button"
-                                        className="btn btn-secondary"
-                                        style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem' }}
-                                        onClick={() => downloadLiteratureDocument(projectId, d.id, d.filename)}
+                    <div className="flex items-center gap-4">
+                        <div className="text-right">
+                            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Overall Progress</p>
+                            <div className="flex items-center gap-3">
+                                <div className="w-32 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                    <div className="h-full bg-gray-900 dark:bg-white transition-all duration-500" style={{ width: `${progress}%` }} />
+                                </div>
+                                <span className="text-sm font-bold">{progress}%</span>
+                            </div>
+                        </div>
+                        <Button variant="secondary" onClick={() => setIsChatOpen(true)} className="relative">
+                            Team Chat
+                            {chatMessages.length > 0 && (
+                                <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 rounded-full border-2 border-white" />
+                            )}
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-8 space-y-8">
+                        {/* AI Section */}
+                        <Card className="p-8">
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="w-8 h-8 bg-gray-900 dark:bg-white rounded flex items-center justify-center text-white dark:text-gray-900">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                </div>
+                                <h3 className="text-lg font-bold">Literature Intelligence</h3>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-4">
+                                    <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">Knowledge Base</p>
+                                    <div className="space-y-2">
+                                        {ragDocs.map(doc => (
+                                            <div key={doc.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg group">
+                                                <div className="flex items-center gap-3">
+                                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                                    <span className="text-sm font-medium truncate max-w-[150px]">{doc.filename}</span>
+                                                </div>
+                                                <button 
+                                                    onClick={() => deleteLiteratureDocument(projectId, doc.id)}
+                                                    className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-all"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <label className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl hover:border-gray-900 dark:hover:border-white transition-colors cursor-pointer">
+                                            <input type="file" className="hidden" onChange={handleLiteratureUpload} accept=".pdf,.txt,.md" disabled={ragUploadLoading} />
+                                            <span className="text-xs font-bold text-gray-400">{ragUploadLoading ? 'Indexing...' : '+ Upload Source'}</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">Ask Anything</p>
+                                    <form onSubmit={handleAskRag} className="flex gap-2">
+                                        <Input 
+                                            placeholder="Synthesize insights..." 
+                                            className="!mb-0" 
+                                            value={ragQuery} 
+                                            onChange={(e) => setRagQuery(e.target.value)} 
+                                        />
+                                        <Button type="submit" isLoading={ragLoading} disabled={ragDocs.length === 0}>
+                                            Ask
+                                        </Button>
+                                    </form>
+                                    {ragAnswer && (
+                                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-sm leading-relaxed text-gray-600 dark:text-gray-400 animate-in fade-in slide-in-from-top-2">
+                                            {ragAnswer}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* Kanban Board */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
+                            {BOARD_COLUMNS.map(col => (
+                                <div key={col.key} className="flex flex-col h-full min-h-[400px]">
+                                    <div className="flex items-center justify-between mb-4 px-1">
+                                        <div className="flex items-center gap-2">
+                                            <div className={`w-2 h-2 rounded-full bg-${col.color}-500`} />
+                                            <h4 className="text-sm font-bold uppercase tracking-widest">{col.label}</h4>
+                                        </div>
+                                        <span className="text-xs font-bold text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+                                            {groupedTasks[col.key].length}
+                                        </span>
+                                    </div>
+
+                                    <div 
+                                        className={`flex-1 space-y-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 transition-colors ${dragOverCol === col.key ? 'bg-gray-200/50 dark:bg-gray-800' : ''}`}
+                                        onDragOver={(e) => { e.preventDefault(); setDragOverCol(col.key); }}
+                                        onDragLeave={() => setDragOverCol(null)}
+                                        onDrop={(e) => {
+                                            e.preventDefault();
+                                            setDragOverCol(null);
+                                            const taskId = e.dataTransfer.getData("taskId");
+                                            if (taskId) handleMoveTask(taskId, col.key);
+                                        }}
                                     >
-                                        Download
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-secondary"
-                                        style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem', backgroundColor: '#dc3545', color: '#fff', border: 'none' }}
-                                        onClick={() => handleDeleteLiteratureDoc(d.id)}
-                                    >
-                                        Delete
-                                    </button>
+                                        <AnimatePresence>
+                                            {groupedTasks[col.key].map(task => (
+                                                <motion.div
+                                                    key={task.id}
+                                                    layout
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    draggable
+                                                    onDragStart={(e) => e.dataTransfer.setData("taskId", task.id)}
+                                                    className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm cursor-grab active:cursor-grabbing group"
+                                                >
+                                                    <h5 className="text-sm font-bold mb-1">{task.title}</h5>
+                                                    <p className="text-xs text-gray-500 line-clamp-2 mb-3">{task.description}</p>
+                                                    
+                                                    <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-gray-700">
+                                                        <span className="text-[10px] text-gray-400 font-bold uppercase">@{task.created_by?.split(' ')[0]}</span>
+                                                        <div className="flex gap-1">
+                                                            {(task.attachments || []).length > 0 && (
+                                                                <span className="text-[10px] text-blue-600 font-bold">📎 {task.attachments.length}</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </motion.div>
+                                            ))}
+                                        </AnimatePresence>
+                                        
+                                        {col.key === 'TODO' && (
+                                            <button 
+                                                onClick={() => setNewTask(prev => ({ ...prev, status: 'TODO' }))}
+                                                className="w-full py-3 border border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-xs font-bold text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                            >
+                                                + New Task
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                    )}
-                </div>
-                <form onSubmit={handleAskRag} className="mt-2">
-                    <div className="form-group">
-                        <label className="form-label">Ask for literature survey insights</label>
-                        <input
-                            className="form-control"
-                            value={ragQuery}
-                            onChange={(e) => setRagQuery(e.target.value)}
-                            placeholder="What methods are commonly used for this problem?"
-                        />
                     </div>
-                    <button className="btn btn-primary" disabled={ragLoading || !ragQuery.trim() || ragDocs.length === 0}>
-                        {ragLoading ? 'Generating...' : 'Get Answer'}
-                    </button>
-                </form>
-                {ragAnswer && (
-                    <div className="mt-3" style={{ whiteSpace: 'pre-wrap' }}>
-                        {ragAnswer}
-                    </div>
-                )}
-            </div>
 
-            <div className="card mb-4">
-                <h3 style={{ fontSize: '1.2rem' }}>
-                    {user?.role === 'FACULTY' ? 'Faculty Task Board (Jira-style)' : 'Team Task Board'}
-                </h3>
-                <form onSubmit={handleCreateTask} className="mt-2">
-                    <div className="grid grid-cols-1 grid-cols-2 gap-2">
-                        <div className="form-group">
-                            <label className="form-label">Task Title</label>
-                            <input
-                                className="form-control"
-                                value={newTask.title}
-                                onChange={(e) => setNewTask((prev) => ({ ...prev, title: e.target.value }))}
-                                placeholder="E.g., API integration"
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label">Initial Status</label>
-                            <select
-                                className="form-control"
-                                value={newTask.status}
-                                onChange={(e) => setNewTask((prev) => ({ ...prev, status: e.target.value }))}
-                            >
-                                {BOARD_COLUMNS.map((col) => (
-                                    <option key={col.key} value={col.key}>{col.label}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Description</label>
-                        <textarea
-                            className="form-control"
-                            rows="3"
-                            value={newTask.description}
-                            onChange={(e) => setNewTask((prev) => ({ ...prev, description: e.target.value }))}
-                            placeholder="Add acceptance criteria or notes"
-                        />
-                    </div>
-                    <button className="btn btn-primary" disabled={saving}>
-                        {saving ? 'Adding...' : 'Add To Do'}
-                    </button>
-                </form>
-                {error && <div className="alert alert-error mt-2">{error}</div>}
-            </div>
-
-            <div className="workspace-board">
-                {BOARD_COLUMNS.map((column) => (
-                    <div
-                        className={`workspace-col ${dragOverCol === column.key ? 'drag-over' : ''}`}
-                        key={column.key}
-                        onDragOver={(e) => handleDragOver(e, column.key)}
-                        onDragLeave={handleDragLeave}
-                        onDrop={(e) => handleDrop(e, column.key)}
-                    >
-                        <h4>{column.label}</h4>
-                        {groupedTasks[column.key].length === 0 ? (
-                            <div className="text-muted" style={{ fontSize: '0.9rem' }}>No tasks</div>
-                        ) : (
-                            <AnimatePresence>
-                                {groupedTasks[column.key].map((task) => (
-                                    <motion.div
-                                        layout
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ duration: 0.2 }}
-                                        key={task.id}
-                                        className="workspace-task"
-                                        draggable="true"
-                                        onDragStart={(e) => handleDragStart(e, task.id)}
-                                    >
-                                        <div className="d-flex justify-between items-center">
-                                            <strong>{task.title}</strong>
-                                        </div>
-                                        {task.description && (
-                                            <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                                                {task.description}
-                                            </p>
-                                        )}
-                                        <div className="text-muted" style={{ fontSize: '0.8rem' }}>
-                                            Added by: {task.created_by || 'Unknown'}
-                                        </div>
-                                        <div className="mt-2">
-                                            <select
-                                                className="form-control"
-                                                value={task.status}
-                                                onChange={(e) => handleMoveTask(task.id, e.target.value)}
-                                            >
-                                                {BOARD_COLUMNS.map((col) => (
-                                                    <option key={col.key} value={col.key}>{col.label}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-
-                                        {/* ── Attachments ── */}
-                                        <div className="task-attachments">
-                                            {(task.attachments || []).length > 0 && (
-                                                <ul className="attachment-list">
-                                                    {(task.attachments || []).map((att) => (
-                                                        <li key={att.id} className="attachment-item">
-                                                            <span className="attachment-icon">📄</span>
-                                                            <span
-                                                                className="attachment-name"
-                                                                title={att.original_name}
-                                                            >
-                                                                {att.original_name.length > 24
-                                                                    ? att.original_name.slice(0, 22) + '…'
-                                                                    : att.original_name}
-                                                            </span>
-                                                            <span className="attachment-size">
-                                                                {formatBytes(att.size_bytes)}
-                                                            </span>
-                                                            <button
-                                                                className="attachment-btn download"
-                                                                title="Download"
-                                                                onClick={() =>
-                                                                    downloadAttachment(
-                                                                        projectId, task.id,
-                                                                        att.id, att.original_name
-                                                                    )
-                                                                }
-                                                            >⬇</button>
-                                                            <button
-                                                                className="attachment-btn delete"
-                                                                title="Delete"
-                                                                onClick={() =>
-                                                                    handleDeleteAttachment(task.id, att.id)
-                                                                }
-                                                            >🗑</button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-
-                                            {/* Hidden file input */}
-                                            <input
-                                                type="file"
-                                                style={{ display: 'none' }}
-                                                ref={(el) => { fileInputRefs.current[task.id] = el; }}
-                                                onChange={(e) => {
-                                                    handleUpload(task.id, e.target.files[0]);
-                                                    e.target.value = '';
-                                                }}
-                                            />
-                                            <button
-                                                className="attachment-upload-btn"
-                                                type="button"
-                                                disabled={attachState[task.id]?.uploading}
-                                                onClick={() => fileInputRefs.current[task.id]?.click()}
-                                            >
-                                                {attachState[task.id]?.uploading ? '⏳ Uploading…' : '📎 Attach file'}
-                                            </button>
-                                            {attachState[task.id]?.error && (
-                                                <div style={{ color: 'var(--color-error)', fontSize: '0.8rem', marginTop: '4px' }}>
-                                                    {attachState[task.id].error}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        )}
-                    </div>
-                ))}
-            </div>
-
-            <button
-                className="smart-chat-launcher"
-                type="button"
-                onClick={() => setIsChatOpen((prev) => !prev)}
-                aria-label="Open team chat"
-                style={{ position: 'fixed', top: '12px', right: '18px', left: 'auto', bottom: 'auto', zIndex: 1200 }}
-            >
-                Team Chat
-            </button>
-
-            <div
-                className={`smart-chat-panel ${isChatOpen ? 'open' : ''}`}
-                style={{ position: 'fixed', top: '78px', right: '18px', left: 'auto', bottom: 'auto', zIndex: 1190 }}
-            >
-                <div className="smart-chat-header">
-                    <div className="smart-chat-avatar">
-                        {(workspace.team_name || 'T').slice(0, 1).toUpperCase()}
-                    </div>
-                    <div>
-                        <div className="smart-chat-title">{workspace.team_name || 'Team Chat'}</div>
-                        <div className="smart-chat-subtitle">
-                            <span className="smart-chat-dot" />
-                            We reply immediately
-                        </div>
-                    </div>
-                    <button
-                        className="smart-chat-close"
-                        type="button"
-                        onClick={() => setIsChatOpen(false)}
-                        aria-label="Close chat"
-                    >
-                        x
-                    </button>
-                </div>
-
-                <div className="smart-chat-messages thin-scrollbar">
-                    {chatMessages.length === 0 ? (
-                        <div className="smart-chat-empty">No messages yet. Start the conversation.</div>
-                    ) : (
-                        chatMessages.map((m) => {
-                            const isMine = String(m.sender_id || '') === String(user?.id || '');
-                            return (
-                                <div key={m.id} className={`smart-chat-row ${isMine ? 'mine' : ''}`}>
-                                    <div className={`smart-chat-bubble ${isMine ? 'mine' : ''}`}>
-                                        <div className="smart-chat-meta">
-                                            <strong>{m.sender_name || 'Unknown'}</strong>{' '}
-                                            <span className="text-muted">({m.sender_role || 'MEMBER'})</span>
-                                        </div>
-                                        <div>{m.message}</div>
+                    {/* Sidebar Area */}
+                    <div className="lg:col-span-4 space-y-8">
+                        <Card className="p-8">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Project Metadata</h3>
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="text-xs font-bold text-gray-400 block mb-1 uppercase">Faculty Advisor</label>
+                                    <p className="text-sm font-bold">{workspace.faculty_name || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-gray-400 block mb-1 uppercase">Research Group</label>
+                                    <p className="text-sm font-bold">{workspace.team_name || 'Individual Project'}</p>
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-gray-400 block mb-3 uppercase">Collaborators</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {(workspace.member_names || []).map((name, i) => (
+                                            <span key={i} className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-[10px] font-bold">
+                                                {name}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
-                            );
-                        })
-                    )}
+                                <div className="pt-6 border-t border-gray-100 dark:border-gray-800">
+                                    <label className="text-xs font-bold text-gray-400 block mb-3 uppercase">Create Quick Task</label>
+                                    <form onSubmit={handleCreateTask} className="space-y-3">
+                                        <Input 
+                                            placeholder="Task title..." 
+                                            className="!mb-0 !text-sm" 
+                                            value={newTask.title} 
+                                            onChange={(e) => setNewTask(p => ({ ...p, title: e.target.value }))}
+                                            required
+                                        />
+                                        <Button type="submit" className="w-full !text-xs" isLoading={saving}>Add To Do</Button>
+                                    </form>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
                 </div>
-
-                <form onSubmit={handleSendMessage} className="smart-chat-input-wrap">
-                    <input
-                        className="smart-chat-input"
-                        placeholder="Type your message here..."
-                        value={chatText}
-                        onChange={(e) => setChatText(e.target.value)}
-                    />
-                    <button className="smart-chat-send" disabled={chatSending || !chatText.trim()}>
-                        {chatSending ? '...' : '>'}
-                    </button>
-                </form>
             </div>
-        </motion.div>
+
+            {/* Chat Drawer */}
+            <AnimatePresence>
+                {isChatOpen && (
+                    <>
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsChatOpen(false)}
+                            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[100]"
+                        />
+                        <motion.div 
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            className="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl z-[101] flex flex-col"
+                        >
+                            <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                                <h3 className="font-bold">Team Collaboration</h3>
+                                <button onClick={() => setIsChatOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                {chatMessages.map((m, i) => {
+                                    const isMine = String(m.sender_id) === String(user?.id);
+                                    return (
+                                        <div key={i} className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{m.sender_name}</span>
+                                            </div>
+                                            <div className={`p-4 rounded-2xl text-sm max-w-[85%] ${isMine ? 'bg-gray-900 text-white rounded-tr-none' : 'bg-gray-100 dark:bg-gray-800 rounded-tl-none'}`}>
+                                                {m.message}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <form onSubmit={handleSendMessage} className="p-6 border-t border-gray-100 dark:border-gray-800 flex gap-2">
+                                <Input 
+                                    placeholder="Share an update..." 
+                                    className="!mb-0" 
+                                    value={chatText} 
+                                    onChange={(e) => setChatText(e.target.value)}
+                                />
+                                <Button type="submit" isLoading={chatSending}>Send</Button>
+                            </form>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </MainLayout>
     );
 }

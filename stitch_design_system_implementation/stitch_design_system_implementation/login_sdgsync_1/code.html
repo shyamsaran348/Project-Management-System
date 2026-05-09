@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=DM+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#005129",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1b1b20",
+                    "sdg-9": "#FD6925",
+                    "on-primary-fixed": "#00210d",
+                    "sdg-6": "#26BDE2",
+                    "sdg-11": "#FD9D24",
+                    "background": "#fcf8ff",
+                    "surface-container-low": "#f6f2fa",
+                    "sdg-3": "#4C9F38",
+                    "sdg-14": "#0A97D9",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "secondary-fixed-dim": "#ffb960",
+                    "on-tertiary-container": "#ffcace",
+                    "text-mid": "#3d3d4a",
+                    "on-secondary-container": "#6e4400",
+                    "amber-light": "#fef3e0",
+                    "text-muted": "#6b6b7a",
+                    "surface-tint": "#1b6c3d",
+                    "tertiary-fixed-dim": "#ffb2b9",
+                    "surface-container-high": "#eae7ee",
+                    "primary-fixed-dim": "#89d89e",
+                    "on-error": "#ffffff",
+                    "primary-container": "#1a6b3c",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#dcd9e0",
+                    "surface-alt": "#eceae3",
+                    "on-background": "#1b1b20",
+                    "on-surface-variant": "#404940",
+                    "sdg-17": "#19486A",
+                    "inverse-primary": "#89d89e",
+                    "sdg-8": "#A21942",
+                    "sdg-2": "#DDA63A",
+                    "cream": "#faf8f3",
+                    "sdg-4": "#C5192D",
+                    "tertiary": "#782c38",
+                    "blue": "#1a3a6b",
+                    "primary-fixed": "#a5f4b8",
+                    "sdg-16": "#00689D",
+                    "surface": "#f5f3ee",
+                    "sdg-13": "#3F7E44",
+                    "sdg-10": "#DD1367",
+                    "tertiary-fixed": "#ffd9dc",
+                    "surface-container-highest": "#e4e1e9",
+                    "inverse-on-surface": "#f3eff7",
+                    "on-secondary": "#ffffff",
+                    "sdg-5": "#FF3A21",
+                    "sdg-1": "#E5243B",
+                    "sand": "#d4c9a8",
+                    "surface-container": "#f0ecf4",
+                    "on-tertiary-fixed": "#3f0110",
+                    "sand-dark": "#b8a87a",
+                    "sdg-7": "#FCC30B",
+                    "error": "#ba1a1a",
+                    "secondary": "#865300",
+                    "sdg-15": "#56C02B",
+                    "accent-hover": "#2d9e60",
+                    "surface-container-lowest": "#ffffff",
+                    "ink-light": "#1a1a2e",
+                    "inverse-surface": "#303036",
+                    "on-tertiary-fixed-variant": "#792d39",
+                    "blue-light": "#e8eef8",
+                    "accent-light": "#e8f5ee",
+                    "tertiary-container": "#96434f",
+                    "outline": "#707a70",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-primary-container": "#9ae9ae",
+                    "outline-variant": "#bfc9be",
+                    "secondary-container": "#fead3e",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fcf8ff",
+                    "on-primary-fixed-variant": "#005229",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffddb8",
+                    "sdg-12": "#BF8B2E",
+                    "surface-variant": "#e4e1e9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "section-padding": "2.5rem",
+                    "stack-sm": "8px",
+                    "container-max": "1280px",
+                    "gutter": "1.5rem",
+                    "stack-lg": "24px",
+                    "header-height": "64px"
+            },
+            "fontFamily": {
+                    "mono-label": ["DM Mono"],
+                    "body-base": ["DM Sans"],
+                    "headline-md": ["Syne"],
+                    "display-lg-mobile": ["Syne"],
+                    "display-lg": ["Syne"],
+                    "body-sm": ["DM Sans"]
+            },
+            "fontSize": {
+                    "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 201, 168, 0.3);
+        }
+        .neural-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0, 81, 41, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .floating-orb {
+            filter: blur(80px);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-cream min-h-screen flex items-center justify-center font-body-base text-on-surface overflow-hidden">
+<!-- Decorative Neural-like background elements -->
+<div class="fixed inset-0 neural-bg pointer-events-none"></div>
+<div class="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full floating-orb"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-sdg-3/5 rounded-full floating-orb"></div>
+<main class="relative z-10 w-full max-w-container-max px-gutter flex justify-center">
+<!-- Central Login Card -->
+<div class="glass-panel w-full max-w-[480px] p-stack-lg md:p-12 rounded-[28px] shadow-md border border-sand/30 flex flex-col items-center">
+<!-- Logo Section -->
+<div class="mb-stack-lg flex flex-col items-center gap-stack-sm">
+<div class="w-16 h-16 bg-primary flex items-center justify-center rounded-2xl shadow-sm mb-2">
+<span class="material-symbols-outlined text-white text-[40px]" data-icon="sync">sync</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">SDGSync</h1>
+</div>
+<!-- Header Text -->
+<div class="text-center mb-stack-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Welcome Back</h2>
+<p class="font-body-base text-body-base text-on-surface-variant">Access the institutional portal for sustainable growth.</p>
+</div>
+<!-- Form -->
+<form class="w-full space-y-stack-md">
+<div class="space-y-stack-sm">
+<label class="font-mono-label text-mono-label text-on-surface-variant block px-1" for="email">INSTITUTIONAL EMAIL</label>
+<input class="w-full h-14 px-stack-lg bg-surface border-none rounded-xl focus:ring-4 focus:ring-primary/20 focus:bg-white transition-all font-body-base text-body-base placeholder:text-outline/50" id="email" placeholder="name@university.edu" type="email"/>
+</div>
+<div class="space-y-stack-sm">
+<div class="flex justify-between items-center px-1">
+<label class="font-mono-label text-mono-label text-on-surface-variant" for="password">PASSWORD</label>
+<a class="font-body-sm text-body-sm text-primary hover:text-accent-hover transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<input class="w-full h-14 px-stack-lg bg-surface border-none rounded-xl focus:ring-4 focus:ring-primary/20 focus:bg-white transition-all font-body-base text-body-base placeholder:text-outline/50" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center space-x-3 px-1 py-2">
+<input class="w-5 h-5 rounded border-sand text-primary focus:ring-primary/20" id="remember" type="checkbox"/>
+<label class="font-body-sm text-body-sm text-on-surface-variant select-none" for="remember">Remember this device for 30 days</label>
+</div>
+<div class="pt-2 space-y-stack-sm">
+<button class="w-full h-14 bg-on-surface text-white rounded-xl font-headline-md text-body-base hover:shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center gap-2" type="submit">
+                        Sign In
+                        <span class="material-symbols-outlined text-[18px]" data-icon="login">login</span>
+</button>
+<div class="relative py-4 flex items-center">
+<div class="flex-grow border-t border-sand/30"></div>
+<span class="flex-shrink mx-4 font-mono-label text-mono-label text-outline/60">OR</span>
+<div class="flex-grow border-t border-sand/30"></div>
+</div>
+<button class="w-full h-14 bg-white border border-sand text-on-surface rounded-xl font-headline-md text-body-base hover:bg-surface active:scale-95 transition-all duration-200" type="button">
+                        Create an account
+                    </button>
+</div>
+</form>
+<!-- Footer Compliance/Links -->
+<div class="mt-stack-lg flex flex-wrap justify-center gap-x-stack-lg gap-y-2">
+<a class="font-body-sm text-body-sm text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Global Support</a>
+</div>
+</div>
+</main>
+<!-- Side Imagery Component (Hidden on small screens) -->
+<div class="fixed right-0 top-0 bottom-0 w-1/3 hidden lg:block overflow-hidden">
+<div class="w-full h-full relative">
+<img alt="SDGSync Institutional Context" class="w-full h-full object-cover" data-alt="A sophisticated, high-end institutional lobby featuring minimalist architectural lines and warm lighting. The space is filled with lush interior plants and large glass windows that suggest a connection between sustainable development and modern infrastructure. The color palette is dominated by soft creams, deep greens, and subtle sand tones, creating a professional yet trustworthy atmosphere for academic and global development contexts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4eKGNls5zmeJbhI0WloYgrwhwAbiSyHfv8xiFHbiQSmF9X1Dh9iMJXBL-xLhwLZETFD4l5frRbvOVlHM2u3ZfF4anez4lLaUOW4dRlkM3Y41dOTiH7HMY7Omd-gY_4sJk5c6pIQSSC6M6EmumRH_8dX6aXDfyspynKx_wVkPhDbBBwBBWn8NL7sRkyQXg6rEnprNkI3u4yZqFQdBhWg7o7PliViOo3J5_trk_bhgrWfHKBMWKaelQWy02gP7HAmX_kUg0f1fWm64"/>
+<div class="absolute inset-0 bg-gradient-to-l from-transparent to-cream"></div>
+<!-- Floating Quote Card -->
+<div class="absolute bottom-12 right-12 glass-panel p-8 rounded-2xl max-w-sm shadow-xl">
+<span class="material-symbols-outlined text-primary text-[32px] mb-4" data-icon="format_quote" data-weight="fill">format_quote</span>
+<p class="font-body-base text-on-surface italic mb-4">"Achieving global goals requires synchronized institutional effort and real-time data transparency."</p>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-dim overflow-hidden">
+<img alt="Director Portrait" class="w-full h-full object-cover" data-alt="A professional headshot of a female executive with a confident and warm expression, representing institutional leadership. She is set against a blurred, high-fidelity office background. Her attire is professional and modern, aligning with the warm institutional aesthetic of the SDGSync brand, using a soft, natural color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo1QIdQKCmMyLAOrURkdJDsxtnmJPPIACg43GCFEzj-osNeEm7Okyap3WiBaoFWjSU2KQGV-HNLEtApG6b769LlscDlGyTCb10m7-BzDp9Fxok4OD2iRVKX9cRBAhzJ-Dn0NaSI-SSz3RvUOYELmTCJjltWy-lNtXJjWgqkLtY_q-D7GcG-u8KdqM3KnUG12RS5VLNeTUscBBIIS5MS3cm71BZ6evoDpNdXqfbMcbEnbWHUADekyXSOflzUOu2vMSHJzdgB4c66i4"/>
+</div>
+<div>
+<p class="font-headline-md text-body-sm text-on-surface">Dr. Elena Sterling</p>
+<p class="font-body-sm text-on-surface-variant">Director of Sustainable Strategy</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

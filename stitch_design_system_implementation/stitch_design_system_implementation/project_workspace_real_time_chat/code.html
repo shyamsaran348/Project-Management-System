@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SDGSync Project Workspace - Real-Time Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#eae7ee",
+                        "sdg-10": "#DD1367",
+                        "secondary-fixed-dim": "#ffb960",
+                        "tertiary-fixed": "#ffd9dc",
+                        "tertiary": "#782c38",
+                        "blue": "#1a3a6b",
+                        "on-error-container": "#93000a",
+                        "sdg-4": "#C5192D",
+                        "surface-tint": "#1b6c3d",
+                        "on-tertiary-fixed-variant": "#792d39",
+                        "on-secondary": "#ffffff",
+                        "amber-light": "#fef3e0",
+                        "surface": "#f5f3ee",
+                        "sdg-2": "#DDA63A",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00210d",
+                        "surface-alt": "#eceae3",
+                        "on-surface": "#1b1b20",
+                        "sdg-6": "#26BDE2",
+                        "ink-light": "#1a1a2e",
+                        "sdg-13": "#3F7E44",
+                        "sand": "#d4c9a8",
+                        "blue-light": "#e8eef8",
+                        "surface-container-low": "#f6f2fa",
+                        "secondary-container": "#fead3e",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-secondary-fixed": "#2a1700",
+                        "sdg-16": "#00689D",
+                        "on-secondary-container": "#6e4400",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#3f0110",
+                        "outline-variant": "#bfc9be",
+                        "surface-variant": "#e4e1e9",
+                        "on-primary-container": "#9ae9ae",
+                        "sdg-8": "#A21942",
+                        "sdg-15": "#56C02B",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e4e1e9",
+                        "error": "#ba1a1a",
+                        "sdg-11": "#FD9D24",
+                        "sand-dark": "#b8a87a",
+                        "sdg-17": "#19486A",
+                        "surface-dim": "#dcd9e0",
+                        "surface-bright": "#fcf8ff",
+                        "text-mid": "#3d3d4a",
+                        "inverse-surface": "#303036",
+                        "inverse-primary": "#89d89e",
+                        "on-surface-variant": "#404940",
+                        "sdg-5": "#FF3A21",
+                        "primary-fixed": "#a5f4b8",
+                        "primary-fixed-dim": "#89d89e",
+                        "primary-container": "#1a6b3c",
+                        "sdg-7": "#FCC30B",
+                        "accent-light": "#e8f5ee",
+                        "outline": "#707a70",
+                        "secondary": "#865300",
+                        "sdg-3": "#4C9F38",
+                        "sdg-12": "#BF8B2E",
+                        "on-tertiary-container": "#ffcace",
+                        "sdg-14": "#0A97D9",
+                        "sdg-9": "#FD6925",
+                        "inverse-on-surface": "#f3eff7",
+                        "on-background": "#1b1b20",
+                        "on-primary-fixed-variant": "#005229",
+                        "cream": "#faf8f3",
+                        "secondary-fixed": "#ffddb8",
+                        "accent-hover": "#2d9e60",
+                        "text-muted": "#6b6b7a",
+                        "surface-container": "#f0ecf4",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#96434f",
+                        "background": "#fcf8ff",
+                        "primary": "#005129",
+                        "tertiary-fixed-dim": "#ffb2b9",
+                        "sdg-1": "#E5243B"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "container-max": "1280px",
+                        "stack-lg": "24px",
+                        "header-height": "64px",
+                        "section-padding": "2.5rem",
+                        "gutter": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["DM Mono"],
+                        "display-lg": ["Syne"],
+                        "display-lg-mobile": ["Syne"],
+                        "body-base": ["DM Sans"],
+                        "headline-md": ["Syne"],
+                        "body-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .chat-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4c9a8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-cream font-body-base text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-header-height max-w-container-max mx-auto bg-white/65 backdrop-blur-xl border-b border-sand/30 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md text-primary">SDGSync</span>
+<div class="hidden md:flex ml-8 space-x-6 h-full items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Projects</a>
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200" href="#">Resource Library</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative group">
+<span class="material-symbols-outlined text-primary cursor-pointer p-2 rounded-full hover:bg-surface transition-all">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-sdg-1 rounded-full border-2 border-white"></span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer p-2 rounded-full hover:bg-surface transition-all">settings</span>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden bg-surface-container">
+<img alt="User avatar" data-alt="A professional headshot of a young woman with a focused expression, wearing modern academic attire. The lighting is soft and natural, coming from a large window in a clean, minimalist university office. The background is slightly blurred, showing books and a sustainable plant, maintaining a warm institutional and high-fidelity aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBazDPhFmXACp4z1PasWDaXvBp3sGMFmlWQHfSM2zMy1jtt1T0T38WEcbqHXDYQDcdh_XG6RnoMHU_CdqYeIaTF9WV1FGgPRcBK-hpuNhM3iap2Ouss-rD0DYHoJ9EBXnNedog9HJ1jyZQiBZ_w1qZtRg-gv7dcJYaln0vj4jc78TsnybRaQWOa_iZharXEWlXOlUhDsXrvTok9TWJ6BiKvRlxi3sr8v1CgVdP_DsFe6V1nnEwD_sE-P2EsRUyKJwp2t1x24CNuhdM"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-header-height h-[calc(100vh-theme(spacing.header-height))] flex flex-col p-4 space-y-stack-md bg-white/65 backdrop-blur-xl border-r border-sand/30 shadow-md w-64 hidden md:flex">
+<div class="flex items-center gap-3 px-2 py-4">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">dataset</span>
+</div>
+<div>
+<p class="font-headline-md text-body-base text-primary leading-tight">SDGSync</p>
+<p class="text-body-sm text-on-surface-variant opacity-70">Institutional Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-xl font-bold" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-body-sm">Projects</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-body-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-sm">Team</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-sm">Documents</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-sand/20 space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-sm">Help Center</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-header-height h-screen flex flex-col">
+<!-- Workspace Header & Tab Navigation -->
+<div class="px-gutter pt-8 pb-4 bg-cream/80 backdrop-blur-sm sticky top-header-height z-40">
+<div class="max-w-container-max mx-auto">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 bg-sdg-13 rounded-2xl flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[32px]">eco</span>
+</div>
+<div>
+<h1 class="font-headline-md text-display-lg-mobile md:text-headline-md text-primary tracking-tight">Urban Forestation Initiative v2.0</h1>
+<p class="text-body-sm text-on-surface-variant">SDG 13: Climate Action • Research Phase</p>
+</div>
+</div>
+<!-- Tabs -->
+<nav class="flex space-x-8 border-b border-sand/30">
+<button class="pb-3 text-on-surface-variant font-medium hover:text-primary transition-colors">Overview</button>
+<button class="pb-3 text-on-surface-variant font-medium hover:text-primary transition-colors">Tasks</button>
+<button class="pb-3 text-primary font-bold border-b-2 border-primary">Chat</button>
+<button class="pb-3 text-on-surface-variant font-medium hover:text-primary transition-colors">Literature</button>
+<button class="pb-3 text-on-surface-variant font-medium hover:text-primary transition-colors">Files</button>
+</nav>
+</div>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-hidden flex flex-col max-w-5xl mx-auto w-full px-gutter">
+<!-- Message Stream -->
+<div class="flex-1 overflow-y-auto py-6 space-y-6 chat-scrollbar pr-2">
+<!-- System Message -->
+<div class="flex justify-center">
+<span class="px-4 py-1 rounded-full bg-sand/20 text-on-surface-variant text-mono-label font-mono-label">June 14, 2024</span>
+</div>
+<!-- Message Left -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-sand">
+<img alt="Dr. Aris Thorne" data-alt="A portrait of a male faculty member in his late 40s, featuring a warm and approachable smile. He is in a bright university study, with a warm color palette of cream and wood. The lighting is crisp yet soft, emphasizing a high-fidelity and professional institutional vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQrebSFgdN4aMZTF4xgjdw-EUdw_wGOYoFBZSJIwfDS0mvtGhwTuRyk-GcAAgI1_PEnCubcIFugpvl2FhO-OymHXmhu9R9AH8JNcqBlE82z1Ato7EQKmNlOctdVVIx4KdqlA6jgqayZN3nTtGiOobr0tbJDZ9Kg4_QvJW8kQk8l-RjpwrLk595KtaYqwuxfz-6be6fL7QWZWSUWRha211dZbKkygh-tTqBN5Qcatc9NqZb1LdEXUG9WHrKqTbLXeynO_zGpI-elXw"/>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2 px-1">
+<span class="font-bold text-body-sm text-primary">Dr. Aris Thorne</span>
+<span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-blue-light text-blue">Faculty</span>
+<span class="text-[10px] text-on-surface-variant/60">09:12 AM</span>
+</div>
+<div class="bg-surface-alt p-4 rounded-2xl rounded-bl-none shadow-sm border border-sand/20">
+<p class="text-body-base leading-relaxed">Good morning team. I've just uploaded the soil sensor data from the North Quad. Has everyone had a chance to look at the pH fluctuations?</p>
+</div>
+</div>
+</div>
+<!-- Message Right (Current User) -->
+<div class="flex items-end justify-end gap-3 ml-auto max-w-[80%]">
+<div class="space-y-1">
+<div class="flex items-center justify-end gap-2 px-1">
+<span class="text-[10px] text-on-surface-variant/60">09:15 AM</span>
+<span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-accent-light text-primary">Student</span>
+<span class="font-bold text-body-sm text-primary">Sarah Jenkins</span>
+</div>
+<div class="bg-primary text-white p-4 rounded-2xl rounded-br-none shadow-md">
+<p class="text-body-base leading-relaxed">Yes, Dr. Thorne. I noticed the sudden spike between 2 AM and 4 AM. Could that be related to the automated irrigation cycle?</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-primary">
+<img alt="Sarah Jenkins" data-alt="A close-up portrait of a young female student with a bright, curious expression. She is in a high-key library setting with light-colored books and warm wooden furniture. The aesthetic is modern academic, clean, and highly professional with a focus on trust and high-fidelity detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRbJFpF-cQH25IWk6F8EB90_dcSHpBJm3zuTdG-6bfX75ubc9Dyi5-fUPShZFla_WcFZ4sptnW-Gvy0WxszO5iUsGZ6WTTVoZouqKBkkmVgL7ENGtlxWAsPohbYNxYCktegYsQ2ScJHGuimrI674v3u-3vi2mu1xwl4jJvtDejLIHNcuYpI24OGExpxm9w00cddD21kqu6N53AKqghqby0UQXWVK4MyiFiJgIudct6vrxIgDaN3ILdITt3tbvKbgqm7tIdQNcMMw0"/>
+</div>
+</div>
+<!-- Message Left -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-sand">
+<img alt="Luka Chen" data-alt="A portrait of a male student with a thoughtful and focused look. He is sitting in a sunlit university courtyard with sustainable greenery in the background. The scene is bright and airy, capturing a modern institutional and high-fidelity feel with a warm, earthy color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6yx-bItyl8Zc9Vy8OKlq_a5w2To40LoSWBp4vhv2BU4qWenFraBmFlVVU697JiC9lzofykD6QgVtjOJHSXJ3Eg61d0IAHYdZyiCiPfz0gCRq8E_VF4wfDvBybSsdIOjS_SgePMtJeF0seMDAIxaiBmF1TON_q0p6EzZ7rHCnFn4WRrdGC82q8EDz1Gn6cVa1B6JqFHSNMwOteCA6lAN4njwMMaNcgyFkO1twA4wzbIGtS9BJtaQdeUbJK_f7DFHAZAjAqM51DnN4"/>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2 px-1">
+<span class="font-bold text-body-sm text-primary">Luka Chen</span>
+<span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-accent-light text-primary">Student</span>
+<span class="text-[10px] text-on-surface-variant/60">09:18 AM</span>
+</div>
+<div class="bg-surface-alt p-4 rounded-2xl rounded-bl-none shadow-sm border border-sand/20">
+<p class="text-body-base leading-relaxed">I'm checking the irrigation logs now. The North Quad sensors are notoriously sensitive to the mineral content in the reclaimed water we're using.</p>
+</div>
+</div>
+</div>
+<!-- Shared Image/Attachment -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<div class="w-8 h-8 flex-shrink-0"></div> <!-- Placeholder for avatar alignment -->
+<div class="bg-surface-alt p-2 rounded-2xl border border-sand/20 shadow-sm overflow-hidden w-64">
+<div class="w-full h-40 bg-surface rounded-xl overflow-hidden mb-2">
+<img alt="Data visualization" class="w-full h-full object-cover" data-alt="A high-fidelity digital dashboard showing complex data visualizations including line graphs and heat maps representing soil moisture and mineral levels. The UI is clean and minimalist, following the warm institutional palette of creams, primary greens, and soft sand tones. The atmosphere is professional and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3MOBG2H-CtgnUdwbtW1fGeVFxRoGWsYVjeQ4JS9VHiO0UBMEMnQ6vN4U7GyEBbzq4867MmJFP7TVdOb2RqOfLVb30EE98PvVzjhVcZgGWLN8c9Y0olXtPUdrpP8P_rvlc_mvuFvQY_NTVNg2FVaK9DjfTv6c-XwxTsJWvfbHsIqarR9WFVPQq1yJhfLB7DNy55nbcUvYbvRpRv3KZtkEz7yZQCnJkDwBmuRHEtenBKeX5JkG5D_Zq0kvjgvNAuuS9KK3kTBFlEBI"/>
+</div>
+<div class="px-2 pb-1">
+<p class="text-[11px] font-bold text-primary">sensor_data_log_v2.png</p>
+<p class="text-[10px] text-on-surface-variant">2.4 MB • Image</p>
+</div>
+</div>
+</div>
+<!-- Typing Indicator -->
+<div class="flex items-center gap-2 px-11 py-2">
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 bg-sand-dark rounded-full animate-bounce"></span>
+<span class="w-1.5 h-1.5 bg-sand-dark rounded-full animate-bounce [animation-delay:0.2s]"></span>
+<span class="w-1.5 h-1.5 bg-sand-dark rounded-full animate-bounce [animation-delay:0.4s]"></span>
+</div>
+<p class="text-body-sm text-on-surface-variant italic">Luka Chen is typing...</p>
+</div>
+</div>
+<!-- Input Area -->
+<div class="pb-8 pt-4">
+<div class="relative bg-white p-2 rounded-[28px] border border-sand shadow-lg flex items-center gap-2 focus-within:ring-4 focus-within:ring-primary/10 transition-all">
+<button class="p-3 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body-base px-2 placeholder:text-on-surface-variant/50" placeholder="Type a message..." type="text"/>
+<div class="flex items-center gap-1">
+<button class="p-3 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mood</span>
+</button>
+<button class="bg-primary text-white p-3 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<div class="mt-3 flex justify-center gap-6">
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+                        End-to-end encrypted
+                    </span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">group</span>
+                        3 active researchers
+                    </span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB (Suppressed on Chat page per rules, but included for complete reference if needed elsewhere) -->
+<!-- Rule says: Suppress on Detail and Task screens. Chat is a task/detail screen. No FAB. -->
+</body></html>

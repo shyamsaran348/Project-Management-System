@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SDGSync Dashboard - Student View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&amp;family=DM+Sans:wght@400;500;700&amp;family=DM+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#89d89e",
+                        "on-error-container": "#93000a",
+                        "sdg-14": "#0A97D9",
+                        "on-surface-variant": "#404940",
+                        "amber-light": "#fef3e0",
+                        "blue-light": "#e8eef8",
+                        "secondary-container": "#fead3e",
+                        "surface-container-low": "#f6f2fa",
+                        "sdg-15": "#56C02B",
+                        "on-primary-fixed-variant": "#005229",
+                        "cream": "#faf8f3",
+                        "surface-container-high": "#eae7ee",
+                        "primary": "#005129",
+                        "background": "#fcf8ff",
+                        "on-surface": "#1b1b20",
+                        "sdg-16": "#00689D",
+                        "secondary": "#865300",
+                        "sdg-13": "#3F7E44",
+                        "surface-variant": "#e4e1e9",
+                        "surface-alt": "#eceae3",
+                        "outline-variant": "#bfc9be",
+                        "outline": "#707a70",
+                        "sdg-3": "#4C9F38",
+                        "primary-container": "#1a6b3c",
+                        "accent-hover": "#2d9e60",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e4e1e9",
+                        "inverse-primary": "#89d89e",
+                        "primary-fixed": "#a5f4b8",
+                        "tertiary-container": "#96434f",
+                        "sdg-17": "#19486A",
+                        "on-tertiary-container": "#ffcace",
+                        "surface-tint": "#1b6c3d",
+                        "on-tertiary-fixed": "#3f0110",
+                        "sdg-8": "#A21942",
+                        "sdg-5": "#FF3A21",
+                        "tertiary": "#782c38",
+                        "surface-dim": "#dcd9e0",
+                        "surface-bright": "#fcf8ff",
+                        "sand": "#d4c9a8",
+                        "inverse-surface": "#303036",
+                        "blue": "#1a3a6b",
+                        "error-container": "#ffdad6",
+                        "sdg-7": "#FCC30B",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#792d39",
+                        "on-primary-fixed": "#00210d",
+                        "on-primary-container": "#9ae9ae",
+                        "on-secondary-fixed": "#2a1700",
+                        "sdg-9": "#FD6925",
+                        "on-background": "#1b1b20",
+                        "tertiary-fixed": "#ffd9dc",
+                        "tertiary-fixed-dim": "#ffb2b9",
+                        "inverse-on-surface": "#f3eff7",
+                        "on-secondary-container": "#6e4400",
+                        "error": "#ba1a1a",
+                        "sdg-6": "#26BDE2",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "sdg-10": "#DD1367",
+                        "sdg-2": "#DDA63A",
+                        "sand-dark": "#b8a87a",
+                        "sdg-11": "#FD9D24",
+                        "text-muted": "#6b6b7a",
+                        "surface-container": "#f0ecf4",
+                        "secondary-fixed-dim": "#ffb960",
+                        "text-mid": "#3d3d4a",
+                        "sdg-4": "#C5192D",
+                        "secondary-fixed": "#ffddb8",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f5f3ee",
+                        "on-primary": "#ffffff",
+                        "sdg-1": "#E5243B",
+                        "accent-light": "#e8f5ee",
+                        "ink-light": "#1a1a2e",
+                        "sdg-12": "#BF8B2E"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "gutter": "1.5rem",
+                        "container-max": "1280px",
+                        "header-height": "64px",
+                        "section-padding": "2.5rem",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["DM Mono"],
+                        "headline-md": ["Syne"],
+                        "display-lg-mobile": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "display-lg": ["Syne"],
+                        "body-base": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+        }
+        .premium-card {
+            background-color: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #d4c9a8;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-cream font-body-base text-on-surface antialiased min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-header-height max-w-container-max mx-auto bg-white/65 backdrop-blur-xl border-b border-sand/30 shadow-sm">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-md text-headline-md text-primary">SDGSync</h1>
+<div class="hidden md:flex items-center space-x-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-base text-body-base" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200 font-body-base text-body-base" href="#">Projects</a>
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200 font-body-base text-body-base" href="#">Curriculum</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-primary hover:text-accent-hover transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-primary hover:text-accent-hover transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-sand">
+<img alt="User avatar" data-alt="A high-quality 3D avatar profile picture of a young university student with a professional and friendly expression. The character is styled in a minimalist digital art fashion, set against a warm cream background that matches the SDGSync UI. Soft ambient lighting creates a clean, modern aesthetic suitable for an academic platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw1mgLfj1KQ6oSaX2iI-ttPnsR86dKrpzoBB9C_vKBQPqdmaw4ft8VhC73Ys9XzQy-S-xGi5VMIL4WFzoVJSXExvVaPo_F35i7AsISYNtuRqNI0_cpN3w9Zd7agU9jhOlJEg1AA-eOG9t_UtIJb8oWY0SrliBW9cIWt8UvNlz75Ki2Tej_jw0UwouQSfqiUwtA9ZLPId7CXE6C9w7fbXWZEyRzSRFyRjiGQjBjhXNYOejPRtDE9KkerwBgpfqvgQwaNNMRRSpBdf4"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-header-height h-[calc(100vh-theme(spacing.header-height))] flex flex-col p-4 space-y-stack-md bg-white/65 backdrop-blur-xl border-r border-sand/30 shadow-md w-64 hidden lg:flex">
+<div class="px-4 py-2 mb-4">
+<p class="font-headline-md text-primary text-headline-md">SDGSync</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Institutional Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center space-x-3 p-3 bg-primary-container text-on-primary-container rounded-xl font-bold font-body-sm text-body-sm transition-all active:scale-98" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-sand/20 space-y-1">
+<button class="w-full flex items-center justify-center space-x-2 bg-primary text-white py-3 rounded-xl font-bold hover:bg-accent-hover transition-all active:scale-95 mb-4">
+<span class="material-symbols-outlined">add</span>
+<span>Create New Project</span>
+</button>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center space-x-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 px-gutter pb-12 max-w-container-max mx-auto">
+<header class="mb-10">
+<h2 class="font-display-lg text-display-lg text-primary mb-2">Welcome back, Maya</h2>
+<p class="text-on-surface-variant font-body-base">Here's what's happening across your SDG impact initiatives.</p>
+</header>
+<div class="grid grid-cols-12 gap-8">
+<!-- Projects Grid (Left 8 cols) -->
+<section class="col-span-12 xl:col-span-8">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface">My Projects</h3>
+<button class="text-primary font-bold hover:underline font-body-sm">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Project Card 1 -->
+<div class="premium-card p-6 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="px-3 py-1 bg-sdg-7 text-white text-mono-label font-mono-label rounded-full">SDG 7: Clean Energy</span>
+<span class="material-symbols-outlined text-sand">more_vert</span>
+</div>
+<h4 class="font-headline-md text-on-surface mb-2">Affordable Solar Housing</h4>
+<p class="text-body-sm text-on-surface-variant mb-6 flex-grow">Developing modular photovoltaic roofing for low-income urban housing developments.</p>
+<div class="mb-6">
+<div class="flex justify-between text-mono-label font-mono-label text-on-surface-variant mb-2">
+<span>COMPLETION</span>
+<span>65%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-sdg-7 rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up 3D avatar of a diverse team member for a tech-oriented platform. Bright, soft lighting and a friendly expression, consistent with the clean, modern SDGSync design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8cICe4yYJ0p9Rk1-2mao2vQxp0QIl4e8bwrGuPyd_k2Qtdk4Q3HoP6T-ajXeLp2uCVGjsZrk4yW4e4sCnhj3nSRL5aIeprCpZTg1bQAJxEHQ1Un4LA3Rw1SVmVK4gwBU-peFfi4Pd1RnbSsL9U3djJDGE3hKJQiaumZHe5A3iHtEY8TNlBrdIB-ihue0katPGEqZfz66JhXx2yaI2AQCxq1np2cYKnQL0VDCVyF9hVUSl-IkLV_0OvcNLS0mnkQCxg1lOTaZzFog"/>
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up 3D avatar of a diverse team member for a tech-oriented platform. Bright, soft lighting and a friendly expression, consistent with the clean, modern SDGSync design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ27x7GxmqjUNQEmKWwEdY3cGifm-voG5zU-57lAIGOYiEpjTeNKfltVx_mbn4P5w9dflFPWqpc_HuW7LQ9TeyMCIJj2Q6oWeiDdqyxFas1FuDhYPuIr15Ck0bZcD4Oy-vTszUaA77d0w4udWE0gvwFppTgehDHdLyNMAig219r5r899gUcfVxVtLVdp__3_67Xjl5ErN-RNLH2mM_1qeOAupalPT1z7bNspAQg-H-Vm4eIqxyYSpW_v3nIvxE8qGEuviAPYpyID0"/>
+<div class="w-8 h-8 rounded-full bg-surface-alt border-2 border-white flex items-center justify-center text-[10px] font-bold">+3</div>
+</div>
+<button class="bg-primary text-white px-5 py-2 rounded-xl text-body-sm font-bold active:scale-95 transition-transform">Open Workspace</button>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="premium-card p-6 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="px-3 py-1 bg-sdg-6 text-white text-mono-label font-mono-label rounded-full">SDG 6: Clean Water</span>
+<span class="material-symbols-outlined text-sand">more_vert</span>
+</div>
+<h4 class="font-headline-md text-on-surface mb-2">Aquifer Restorative Filter</h4>
+<p class="text-body-sm text-on-surface-variant mb-6 flex-grow">Researching sustainable bio-filtration methods using native lake flora for potable water.</p>
+<div class="mb-6">
+<div class="flex justify-between text-mono-label font-mono-label text-on-surface-variant mb-2">
+<span>COMPLETION</span>
+<span>32%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-sdg-6 rounded-full" style="width: 32%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up 3D avatar of a diverse team member for a tech-oriented platform. Bright, soft lighting and a friendly expression, consistent with the clean, modern SDGSync design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5PuudXduJnTLhLEqOMU61N3xoYhhNefU7fj6rtOBfd1XzwjTKBxytPMrntIvBOg0mCwfmJdjdRaMVVGYzs1pJ8O8STnUnsh_ljD5JBOuGXxxBVgosvxSApHC-aulMyNN6V31pq9hikzq68pwfw3zrG5Juu3lBCpi9fAnF8eIxP3lQ9LN8H5LHouJZi02UfhcYS-fCoimQvGKIRqrndmc5XbVy4l4GsjMNRA1V3BxvFV3LkRSDiMCchOdUkoiP7vyJqrCj1Tt7eUw"/>
+<div class="w-8 h-8 rounded-full bg-surface-alt border-2 border-white flex items-center justify-center text-[10px] font-bold">+1</div>
+</div>
+<button class="bg-primary text-white px-5 py-2 rounded-xl text-body-sm font-bold active:scale-95 transition-transform">Open Workspace</button>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="premium-card p-6 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<span class="px-3 py-1 bg-sdg-13 text-white text-mono-label font-mono-label rounded-full">SDG 13: Climate Action</span>
+<span class="material-symbols-outlined text-sand">more_vert</span>
+</div>
+<h4 class="font-headline-md text-on-surface mb-2">Urban Canopy Tracker</h4>
+<p class="text-body-sm text-on-surface-variant mb-6 flex-grow">AI-powered mapping of local heat islands to prioritize community-led reforestation.</p>
+<div class="mb-6">
+<div class="flex justify-between text-mono-label font-mono-label text-on-surface-variant mb-2">
+<span>COMPLETION</span>
+<span>88%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-sdg-13 rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up 3D avatar of a diverse team member for a tech-oriented platform. Bright, soft lighting and a friendly expression, consistent with the clean, modern SDGSync design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSj1I7L3t5rRx_eUrZ3H1DtxbenY8c9tF0jiI1qgZpQvJZV8hOkqzrp17o8Kiko_tX9UHEvonLh-eUnn-XZ78PxHV3VF4JCGbF3wDRWxlzv7aB-W79eDY4HFW-SgV2q52Yh7OO7dLLMa45Bv6UmfpsWfdaA29aMzCcgUdSZ5tN_xnSe5PMD9rWsybhPJ_xuQ45Rpt9I--rc6uxpMEZGpawG9Ir17tpp56C5K9jZ78R2OP9OMwkV-n2RmjNeR1TaKEvrGxlEuxMRRQ"/>
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close-up 3D avatar of a diverse team member for a tech-oriented platform. Bright, soft lighting and a friendly expression, consistent with the clean, modern SDGSync design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0favEdW-s2ZgloxIUteCvhm_HnG5RoZce91m8Q-2Quw6qjQ2i6_pyKKso-vrkfaHTQ2jRo_fGFM7fwkNSRjvIO1YPcQGy7XImSqy8M7OWgDLcyF9_gLstRHRCxtpoRlQ7SS8VnMCs943WoEJunzhgbYWDUJd2Rit80WdfsbVAmRVaYDkRM05MDpL-8ZB--iQoR32oRlxUl-8-06p0SrCoN0wG0oB0vTTsKrNQ-RnTegPw7bMgT-kgmapogaZFDtHBUGIPdux45vQ"/>
+</div>
+<button class="bg-primary text-white px-5 py-2 rounded-xl text-body-sm font-bold active:scale-95 transition-transform">Open Workspace</button>
+</div>
+</div>
+<!-- Add New Card -->
+<button class="border-2 border-dashed border-sand/50 rounded-[28px] p-6 flex flex-col items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-all group">
+<span class="material-symbols-outlined text-4xl mb-2 group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-bold">Start New Project</span>
+</button>
+</div>
+</section>
+<!-- Sidebar (Right 4 cols) -->
+<aside class="col-span-12 xl:col-span-4 space-y-8">
+<!-- Upcoming Deadlines -->
+<div class="premium-card p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Upcoming Deadlines</h3>
+<div class="space-y-4">
+<div class="flex items-start space-x-4 p-3 rounded-xl hover:bg-surface-container transition-colors">
+<div class="bg-amber-light text-secondary w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold">
+<span class="text-[10px] leading-none">OCT</span>
+<span class="text-xl">12</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Budget Finalization</p>
+<p class="text-body-sm text-on-surface-variant">Solar Housing Initiative</p>
+</div>
+</div>
+<div class="flex items-start space-x-4 p-3 rounded-xl hover:bg-surface-container transition-colors">
+<div class="bg-blue-light text-blue w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold">
+<span class="text-[10px] leading-none">OCT</span>
+<span class="text-xl">15</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Ethics Review Submission</p>
+<p class="text-body-sm text-on-surface-variant">Aquifer Restorative Filter</p>
+</div>
+</div>
+<div class="flex items-start space-x-4 p-3 rounded-xl hover:bg-surface-container transition-colors">
+<div class="bg-sdg-13/10 text-sdg-13 w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold">
+<span class="text-[10px] leading-none">OCT</span>
+<span class="text-xl">20</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Final Site Map Export</p>
+<p class="text-body-sm text-on-surface-variant">Urban Canopy Tracker</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity (Chat) -->
+<div class="premium-card p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Recent Activity</h3>
+<div class="space-y-6">
+<div class="flex space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full flex-shrink-0" data-alt="Small 3D avatar profile picture of a team member for the SDGSync dashboard. The design is clean, high-resolution, and features soft, professional lighting consistent with an institutional modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUUsKhbrz710iJshNxUSisPzO1hnIrIBPnIqi7DaZEErJiUC8Q8lz1F5lF8hnUfcuvlv3VItWK4zeqbTBS01rWmBwWs8pLZunAXWVJyS7p7UwSPwq22NinxU1VN424P8OzDM0xEFF-AeOtZT6vDCwklriUpX8NQaIUfo5iyznt2CUNflkp8EZuHg63j2nGixDvzKFnFbosKbB0xbMrVfWly2NfR3kgzfv0kTHhGfyRG5gC0VFi1kIk9HMUr4BwOphF5M3Xj3W9mlc"/>
+<div>
+<p class="text-body-sm font-bold text-on-surface">Luka Chen <span class="font-normal text-on-surface-variant ml-2">2m ago</span></p>
+<div class="bg-surface p-3 rounded-2xl rounded-tl-none mt-1">
+<p class="text-body-sm">I've uploaded the latest solar panel efficiency data to the shared drive. Take a look!</p>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full flex-shrink-0" data-alt="Small 3D avatar profile picture of a team member for the SDGSync dashboard. The design is clean, high-resolution, and features soft, professional lighting consistent with an institutional modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVqtkP_z_9acW0fsEqw7pt1C01tP0tm-pW17fFCNF7iziJcb3wK9BZJletLJ3K_LBrp4H4yefBv53wwaL4RAXrAWE39IoQbnoDR8riEAsUVR0WQ-4Uynlnr4VbmHj5w1kzQriWNxfZzz8CqrtKiIkJn5D5A6hJ0RVVB1UOWWEMc5RYZ2wzfEV91L2Kg3sYxtkt4OzK3vgbJkgdIG6w2fubAjqu7dbd8sBsCa7HhUeVpLf8fnhv4zVximXiaKMDLdI_m_mxgr9-bhA"/>
+<div>
+<p class="text-body-sm font-bold text-on-surface">Sarah Jenkins <span class="font-normal text-on-surface-variant ml-2">1h ago</span></p>
+<div class="bg-surface p-3 rounded-2xl rounded-tl-none mt-1">
+<p class="text-body-sm">Meeting rescheduled to Thursday at 3 PM to accommodate the faculty advisor.</p>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full flex-shrink-0" data-alt="Small 3D avatar profile picture of a team member for the SDGSync dashboard. The design is clean, high-resolution, and features soft, professional lighting consistent with an institutional modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1J-pDKfmjpqYbOKSP56gXENfkxVzVCC_XgrZQLeqobf4LLYxx7iq_yqi-0lWyZTyUJvFLU8CwAekue087SpzlFE2kN2BD9CYLfTBCJdc57tvoiQFnmwBJwcsf2b3cfXqVihgDv4dPXCtqWk-dYnsc16sUuduaFhIrvezVzIMWYaZCLjFLh0g1Y-YJkrQ-bLJWqu6n2x1q1TiRQWBGu56XCnXuv_BugBZScrRay-k8v-tulWYcPD8zfYEWzJum6HrJbDKx67unRys"/>
+<div>
+<p class="text-body-sm font-bold text-on-surface">Dr. Aris Thorne <span class="font-normal text-on-surface-variant ml-2">4h ago</span></p>
+<div class="bg-surface p-3 rounded-2xl rounded-tl-none mt-1">
+<p class="text-body-sm">The research proposal for the water filter looks solid. I've left a few comments on Section 4.2.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 flex items-center space-x-2">
+<input class="flex-1 bg-surface border-none rounded-xl px-4 py-2 text-body-sm focus:ring-2 focus:ring-primary/20" placeholder="Type a message..." type="text"/>
+<button class="bg-primary text-white p-2 rounded-xl">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- FAB (Suppressed for Dashboard Context but included as reference) -->
+<!-- <button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-accent-hover active:scale-95 transition-all z-40">
+        <span class="material-symbols-outlined">chat</span>
+    </button> -->
+</body></html>

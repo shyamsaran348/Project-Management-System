@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=DM+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "sdg-6": "#26BDE2",
+                        "surface-alt": "#eceae3",
+                        "on-surface": "#1b1b20",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#00210d",
+                        "sdg-13": "#3F7E44",
+                        "ink-light": "#1a1a2e",
+                        "amber-light": "#fef3e0",
+                        "sdg-2": "#DDA63A",
+                        "surface": "#f5f3ee",
+                        "sdg-4": "#C5192D",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffd9dc",
+                        "tertiary": "#782c38",
+                        "blue": "#1a3a6b",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#1b6c3d",
+                        "on-tertiary-fixed-variant": "#792d39",
+                        "sdg-10": "#DD1367",
+                        "surface-container-high": "#eae7ee",
+                        "secondary-fixed-dim": "#ffb960",
+                        "sdg-11": "#FD9D24",
+                        "sand-dark": "#b8a87a",
+                        "sdg-15": "#56C02B",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e4e1e9",
+                        "outline-variant": "#bfc9be",
+                        "on-tertiary-fixed": "#3f0110",
+                        "sdg-8": "#A21942",
+                        "surface-variant": "#e4e1e9",
+                        "on-primary-container": "#9ae9ae",
+                        "surface-container-low": "#f6f2fa",
+                        "secondary-container": "#fead3e",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-secondary-fixed": "#2a1700",
+                        "blue-light": "#e8eef8",
+                        "sand": "#d4c9a8",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "sdg-16": "#00689D",
+                        "on-secondary-container": "#6e4400",
+                        "secondary": "#865300",
+                        "sdg-3": "#4C9F38",
+                        "sdg-12": "#BF8B2E",
+                        "outline": "#707a70",
+                        "sdg-7": "#FCC30B",
+                        "accent-light": "#e8f5ee",
+                        "primary-container": "#1a6b3c",
+                        "sdg-5": "#FF3A21",
+                        "primary-fixed-dim": "#89d89e",
+                        "primary-fixed": "#a5f4b8",
+                        "inverse-surface": "#303036",
+                        "inverse-primary": "#89d89e",
+                        "text-mid": "#3d3d4a",
+                        "on-surface-variant": "#404940",
+                        "surface-dim": "#dcd9e0",
+                        "sdg-17": "#19486A",
+                        "surface-bright": "#fcf8ff",
+                        "sdg-1": "#E5243B",
+                        "tertiary-fixed-dim": "#ffb2b9",
+                        "surface-container": "#f0ecf4",
+                        "on-primary": "#ffffff",
+                        "text-muted": "#6b6b7a",
+                        "accent-hover": "#2d9e60",
+                        "secondary-fixed": "#ffddb8",
+                        "primary": "#005129",
+                        "background": "#fcf8ff",
+                        "tertiary-container": "#96434f",
+                        "inverse-on-surface": "#f3eff7",
+                        "sdg-9": "#FD6925",
+                        "sdg-14": "#0A97D9",
+                        "on-primary-fixed-variant": "#005229",
+                        "cream": "#faf8f3",
+                        "on-background": "#1b1b20",
+                        "on-tertiary-container": "#ffcace"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "premium": "28px"
+                    },
+                    "spacing": {
+                        "stack-lg": "24px",
+                        "header-height": "64px",
+                        "section-padding": "2.5rem",
+                        "gutter": "1.5rem",
+                        "stack-md": "16px",
+                        "container-max": "1280px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Syne"],
+                        "body-base": ["DM Sans"],
+                        "headline-md": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "mono-label": ["DM Mono"],
+                        "display-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sdg-grid-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-cream font-body-base text-on-surface overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-header-height bg-white/65 backdrop-blur-xl border-b border-sand/30 shadow-sm">
+<div class="flex items-center gap-stack-lg">
+<span class="text-headline-md font-headline-md text-primary">SDGSync</span>
+<div class="hidden md:flex relative ml-stack-lg">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-body-sm" placeholder="Search analytics..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sand/20">
+<img alt="User avatar" data-alt="A professional headshot of a female university faculty member with a friendly smile, set against a blurred academic library background. She is wearing a modern emerald green blazer that complements the institutional palette. The lighting is soft and high-key, emphasizing a clean, light-mode aesthetic consistent with high-end UI design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaNkx1rKq2ZG0LR25pkUWbVfDy4BDynxkLaSotpLAzwBrPcKZSv1-uWx_OJPbGhol_elMvH8qiAyYG4wgcn7aFwy08wmjU2AxN0wibgAKb0AVaIH2NlP-8Sprnr-vViE-JUlbR0unkHe77ojhprdh_widrw6rr5mTTTYDp1Y1FEWb9RP0PY6mE9K_5gsoO2mD5fI1TnmAQj9e6kQ7AW3gdSGucOylma4BPCGd1P8gjZqT1U5BDj_OhKsYhb74vC3SN7oeU3ctHrEQ"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-header-height h-[calc(100vh-theme(spacing.header-height))] w-64 bg-white/65 backdrop-blur-xl border-r border-sand/30 shadow-md flex flex-col p-4 space-y-stack-md z-40">
+<div class="mb-stack-lg">
+<div class="flex items-center gap-3 p-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">sync</span>
+</div>
+<div>
+<h3 class="font-headline-md text-[14px] text-primary">SDGSync</h3>
+<p class="text-on-surface-variant text-[10px] font-mono-label">Institutional Portal</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-xl font-bold scale-98" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-body-sm text-body-sm">Projects</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-body-sm text-body-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-sm text-body-sm">Team</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-sm text-body-sm">Documents</span>
+</a>
+</nav>
+<button class="bg-primary text-white p-3 rounded-xl flex items-center justify-center gap-2 font-bold shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add</span>
+<span class="font-body-sm text-body-sm">Create New Project</span>
+</button>
+<div class="pt-4 border-t border-sand/30 space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-sm text-body-sm">Help Center</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-sm text-body-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-header-height p-gutter max-w-container-max mx-auto min-h-screen">
+<!-- Header & Top Actions -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-stack-lg gap-4">
+<div>
+<p class="font-mono-label text-primary uppercase tracking-widest text-[10px]">Faculty Overview</p>
+<h1 class="font-display-lg text-display-lg text-primary mt-1">Research Dashboard</h1>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center bg-white/65 backdrop-blur border border-sand/30 rounded-xl px-4 py-2 text-body-sm font-medium shadow-sm">
+<span class="material-symbols-outlined text-sdg-13 mr-2">calendar_today</span>
+                    Academic Year 2023-24
+                </div>
+<button class="bg-white border border-sand p-2 rounded-xl hover:bg-surface transition-colors shadow-sm">
+<span class="material-symbols-outlined">file_download</span>
+</button>
+</div>
+</header>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg mb-stack-lg">
+<div class="bg-white p-6 rounded-premium border border-sand/30 shadow-md flex items-center justify-between hover:translate-y-[-2px] transition-all duration-300">
+<div>
+<p class="text-on-surface-variant text-body-sm font-medium">Total Projects</p>
+<h2 class="text-[36px] font-bold text-primary mt-1">142</h2>
+<p class="text-sdg-3 text-[12px] font-bold flex items-center mt-2">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+                        +12% from last term
+                    </p>
+</div>
+<div class="w-16 h-16 bg-accent-light rounded-2xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">biotech</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-premium border border-sand/30 shadow-md flex items-center justify-between hover:translate-y-[-2px] transition-all duration-300">
+<div>
+<p class="text-on-surface-variant text-body-sm font-medium">Active Researchers</p>
+<h2 class="text-[36px] font-bold text-primary mt-1">486</h2>
+<p class="text-sdg-13 text-[12px] font-bold flex items-center mt-2">
+<span class="material-symbols-outlined text-[14px] mr-1">person_add</span>
+                        24 new this month
+                    </p>
+</div>
+<div class="w-16 h-16 bg-blue-light rounded-2xl flex items-center justify-center text-blue">
+<span class="material-symbols-outlined text-[32px]">groups</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-premium border border-sand/30 shadow-md flex items-center justify-between hover:translate-y-[-2px] transition-all duration-300">
+<div>
+<p class="text-on-surface-variant text-body-sm font-medium">Task Completion Rate</p>
+<h2 class="text-[36px] font-bold text-primary mt-1">84%</h2>
+<div class="w-full bg-surface-alt h-1.5 rounded-full mt-4 relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full bg-primary rounded-full" style="width: 84%"></div>
+</div>
+</div>
+<div class="w-16 h-16 bg-amber-light rounded-2xl flex items-center justify-center text-sdg-12">
+<span class="material-symbols-outlined text-[32px]">verified</span>
+</div>
+</div>
+</div>
+<!-- SDG Distribution & Impact -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg mb-stack-lg">
+<!-- SDG Distribution Chart Area -->
+<div class="lg:col-span-8 bg-white p-8 rounded-premium border border-sand/30 shadow-md">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-headline-md text-primary">SDG Distribution</h3>
+<p class="text-body-sm text-on-surface-variant">Alignment of ongoing research projects with global goals.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface border border-sand/30 rounded-lg text-body-sm font-bold text-primary">Bar</button>
+<button class="px-3 py-1 text-on-surface-variant hover:bg-surface rounded-lg text-body-sm">Donut</button>
+</div>
+</div>
+<div class="grid grid-cols-17 h-64 gap-2 items-end mb-6">
+<!-- SDG Colors Bar Visualizer -->
+<div class="bg-sdg-1 h-[65%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative">
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-ink-light text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Goal 1: 65%</div>
+</div>
+<div class="bg-sdg-2 h-[42%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-3 h-[88%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-4 h-[92%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-5 h-[35%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-6 h-[76%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-7 h-[55%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-8 h-[22%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-9 h-[68%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-10 h-[48%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-11 h-[72%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-12 h-[38%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-13 h-[95%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-14 h-[30%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-15 h-[58%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-16 h-[44%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+<div class="bg-sdg-17 h-[82%] rounded-t-md hover:opacity-80 transition-opacity cursor-pointer group relative"></div>
+</div>
+<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2">
+<!-- Legend Mini Tiles -->
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-sdg-3"></div>
+<span class="text-[10px] font-mono-label">Health</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-sdg-4"></div>
+<span class="text-[10px] font-mono-label">Education</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-sdg-13"></div>
+<span class="text-[10px] font-mono-label">Climate</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-sdg-17"></div>
+<span class="text-[10px] font-mono-label">Partners</span>
+</div>
+</div>
+</div>
+<!-- Research Impact Section -->
+<div class="lg:col-span-4 flex flex-col gap-stack-lg">
+<div class="flex-1 bg-white p-6 rounded-premium border border-sand/30 shadow-md overflow-hidden relative group">
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px] text-primary">psychology</span>
+</div>
+<h3 class="text-headline-md text-primary mb-4">Research Impact</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-end mb-1">
+<p class="text-on-surface-variant text-body-sm">Literature Documents</p>
+<span class="text-primary font-bold">12.4k</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 70%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-1">
+<p class="text-on-surface-variant text-body-sm">RAG Queries Processed</p>
+<span class="text-primary font-bold">8.2k</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="bg-sdg-6 h-full rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-sand/20">
+<p class="text-[11px] text-on-surface-variant italic">"Insight engagement has increased by 18.5% since the last metadata audit."</p>
+</div>
+</div>
+</div>
+<div class="bg-primary p-6 rounded-premium shadow-lg text-white">
+<h4 class="font-bold text-body-base mb-2">Institutional Report</h4>
+<p class="text-white/80 text-[12px] mb-4">The Q3 Sustainability Audit is now available for review by department heads.</p>
+<button class="w-full bg-white text-primary py-2 rounded-xl font-bold text-body-sm hover:bg-surface-alt transition-colors">
+                        View Full Report
+                    </button>
+</div>
+</div>
+</div>
+<!-- Activity Feed Section -->
+<div class="bg-white/40 backdrop-blur-md rounded-premium border border-sand/30 shadow-sm p-8 mb-stack-lg">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-headline-md text-primary">Project Activity Feed</h3>
+<button class="text-primary font-bold text-body-sm hover:underline">View all milestones</button>
+</div>
+<div class="space-y-4">
+<!-- Activity Item 1 -->
+<div class="flex items-center gap-6 p-4 bg-white/60 rounded-2xl hover:bg-white transition-colors border border-sand/10">
+<div class="w-12 h-12 bg-sdg-4/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sdg-4">school</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-primary text-body-sm">Global Literacy Initiative</h4>
+<p class="text-on-surface-variant text-[13px]">Milestone Reached: Phase 2 Pilot in Nairobi successfully concluded.</p>
+</div>
+<div class="text-right">
+<span class="px-3 py-1 bg-sdg-4 text-white text-[10px] rounded-full font-bold">SDG 4</span>
+<p class="text-[11px] text-on-surface-variant mt-1">2h ago</p>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-center gap-6 p-4 bg-white/60 rounded-2xl hover:bg-white transition-colors border border-sand/10">
+<div class="w-12 h-12 bg-sdg-6/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sdg-6">water_drop</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-primary text-body-sm">Water Quality Monitoring</h4>
+<p class="text-on-surface-variant text-[13px]">New Document: Sensor data integration report uploaded by Dr. Aris.</p>
+</div>
+<div class="text-right">
+<span class="px-3 py-1 bg-sdg-6 text-white text-[10px] rounded-full font-bold">SDG 6</span>
+<p class="text-[11px] text-on-surface-variant mt-1">5h ago</p>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-center gap-6 p-4 bg-white/60 rounded-2xl hover:bg-white transition-colors border border-sand/10">
+<div class="w-12 h-12 bg-sdg-13/10 rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sdg-13">park</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-primary text-body-sm">Urban Canopy Analysis</h4>
+<p class="text-on-surface-variant text-[13px]">System Update: RAG models successfully indexed 400+ forestry papers.</p>
+</div>
+<div class="text-right">
+<span class="px-3 py-1 bg-sdg-13 text-white text-[10px] rounded-full font-bold">SDG 13</span>
+<p class="text-[11px] text-on-surface-variant mt-1">Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Team & Collaboration Asymmetric Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="bg-white p-6 rounded-premium border border-sand/30 shadow-md">
+<h3 class="font-headline-md text-primary mb-4">Top Contributors</h3>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-3 bg-surface p-2 rounded-xl pr-4 border border-sand/20">
+<img alt="Dr. Julian" class="w-10 h-10 rounded-lg object-cover" data-alt="Close-up portrait of an elderly male professor with gray hair and glasses, exuding wisdom and warmth. He is wearing a classic charcoal grey sweater in a brightly lit academic office. The image should be sharp, with soft bokeh highlighting his professional yet approachable nature, matching the institutional cream and emerald UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8pgho6xROE-KaKsBbg_h9zvjUSM0GSon-kO_mF9Y3Dyvvb65136S_eFpbJbmb9Svz2K6skT_vDM1DLiK-HhW21s-_yMXUagp_RcuIRzDeSBgrihEaZuLS2IPP_UL1EqEH2nVs5hBFVK9AlTwr0owx-Urv9nRdXTVUoLgK2jwWtxGDcfg_gcyPz4OX28TcgX_ybFNCnEdcIum41uJ13UKsSV0lRZz7GyEvLjyomGG9_hjnWUzkMoLOV3oVTET9_N-VNsCkmowk0Vs"/>
+<div>
+<p class="text-body-sm font-bold text-primary">Dr. Julian M.</p>
+<p class="text-[10px] text-on-surface-variant">Dept. of Environment</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface p-2 rounded-xl pr-4 border border-sand/20">
+<img alt="Sarah Chen" class="w-10 h-10 rounded-lg object-cover" data-alt="A portrait of a young female Asian researcher with a confident expression, wearing professional attire in a modern glass-walled laboratory setting. High-key natural lighting illuminates her face, conveying high-fidelity academic professionalism. The visual style is crisp and clean, adhering to a light-mode aesthetic with soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkTw_p7EWJUF-z4GsN5QnWc_Nda8BaYbUs_RvthPsra2uJol8m9hsMm8OCCAe2C9PehlIf66DpQ7U0V6wGW7dX24aq7KeGj9yZRQ5TBeo-NhLVhXt8NomtMQ9q0wtvIVKhyWPshYht7l7VY8xvz6V0RtfIwbHKkf-jCiAqkf4VShaNRaOalbcX97hjIknxPdzLMWhTl2dBWwIbR2BTiCzrVumAaksm_OA4ddPHISKdcx6F-v4EYdt83TgqtLncyYOWolawIotgaWg"/>
+<div>
+<p class="text-body-sm font-bold text-primary">Sarah Chen</p>
+<p class="text-[10px] text-on-surface-variant">Data Lead</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface p-2 rounded-xl pr-4 border border-sand/20">
+<img alt="Marcus T." class="w-10 h-10 rounded-lg object-cover" data-alt="Headshot of a middle-aged Black man with a sharp, professional appearance, wearing a tailored navy suit. He is standing in a brightly lit atrium of a modern university building. The composition uses high-key lighting to create a clean, institutional feel that integrates perfectly into an emerald-and-cream design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW7LpEvhgxMRwm8aVGr14xe9eNrDH8GZSDKX3CKNzPkkHsG_tsuCMjv284TMUFKeDLr6BR5NlaCtluFQcTHetvhmgcCPtEYw8T8EHSZUL3KBDwbiW7od5YQjWjDzR9dnH23sJkLkD1kMLJRaLZEW_YeLOx6I0Qr1UC11xOZHhk5Xoskq4JlIz-aWRBeA1TVBBUBB8gipZ00cw3BVcNouXvyb4566DLy22bpUBlnIahlMLR22ixeyZRXUHko0smxDGg8qP_NeHCE84"/>
+<div>
+<p class="text-body-sm font-bold text-primary">Marcus T.</p>
+<p class="text-[10px] text-on-surface-variant">Social Sciences</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-alt/50 p-6 rounded-premium border border-dashed border-sand flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-[48px] text-sand-dark mb-2">add_circle</span>
+<h3 class="font-headline-md text-primary">Add Faculty Team</h3>
+<p class="text-body-sm text-on-surface-variant max-w-xs mb-4">Invite department colleagues to collaborate on SDG monitoring and data sharing.</p>
+<button class="bg-ink-light text-white px-6 py-2 rounded-xl text-body-sm font-bold hover:scale-105 transition-transform">
+                    Send Invites
+                </button>
+</div>
+</div>
+<!-- Footer Note -->
+<footer class="mt-stack-lg pt-stack-lg border-t border-sand/20 flex justify-between items-center text-[11px] text-on-surface-variant font-mono-label">
+<p>© 2024 SDGSync Global Institutional Portal. All rights reserved.</p>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="hover:text-primary transition-colors" href="#">Data Ethics</a>
+</div>
+</footer>
+</main>
+</body></html>

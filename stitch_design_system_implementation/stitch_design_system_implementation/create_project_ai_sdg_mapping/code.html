@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Analysis Result - SDGSync</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Syne:wght@600;700;800&amp;family=DM+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#ffffff",
+                      "blue": "#1a3a6b",
+                      "blue-light": "#e8eef8",
+                      "surface-container-highest": "#e4e1e9",
+                      "sdg-7": "#FCC30B",
+                      "sdg-12": "#BF8B2E",
+                      "outline": "#707a70",
+                      "surface-bright": "#fcf8ff",
+                      "on-surface": "#1b1b20",
+                      "secondary": "#865300",
+                      "primary-container": "#1a6b3c",
+                      "error": "#ba1a1a",
+                      "surface-container-low": "#f6f2fa",
+                      "tertiary-fixed-dim": "#ffb2b9",
+                      "on-primary-container": "#9ae9ae",
+                      "error-container": "#ffdad6",
+                      "sdg-15": "#56C02B",
+                      "on-error-container": "#93000a",
+                      "outline-variant": "#bfc9be",
+                      "on-primary-fixed": "#00210d",
+                      "background": "#fcf8ff",
+                      "text-muted": "#6b6b7a",
+                      "surface-container-high": "#eae7ee",
+                      "sdg-8": "#A21942",
+                      "primary-fixed-dim": "#89d89e",
+                      "surface-tint": "#1b6c3d",
+                      "sdg-17": "#19486A",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#404940",
+                      "tertiary-container": "#96434f",
+                      "sdg-4": "#C5192D",
+                      "on-tertiary-fixed-variant": "#792d39",
+                      "text-mid": "#3d3d4a",
+                      "amber-light": "#fef3e0",
+                      "sdg-6": "#26BDE2",
+                      "tertiary": "#782c38",
+                      "primary": "#005129",
+                      "accent-hover": "#2d9e60",
+                      "on-tertiary-container": "#ffcace",
+                      "sdg-2": "#DDA63A",
+                      "secondary-fixed-dim": "#ffb960",
+                      "inverse-surface": "#303036",
+                      "sdg-9": "#FD6925",
+                      "on-primary-fixed-variant": "#005229",
+                      "ink-light": "#1a1a2e",
+                      "sdg-11": "#FD9D24",
+                      "sdg-13": "#3F7E44",
+                      "accent-light": "#e8f5ee",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "on-background": "#1b1b20",
+                      "inverse-primary": "#89d89e",
+                      "tertiary-fixed": "#ffd9dc",
+                      "surface-dim": "#dcd9e0",
+                      "surface-alt": "#eceae3",
+                      "inverse-on-surface": "#f3eff7",
+                      "primary-fixed": "#a5f4b8",
+                      "cream": "#faf8f3",
+                      "sand-dark": "#b8a87a",
+                      "secondary-fixed": "#ffddb8",
+                      "sdg-14": "#0A97D9",
+                      "sdg-3": "#4C9F38",
+                      "surface": "#f5f3ee",
+                      "on-secondary-fixed": "#2a1700",
+                      "on-primary": "#ffffff",
+                      "sdg-10": "#DD1367",
+                      "surface-variant": "#e4e1e9",
+                      "surface-container": "#f0ecf4",
+                      "sdg-5": "#FF3A21",
+                      "sdg-1": "#E5243B",
+                      "sand": "#d4c9a8",
+                      "secondary-container": "#fead3e",
+                      "sdg-16": "#00689D",
+                      "on-tertiary-fixed": "#3f0110",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#6e4400"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "header-height": "64px",
+                      "gutter": "1.5rem",
+                      "stack-lg": "24px",
+                      "section-padding": "2.5rem",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "body-sm": ["DM Sans"],
+                      "display-lg-mobile": ["Syne"],
+                      "headline-md": ["Syne"],
+                      "display-lg": ["Syne"],
+                      "body-base": ["DM Sans"],
+                      "mono-label": ["DM Mono"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .premium-card {
+            border-radius: 28px;
+            background: #ffffff;
+            border: 1px solid #d4c9a8;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(27, 27, 32, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-cream font-body-base text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-header-height max-w-container-max mx-auto glass-panel border-b border-sand/30 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md text-primary">SDGSync</span>
+</div>
+<div class="flex-1 max-w-md mx-gutter hidden md:block">
+<div class="relative flex items-center bg-surface rounded-full px-4 py-2 border border-sand/30">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-body-sm p-0" placeholder="Search documentation..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-primary hover:text-accent-hover transition-colors p-2">notifications</button>
+<button class="material-symbols-outlined text-primary hover:text-accent-hover transition-colors p-2">settings</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+<img alt="User avatar" data-alt="A professional profile avatar of a young academic with glasses and a friendly expression, styled in a clean, high-fidelity vector illustration. The color palette uses soft greens and warm neutrals to align with the SDGSync institutional brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv6Bs9Z2mglyqCMZUWp8WADD70WBEZO6VjGRkz_4KeDRFFyXtQt1gkcBScjMQ649eAgaEY0AioOHhNHFZwdxz6qXpCDcprHuC_OkEk2oKuoBMSihEAmjeG1VLCS8v5roLF4d2EmTVTAVdEy2i6T3SR-3ycxpcMj8FlGXxPS1faeBcYlbhCXB7IpxpDVWXCguZN9xYvZNqazSMrup_9HFaMKkLOsCP4NqR0DG1DFJY7EpCYMtBzjRMMVIOd1WL8huy40JBhpAKg8cg"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-header-height h-[calc(100vh-theme(spacing.header-height))] flex flex-col p-4 space-y-stack-md glass-panel border-r border-sand/30 w-64 hidden lg:flex">
+<div class="flex flex-col gap-1 px-2 mb-4">
+<span class="text-headline-md font-headline-md text-primary">SDGSync</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Institutional Portal</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-xl font-bold" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span>Projects</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Team</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-sand/30 space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-header-height min-h-screen">
+<div class="max-w-container-max mx-auto px-gutter py-stack-lg">
+<!-- Breadcrumb / Progress -->
+<div class="flex items-center gap-2 mb-stack-lg">
+<span class="text-on-surface-variant font-body-sm">Create Project</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+<span class="text-primary font-bold font-body-sm">AI Analysis Result</span>
+</div>
+<!-- Header Section -->
+<div class="mb-section-padding">
+<h1 class="text-display-lg font-display-lg text-on-surface mb-2">Analysis Complete</h1>
+<p class="text-on-surface-variant max-w-2xl">Our ML engine has processed your problem statement and mapped it to the UN Sustainable Development Goals framework with high confidence.</p>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-stack-lg">
+<!-- Left Column: Problem Statement & Recommendations -->
+<div class="xl:col-span-7 space-y-stack-lg">
+<!-- Original Statement Card -->
+<section class="premium-card p-stack-lg shadow-md">
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="text-headline-md font-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span>
+                                Original Problem Statement
+                            </h2>
+<span class="bg-surface px-3 py-1 rounded-full text-mono-label uppercase">Read-only</span>
+</div>
+<div class="bg-surface rounded-xl p-stack-md border border-sand/20">
+<p class="text-body-base text-on-surface-variant italic leading-relaxed">
+                                "Our initiative aims to address the critical water scarcity in rural sub-Saharan communities by implementing solar-powered atmospheric water generators. This project not only provides clean drinking water but also creates local jobs for maintenance and distribution, specifically targeting empowerment of local women-led cooperatives."
+                            </p>
+</div>
+</section>
+<!-- Recommendations Section -->
+<section class="premium-card p-stack-lg shadow-md">
+<h2 class="text-headline-md font-headline-md mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+                            Most Suitable SDGs
+                        </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Rec 1 -->
+<div class="p-4 border border-sand/30 rounded-2xl bg-cream/50">
+<div class="flex items-start justify-between mb-3">
+<div class="bg-sdg-6 text-white p-2 rounded-lg font-bold text-lg">06</div>
+<span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">Primary Match</span>
+</div>
+<h3 class="font-bold text-on-surface mb-1">Clean Water &amp; Sanitation</h3>
+<p class="text-body-sm text-on-surface-variant">Direct alignment with water scarcity resolution and infrastructure development.</p>
+</div>
+<!-- Rec 2 -->
+<div class="p-4 border border-sand/30 rounded-2xl bg-cream/50">
+<div class="flex items-start justify-between mb-3">
+<div class="bg-sdg-7 text-white p-2 rounded-lg font-bold text-lg">07</div>
+<span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">Secondary Match</span>
+</div>
+<h3 class="font-bold text-on-surface mb-1">Affordable &amp; Clean Energy</h3>
+<p class="text-body-sm text-on-surface-variant">Utilizing solar energy as the primary power source for atmospheric generation.</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: AI Classification Scores -->
+<div class="xl:col-span-5 space-y-stack-lg">
+<section class="premium-card p-stack-lg shadow-md h-full">
+<div class="flex items-center justify-between mb-stack-lg">
+<h2 class="text-headline-md font-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                                AI Classification
+                            </h2>
+<span class="text-primary font-mono-label">98.4% Confidence</span>
+</div>
+<div class="space-y-6">
+<!-- SDG 6 -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sdg-6 flex items-center justify-center text-white rounded-lg font-bold">6</div>
+<span class="font-bold text-on-surface">Clean Water</span>
+</div>
+<span class="text-body-sm font-bold text-sdg-6">95%</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-sdg-6 rounded-full" style="width: 95%"></div>
+</div>
+</div>
+<!-- SDG 7 -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sdg-7 flex items-center justify-center text-white rounded-lg font-bold">7</div>
+<span class="font-bold text-on-surface">Clean Energy</span>
+</div>
+<span class="text-body-sm font-bold text-sdg-7">88%</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-sdg-7 rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<!-- SDG 5 -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sdg-5 flex items-center justify-center text-white rounded-lg font-bold">5</div>
+<span class="font-bold text-on-surface">Gender Equality</span>
+</div>
+<span class="text-body-sm font-bold text-sdg-5">72%</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-sdg-5 rounded-full" style="width: 72%"></div>
+</div>
+</div>
+<!-- SDG 8 -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-sdg-8 flex items-center justify-center text-white rounded-lg font-bold">8</div>
+<span class="font-bold text-on-surface">Decent Work</span>
+</div>
+<span class="text-body-sm font-bold text-sdg-8">64%</span>
+</div>
+<div class="h-2 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-sdg-8 rounded-full" style="width: 64%"></div>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg p-4 bg-primary-container/10 rounded-2xl border border-primary/20">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-body-sm text-primary">
+<strong>Insight:</strong> The mention of "women-led cooperatives" significantly boosted Goal 5 weighting. This project has strong intersectional impact.
+                                </p>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Visual Anchor / Image -->
+<div class="mt-stack-lg w-full h-64 rounded-[28px] overflow-hidden relative group border border-sand/30">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A wide-angle, high-definition landscape of a sun-drenched rural community in sub-Saharan Africa. In the foreground, sleek, modern atmospheric water generators are integrated into the landscape near a vibrant green field. The lighting is warm and golden-hour inspired, reflecting a mood of hope, innovation, and sustainable development. The style is professional and documentary-like, emphasizing environmental harmony and clean technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvy3k7V1JLLbCO28og37_olm1Q1qlpCmeJxU53uLyRvfoyIxgy0rZZ4ofDaC_g3Nl_29lsYVIWbQbrEFeXDfSNGfTNhUzeNwLIbdWrJuiW2go-SlWXrkDQ5AwJjg72avbDsbP6hqsuPIMqW7fIuv3PUS2o1f7KJkVPQz76C8hcw90w1MdNn3xSV9UV2dHu9q-kDhCErF1i6rUC8aleRj2OzT6VGdJWIv2FhBIx78EKkhZcNl9fhNOhjsKzJU8m4oOqLqV1e09HcDI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-ink-light/80 to-transparent flex items-end p-stack-lg">
+<p class="text-white text-body-base max-w-xl">
+                        AI identifies 4 distinct impact nodes within your proposal. 
+                        Targeting these SDGs increases funding eligibility by approximately 24%.
+                    </p>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-section-padding flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-sand pt-stack-lg">
+<button class="w-full sm:w-auto px-8 py-3 bg-white border border-sand rounded-2xl text-on-surface font-bold hover:bg-surface transition-all flex items-center justify-center gap-2 active:scale-95">
+<span class="material-symbols-outlined">edit</span>
+                    Edit Details
+                </button>
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+<button class="w-full sm:w-auto px-10 py-4 bg-primary text-white rounded-2xl font-bold shadow-lg hover:bg-accent-hover transition-all flex items-center justify-center gap-2 active:scale-95">
+                        Create Project
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB (Suppressed on Details/Transactional as per rules, but included if primary dashboard) -->
+<!-- We suppress here as this is a transactional 'Analysis Result' screen -->
+</body></html>

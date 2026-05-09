@@ -24,6 +24,20 @@ const BOARD_COLUMNS = [
     { key: 'DONE', label: 'Completed', color: 'bg-[var(--sdg-15)]' }
 ];
 
+/**
+ * Project Workspace Component
+ * --------------------------
+ * The primary collaborative environment for institutional researchers.
+ * 
+ * CORE MODULES:
+ * 1. Research Kanban: High-fidelity task management with milestone tracking.
+ * 2. Literature Intelligence (LIR): RAG-powered research paper assistant using Groq LLM.
+ * 3. Real-time Project Pulse: WebSocket-integrated chat for team synchronization.
+ * 4. Resource Allocation: Role-based task assignments with institutional guardrails.
+ * 
+ * DESIGN: Powered by the Stitch Design System (Glassmorphism & High-contrast neutrals).
+ */
+
 export default function ProjectWorkspace() {
     const { projectId } = useParams();
     const navigate = useNavigate();

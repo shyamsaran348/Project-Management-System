@@ -23,6 +23,20 @@ from app.utils import get_link_id as _get_link_id, is_project_participant as _is
 
 router = APIRouter()
 
+"""
+Literature Intelligence Repository (LIR) Service
+------------------------------------------------
+This module implements the Retrieval-Augmented Generation (RAG) architecture.
+It allows researchers to upload project-specific literature and perform 
+semantic queries using high-performance LLMs (Groq).
+
+CORE PIPELINE:
+1. Extraction: PDF parsing via PyPDF with cleaning heuristics.
+2. Chunking: Recursive character splitting with overlap for context retention.
+3. RAG Search: Semantic context retrieval combined with user prompts.
+4. Inference: Sub-second synthesis using Groq's LPU acceleration.
+"""
+
 MAX_FILE_SIZE = 15 * 1024 * 1024
 ALLOWED_EXTENSIONS = {".pdf", ".txt", ".md"}
 TOKEN_PATTERN = re.compile(r"[a-z0-9]+")

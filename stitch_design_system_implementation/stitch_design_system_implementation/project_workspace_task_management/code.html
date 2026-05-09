@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SDGSync - Task Management Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=Syne:wght@400..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "on-background": "#1b1b20",
+                      "on-primary-fixed": "#00210d",
+                      "sdg-10": "#DD1367",
+                      "tertiary": "#782c38",
+                      "secondary-container": "#fead3e",
+                      "sdg-13": "#3F7E44",
+                      "sdg-11": "#FD9D24",
+                      "on-surface-variant": "#404940",
+                      "surface": "#f5f3ee",
+                      "sdg-15": "#56C02B",
+                      "blue-light": "#e8eef8",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#ffb2b9",
+                      "sdg-14": "#0A97D9",
+                      "primary": "#005129",
+                      "on-surface": "#1b1b20",
+                      "sdg-6": "#26BDE2",
+                      "sdg-5": "#FF3A21",
+                      "outline-variant": "#bfc9be",
+                      "accent-hover": "#2d9e60",
+                      "tertiary-container": "#96434f",
+                      "on-primary-fixed-variant": "#005229",
+                      "tertiary-fixed": "#ffd9dc",
+                      "primary-fixed": "#a5f4b8",
+                      "surface-container-highest": "#e4e1e9",
+                      "text-mid": "#3d3d4a",
+                      "surface-tint": "#1b6c3d",
+                      "sdg-9": "#FD6925",
+                      "secondary-fixed": "#ffddb8",
+                      "primary-container": "#1a6b3c",
+                      "inverse-on-surface": "#f3eff7",
+                      "secondary": "#865300",
+                      "amber-light": "#fef3e0",
+                      "cream": "#faf8f3",
+                      "error": "#ba1a1a",
+                      "surface-container": "#f0ecf4",
+                      "on-tertiary-container": "#ffcace",
+                      "on-secondary-container": "#6e4400",
+                      "sdg-16": "#00689D",
+                      "sdg-7": "#FCC30B",
+                      "sdg-4": "#C5192D",
+                      "sdg-17": "#19486A",
+                      "inverse-surface": "#303036",
+                      "surface-alt": "#eceae3",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "background": "#fcf8ff",
+                      "surface-dim": "#dcd9e0",
+                      "sand": "#d4c9a8",
+                      "sdg-8": "#A21942",
+                      "sdg-12": "#BF8B2E",
+                      "accent-light": "#e8f5ee",
+                      "on-tertiary-fixed-variant": "#792d39",
+                      "sand-dark": "#b8a87a",
+                      "text-muted": "#6b6b7a",
+                      "secondary-fixed-dim": "#ffb960",
+                      "inverse-primary": "#89d89e",
+                      "on-error": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "sdg-1": "#E5243B",
+                      "sdg-2": "#DDA63A",
+                      "outline": "#707a70",
+                      "primary-fixed-dim": "#89d89e",
+                      "surface-bright": "#fcf8ff",
+                      "ink-light": "#1a1a2e",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#3f0110",
+                      "surface-variant": "#e4e1e9",
+                      "on-primary-container": "#9ae9ae",
+                      "on-secondary-fixed": "#2a1700",
+                      "surface-container-high": "#eae7ee",
+                      "surface-container-low": "#f6f2fa",
+                      "on-tertiary": "#ffffff",
+                      "blue": "#1a3a6b",
+                      "sdg-3": "#4C9F38"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-md": "16px",
+                      "stack-lg": "24px",
+                      "header-height": "64px",
+                      "section-padding": "2.5rem",
+                      "gutter": "1.5rem",
+                      "stack-sm": "8px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "mono-label": ["DM Mono"],
+                      "display-lg-mobile": ["Syne"],
+                      "body-sm": ["DM Sans"],
+                      "headline-md": ["Syne"],
+                      "display-lg": ["Syne"],
+                      "body-base": ["DM Sans"]
+              },
+              "fontSize": {
+                      "mono-label": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "700"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-cream font-body-base text-on-background antialiased min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-header-height bg-white/65 backdrop-blur-xl border-b border-sand/30 shadow-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-md">
+<span class="text-headline-md font-headline-md text-primary">SDGSync</span>
+<div class="hidden md:flex ml-stack-lg gap-stack-md">
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Projects</a>
+<a class="text-on-surface-variant font-medium hover:text-accent-hover transition-colors duration-200" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 rounded-full border-none bg-surface text-body-sm focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search tasks..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-accent-hover p-2 transition-colors duration-200 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-accent-hover p-2 transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-sand-dark flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
+<img alt="User avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkknAzJC-3NsGn6sXK1ih2ube4Aq9tHPyennimW1AbDjDKQMqK400ENeBGW1BVuC5zJ1rogTRGsKptBF9RvfEprtDSU8UdKUvJt_IgYqOHMM_CszI6Iuw295oUXYbebyMAGUx41QvI8W7vgWmWBX7VORdzJB9eQKm50HPahlIA_5OsWkWC-FuUnKP_IX4x2h580Aiv_o3TOwh-nCJXKBKe2pkroDukvMBtbdQHL7m9BJcZ3JLVgm6zf8Hv2yizPelCM5jmXGEIgeg"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-header-height h-[calc(100vh-theme(spacing.header-height))] w-64 bg-white/65 backdrop-blur-xl border-r border-sand/30 shadow-md flex flex-col p-4 space-y-stack-md z-40 hidden md:flex">
+<div class="mb-4 px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]">sync</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-base text-primary leading-tight">SDGSync</h3>
+<p class="text-[10px] text-on-surface-variant font-mono-label tracking-wider">INSTITUTIONAL PORTAL</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200">dashboard</span>
+<span class="font-medium text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container rounded-xl font-bold" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="font-bold text-body-sm">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200">query_stats</span>
+<span class="font-medium text-body-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200">group</span>
+<span class="font-medium text-body-sm">Team</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200">description</span>
+<span class="font-medium text-body-sm">Documents</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-sand/20 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-medium text-body-sm">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium text-body-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-64 pt-header-height min-h-screen">
+<div class="max-w-[1200px] mx-auto px-gutter py-8">
+<!-- Project Header & Secondary Nav -->
+<div class="mb-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-mono-label font-mono-label text-sdg-13 px-2 py-1 bg-sdg-13/10 rounded-md">GOAL 13</span>
+<span class="text-on-surface-variant text-body-sm">• Institutional Framework</span>
+</div>
+<h1 class="font-headline-md text-display-lg-mobile text-on-background">Climate Mitigation Framework 2024</h1>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+                        Add Task
+                    </button>
+</div>
+<!-- Secondary Tab Nav -->
+<div class="flex border-b border-sand/30 gap-8">
+<button class="pb-4 text-body-base text-on-surface-variant hover:text-primary transition-colors">Overview</button>
+<button class="pb-4 text-body-base text-primary font-bold border-b-2 border-primary">Tasks</button>
+<button class="pb-4 text-body-base text-on-surface-variant hover:text-primary transition-colors">Chat</button>
+<button class="pb-4 text-body-base text-on-surface-variant hover:text-primary transition-colors">Literature</button>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-stack-lg items-start">
+<!-- TO DO Column -->
+<div class="bg-surface-alt/50 rounded-[32px] p-4 flex flex-col gap-stack-md min-h-[600px] border border-sand/10">
+<div class="flex items-center justify-between px-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+<h2 class="font-headline-md text-body-base text-on-surface-variant uppercase tracking-widest">To Do</h2>
+<span class="bg-white/60 px-2 py-0.5 rounded-full text-mono-label font-mono-label text-on-surface-variant">3</span>
+</div>
+<button class="text-on-surface-variant p-1 hover:bg-white rounded-lg transition-all"><span class="material-symbols-outlined text-[20px]">more_horiz</span></button>
+</div>
+<!-- Task Card 1 -->
+<div class="bg-surface-container-lowest rounded-[28px] p-6 shadow-md border border-sand/10 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group relative">
+<div class="flex justify-between items-start mb-3">
+<span class="bg-sdg-11/10 text-sdg-11 px-3 py-1 rounded-full text-mono-label font-mono-label">PRIORITY: HIGH</span>
+<div class="relative">
+<button class="text-on-surface-variant opacity-30 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+<!-- Dropdown Mockup (Hidden by default, shown conceptually) -->
+<div class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-sand/20 z-10 py-2">
+<button class="w-full text-left px-4 py-2 text-body-sm hover:bg-surface flex items-center gap-2"><span class="material-symbols-outlined text-sdg-15">check_circle</span> Mark as Done</button>
+<button class="w-full text-left px-4 py-2 text-body-sm hover:bg-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">trending_flat</span> Move to Progress</button>
+<div class="h-px bg-sand/10 my-1"></div>
+<button class="w-full text-left px-4 py-2 text-body-sm hover:bg-error/10 text-error flex items-center gap-2"><span class="material-symbols-outlined">delete</span> Delete Task</button>
+</div>
+</div>
+</div>
+<h3 class="font-headline-md text-body-base text-primary mb-2">Stakeholder Analysis Matrix</h3>
+<p class="text-body-sm text-on-surface-variant mb-4 line-clamp-2">Compile institutional data points from regional partners to identify carbon offset potentials.</p>
+<div class="flex items-center gap-4 pt-4 border-t border-sand/10">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+<span class="text-mono-label">2</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+<span class="text-mono-label">4</span>
+</div>
+<div class="ml-auto flex -space-x-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBayOX5F0LUqHEguZ8Z_-Iom4HaT4Y8RhRyZxxtsQjUPgupFMMryMAldtBQ8PbGQZuzD1VJYemGSJRIWEugZt8BEHD3Jjh4PzbVumCMsLLDy4_HxEVSJCf4vCktpx-ue-s5UA1VsmUlHgJz412R3x5kH5IZ5WM5o9QFL2IJngXoEsu-VTBzcNFlDQh0YrTSEvpkcREkc3acbJuAqFgg6lrLQasWCbY_HhyD1QOrkL1scGC-yyw-7urum485EVDcPQvHvHmZ1hWWjUs"/>
+<img alt="Assignee" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG_1pIg6_Ays9ksPckm0mpLIIcr9YaV1rfk4b9GDlF7t8c2k9Zosg7y2jObfYAriZf6rdP-XQjqrcQvfReAJnK0kH8a8QuSudNgpQ5EYFOWOZ7Zij4-U5-xkuZDaSuDFScBvIWWfqzImGIqJigp9XKvWOmO32JqwOTw_VniYUxMaq2WFKrHhl1HeX7E5MHkkKCiJyBZ5tFFfDYd4WBa5lHgettrg1tAOsgwxfdZLEUbnWcOrwbFx5fVV5LG3hsFX7huzIXfEzhaao"/>
+</div>
+</div>
+</div>
+<!-- Task Card 2 (With expanded attachments UI) -->
+<div class="bg-surface-container-lowest rounded-[28px] p-6 shadow-md border border-sand/10 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+<h3 class="font-headline-md text-body-base text-primary mb-2">Resource Mapping Projections</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Draft the initial GIS layer for the 2024 monitoring cycle.</p>
+<!-- Attachment UI Section -->
+<div class="space-y-stack-sm mb-4">
+<div class="bg-surface rounded-xl p-3 flex items-center justify-between group/file">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sdg-16">description</span>
+<div>
+<p class="text-[12px] font-bold text-on-background leading-none">Resource_Map_v1.pdf</p>
+<p class="text-[10px] text-on-surface-variant">1.2 MB</p>
+</div>
+</div>
+<div class="flex gap-1 opacity-0 group-hover/file:opacity-100 transition-opacity">
+<button class="p-1 hover:bg-white rounded-md text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">download</span></button>
+<button class="p-1 hover:bg-error/10 rounded-md text-error"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+<button class="w-full border-2 border-dashed border-sand/30 rounded-xl p-3 flex items-center justify-center gap-2 text-on-surface-variant hover:border-primary/40 hover:bg-primary/5 transition-all text-body-sm font-medium">
+<span class="material-symbols-outlined">upload_file</span>
+                                Upload File
+                            </button>
+</div>
+<div class="flex items-center gap-4 pt-4 border-t border-sand/10">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+<span class="text-mono-label">1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- IN PROGRESS Column -->
+<div class="bg-surface-alt/50 rounded-[32px] p-4 flex flex-col gap-stack-md min-h-[600px] border border-sand/10">
+<div class="flex items-center justify-between px-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<h2 class="font-headline-md text-body-base text-on-surface-variant uppercase tracking-widest">In Progress</h2>
+<span class="bg-white/60 px-2 py-0.5 rounded-full text-mono-label font-mono-label text-on-surface-variant">1</span>
+</div>
+<button class="text-on-surface-variant p-1 hover:bg-white rounded-lg transition-all"><span class="material-symbols-outlined text-[20px]">more_horiz</span></button>
+</div>
+<!-- Task Card In Progress -->
+<div class="bg-surface-container-lowest rounded-[28px] p-6 shadow-md border border-sand/10 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+<div class="flex justify-between items-start mb-3">
+<span class="bg-sdg-13/10 text-sdg-13 px-3 py-1 rounded-full text-mono-label font-mono-label">GOAL 13</span>
+<div class="relative">
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<h3 class="font-headline-md text-body-base text-primary mb-2">GHG Emission Baseline Study</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Collecting real-time sensor data from the pilot sites in Kenya and Vietnam.</p>
+<!-- Progress bar -->
+<div class="w-full bg-surface h-2 rounded-full overflow-hidden mb-4">
+<div class="bg-secondary h-full w-[65%] rounded-full"></div>
+</div>
+<div class="flex items-center gap-4 pt-4 border-t border-sand/10">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+<span class="text-mono-label">4</span>
+</div>
+<div class="ml-auto flex -space-x-2">
+<img alt="Assignee" class="w-6 h-6 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD6dynuCWq2VTDUuFDKaT7ea3gUnXktNuH4hXDw14L_VttazS5dYb_o9HSDax_b1Cvtx1eEEWMazI06kvEl6OaIm5F4x8KtB5CHGrKPGslXdCSHruGWpWoqPz2Pq1xlNy9BatYfjg7E99MEDt0QIX8WwJgqbJUi6NmcmSXQQjubwkWdbJWxjPzfp59kbPw4uZIsd9mF12VZCvORC2DTB4KVi0ZcW_ew_4UDG2Mbmpj3xOxg1-pHeYFAg_5AEDSroSl5yudET6j2K4"/>
+</div>
+</div>
+</div>
+</div>
+<!-- COMPLETED Column -->
+<div class="bg-surface-alt/50 rounded-[32px] p-4 flex flex-col gap-stack-md min-h-[600px] border border-sand/10">
+<div class="flex items-center justify-between px-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-sdg-15"></span>
+<h2 class="font-headline-md text-body-base text-on-surface-variant uppercase tracking-widest">Completed</h2>
+<span class="bg-white/60 px-2 py-0.5 rounded-full text-mono-label font-mono-label text-on-surface-variant">5</span>
+</div>
+<button class="text-on-surface-variant p-1 hover:bg-white rounded-lg transition-all"><span class="material-symbols-outlined text-[20px]">more_horiz</span></button>
+</div>
+<!-- Completed Task Card -->
+<div class="bg-surface-container-lowest/70 rounded-[28px] p-6 shadow-sm border border-sand/5 transition-all grayscale-[0.3]">
+<div class="flex justify-between items-start mb-3">
+<span class="bg-sdg-15/10 text-sdg-15 px-3 py-1 rounded-full text-mono-label font-mono-label flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                FINISHED
+                            </span>
+</div>
+<h3 class="font-headline-md text-body-base text-on-surface-variant line-through mb-2">Ethics Approval Request</h3>
+<p class="text-body-sm text-on-surface-variant opacity-60 mb-4">Submission for the institutional review board regarding data privacy.</p>
+<div class="flex items-center gap-4 pt-4 border-t border-sand/10">
+<div class="flex items-center gap-1 text-on-surface-variant opacity-50">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+<span class="text-mono-label">1</span>
+</div>
+<div class="ml-auto">
+<div class="w-6 h-6 rounded-full bg-sdg-15 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-white/65 backdrop-blur-xl border-t border-sand/30 h-16 flex justify-around items-center px-gutter z-50">
+<a class="text-primary flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder</span>
+<span class="text-[10px] font-medium">Projects</span>
+</a>
+<button class="bg-primary text-white p-3 rounded-full -mt-10 shadow-lg border-4 border-cream">
+<span class="material-symbols-outlined">add</span>
+</button>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[10px] font-medium">Stats</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (Only for specific contexts, here we use the top add task but often FAB sits bottom right) -->
+<div class="fixed bottom-24 right-8 hidden lg:block">
+<button class="w-14 h-14 bg-ink-light text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-90 transition-all group">
+<span class="material-symbols-outlined">question_answer</span>
+<span class="absolute right-full mr-4 bg-ink-light text-white px-3 py-1 rounded-lg text-body-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">AI Research Assistant</span>
+</button>
+</div>
+</body></html>

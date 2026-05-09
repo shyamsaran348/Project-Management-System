@@ -38,7 +38,7 @@ export default function Login() {
 
     return (
         <MainLayout>
-            <div className="bg-[var(--cream)] min-h-[calc(100vh-64px)] flex items-center justify-center font-body-base text-[var(--on-surface)] overflow-hidden relative">
+            <div className="bg-[var(--cream)] min-h-screen pt-[120px] pb-24 flex items-center justify-center font-body-base text-[var(--on-surface)] overflow-hidden relative">
                 {/* Decorative Neural-like background elements */}
                 <ParticleNetwork />
                 <div className="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[80px] z-0 pointer-events-none"></div>

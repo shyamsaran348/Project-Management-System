@@ -75,19 +75,13 @@ export default function Register() {
                 <div className="absolute -top-12 -left-12 w-24 h-24 bg-[var(--primary)]/10 rounded-full blur-3xl z-0"></div>
                 <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-[var(--sdg-3)]/10 rounded-full blur-3xl z-0"></div>
 
-                <main className="w-full max-w-[500px] relative z-10 my-12">
-                    {/* Central Glassmorphic Card */}
-                    <section className="glass-panel rounded-[32px] overflow-hidden p-10">
-                        {/* Brand Header */}
-                        <header className="text-center mb-8">
-                            <div className="flex justify-center mb-4">
-                                <div className="w-14 h-14 bg-[var(--primary)] rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-[var(--primary)]/10">
-                                    <span className="material-symbols-outlined text-white text-[1.8rem]">verified_user</span>
-                                </div>
-                            </div>
-                            <h1 className="font-['Syne'] text-[1.5rem] font-bold text-[var(--ink)] tracking-tight mb-1">Institutional Onboarding</h1>
-                            <p className="font-['DM_Sans'] text-[0.85rem] text-[var(--text-muted)] font-light">Join the global network of researchers aligning science with impact.</p>
-                        </header>
+                
+                <main className="relative z-10 w-full max-w-[540px] px-6">
+                    <div className="glass-panel p-10 md:p-14 rounded-[40px] flex flex-col">
+                        <div className="text-center mb-10">
+                            <h2 className="font-heading text-[2.2rem] text-[var(--primary)] mb-3">Institutional Onboarding</h2>
+                            <p className="font-light text-[var(--text-muted)] text-[0.95rem]">Join the global network of researchers aligning science with impact.</p>
+                        </div>
                         
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Toggle Roles */}
@@ -133,10 +127,17 @@ export default function Register() {
 
                                 {/* Institutional Email */}
                                 <div className="space-y-2">
-                                    <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="email">Institutional Email</label>
-                                    <div className="relative group">
-                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">mail</span>
-                                        <input className="w-full pl-12" id="email" name="email" placeholder="name@university.edu" type="email" required onChange={handleChange}/>
+                                    <label className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--primary)] opacity-60 block px-1">Institutional Email</label>
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 text-[20px]">mail</span>
+                                        <input 
+                                            className="w-full h-14 pl-14 pr-6" 
+                                            name="email"
+                                            type="email"
+                                            required
+                                            placeholder="name@university.edu" 
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                 </div>
 
@@ -201,18 +202,18 @@ export default function Register() {
                                 <Link to="/login" className="text-[var(--primary)] font-bold hover:text-[var(--accent-hover)] transition-colors underline-offset-4 hover:underline ml-1">Log in</Link>
                             </p>
                         </form>
-                    </section>
+                    </div>
 
-                    {/* Footer Visual Reference */}
-                    <footer className="mt-12 flex flex-col items-center">
-                        <p className="text-[0.6rem] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] mb-6">Aligning with Global Frameworks</p>
-                        <div className="flex justify-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all cursor-default">
-                            <div className="w-10 h-10 bg-[var(--sdg-1)] rounded-lg shadow-sm" title="No Poverty"></div>
-                            <div className="w-10 h-10 bg-[var(--sdg-4)] rounded-lg shadow-sm" title="Quality Education"></div>
-                            <div className="w-10 h-10 bg-[var(--sdg-13)] rounded-lg shadow-sm" title="Climate Action"></div>
-                            <div className="w-10 h-10 bg-[var(--sdg-17)] rounded-lg shadow-sm" title="Partnerships"></div>
+                    {/* Aligning Section */}
+                    <div className="mt-12 flex flex-col items-center">
+                        <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-[var(--text-muted)] opacity-50 mb-6">Aligning with Global Frameworks</p>
+                        <div className="flex gap-4 opacity-20 grayscale">
+                            <div className="w-10 h-10 rounded-full bg-[var(--primary)]"></div>
+                            <div className="w-10 h-10 rounded-full bg-[var(--primary)]"></div>
+                            <div className="w-10 h-10 rounded-full bg-[var(--primary)]"></div>
+                            <div className="w-10 h-10 rounded-full bg-[var(--primary)]"></div>
                         </div>
-                    </footer>
+                    </div>
                 </main>
             </div>
         </MainLayout>

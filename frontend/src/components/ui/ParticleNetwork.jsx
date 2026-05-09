@@ -3,9 +3,9 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 export default function ParticleNetwork() {
-    const particlesInit = useCallback(async engine => {
+    const particlesInit = async (engine) => {
         await loadFull(engine);
-    }, []);
+    };
 
     return (
         <Particles

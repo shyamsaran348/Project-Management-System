@@ -33,10 +33,10 @@ export default function Home() {
                              initial={{ opacity: 0, y: 30 }}
                              animate={{ opacity: 1, y: 0 }}
                              transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
-                             className="text-[clamp(2.5rem,5vw,4rem)] mb-10 leading-[1.05]"
+                             className="text-[clamp(2.5rem,5vw,4.2rem)] mb-10 leading-[1.1] text-balance font-heading"
                         >
                             Academic projects<br/>
-                            aligned with <em className="not-italic text-[var(--primary)]">global</em><br/>
+                            aligned with <em className="font-serif italic text-[var(--accent)]">global</em><br/>
                             impact.
                         </motion.h1>
                         <motion.p 
@@ -52,14 +52,15 @@ export default function Home() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            className="flex flex-wrap items-center gap-6"
+                            className="flex flex-wrap items-center gap-8"
                         >
-                            <Link to="/register" className="btn-primary px-10 h-14 rounded-xl text-[16px]">
+                            <Link to="/register" className="btn-primary px-12 h-16 rounded-xl text-[17px] shadow-lg">
                                 Start Initiative
                                 <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                             </Link>
-                            <Link to="/analytics" className="font-['Syne'] font-bold text-[15px] text-[var(--ink)] hover:text-[var(--primary)] transition-colors flex items-center gap-2">
+                            <Link to="/analytics" className="font-heading font-semibold text-[15px] text-[var(--primary)] hover:text-[var(--accent)] transition-colors flex items-center gap-3 group">
                                 View Impact Dashboard
+                                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">analytics</span>
                             </Link>
                         </motion.div>
                     </div>
@@ -134,32 +135,32 @@ export default function Home() {
 
                 {/* Features Grid */}
                 <div className="max-w-[1280px] mx-auto px-10 py-32">
-                    <div className="font-mono text-[0.7rem] font-light tracking-[0.14em] uppercase text-[var(--text-muted)] mb-6">Core capabilities</div>
-                    <h2 className="text-[clamp(1.8rem,3vw,3rem)] mb-20 leading-[1.1]">
-                        Everything your team<br/>needs to drive impact.
+                    <div className="font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-[var(--accent)] mb-6">Core Capabilities</div>
+                    <h2 className="text-[clamp(2rem,4vw,3.2rem)] mb-20 leading-[1.15] font-heading max-w-[800px]">
+                        The toolkit for <em className="font-serif italic font-normal">modern</em> academic research centers.
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {[
-                            { icon: '🎯', name: 'SDG Classification', desc: 'BERT-based transformer automatically maps your project\'s problem statement to one or more of the 17 UN SDGs with 95%+ accuracy.', tag: 'BERT · Transformers', bg: 'bg-[var(--accent-light)]' },
-                            { icon: '📚', name: 'Literature Intelligence', desc: 'Upload PDFs and TXT research papers. Ask questions in plain language. Get cited answers powered by Groq LLM and RAG retrieval.', tag: 'RAG · Groq LLM', bg: 'bg-[var(--accent-light)]' },
-                            { icon: '⚡', name: 'Real-time Collaboration', desc: 'Integrated workspace with task tracking, file attachments, project chat, and smart availability validation for team assignments.', tag: 'WebSocket · RBAC', bg: 'bg-[var(--accent-light)]' }
+                            { icon: '🎯', name: 'SDG Classification', desc: 'Neural transformer automatically maps your project\'s problem statement to the 17 UN SDGs with institutional-grade accuracy.', tag: 'BERT · Transformers', bg: 'bg-[var(--accent-light)]' },
+                            { icon: '📚', name: 'Literature Assistant', desc: 'Upload research papers and query the repository using plain language. Powered by high-speed RAG and Groq Llama-3.', tag: 'RAG · Groq LLM', bg: 'bg-[var(--accent-light)]' },
+                            { icon: '⚡', name: 'Global Collaboration', desc: 'Secure institutional workspace with task tracking, file synchronization, and real-time project communications.', tag: 'WebSocket · RBAC', bg: 'bg-[var(--accent-light)]' }
                         ].map((feat, i) => (
-                            <div key={i} className="glass-panel p-8 rounded-3xl group">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6 ${feat.bg}`}>{feat.icon}</div>
-                                <h3 className="text-[1.1rem] mb-3">{feat.name}</h3>
-                                <p className="text-[0.9rem] text-[var(--text-muted)] font-light leading-relaxed mb-6">{feat.desc}</p>
-                                <div className="font-mono text-[10px] px-3 py-1 rounded-full bg-[var(--surface-alt)] text-[var(--text-muted)] inline-block uppercase tracking-wider">{feat.tag}</div>
+                            <div key={i} className="glass-panel p-10 rounded-[32px] group hover:border-[var(--accent)]/30 transition-all duration-500">
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-8 ${feat.bg} text-[var(--primary)] shadow-sm`}>{feat.icon}</div>
+                                <h3 className="text-[1.25rem] mb-4 font-heading">{feat.name}</h3>
+                                <p className="text-[0.95rem] text-[var(--text-muted)] font-light leading-relaxed mb-8">{feat.desc}</p>
+                                <div className="font-mono text-[10px] px-3.5 py-1.5 rounded-lg bg-[var(--surface-alt)] text-[var(--primary)] inline-block uppercase tracking-wider font-bold">{feat.tag}</div>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* SDG Showcase */}
-                <div className="bg-[var(--ink)] py-32">
-                    <div className="section-container">
-                        <h2 className="text-[clamp(1.8rem,3vw,2.8rem)] text-white mb-4">Aligned to all 17 UN SDGs</h2>
-                        <p className="text-[1rem] font-light text-white/50 max-w-[520px] leading-relaxed mb-16">Every project in SDGSync is automatically mapped to its relevant goals — making your institution's impact visible and measurable.</p>
+                <div className="bg-[var(--primary)] py-40">
+                    <div className="section-container py-0">
+                        <h2 className="text-[clamp(2.2rem,5vw,3.5rem)] text-white mb-6 font-heading">Institutional SDG Alignment</h2>
+                        <p className="text-[1.1rem] font-light text-white/60 max-w-[600px] leading-relaxed mb-20">SDGSync ensures every project is mapped to the <em className="font-serif italic">Global Goals</em>, providing the transparency required for international academic reporting.</p>
                         <div className="flex flex-wrap gap-2">
                             {[
                                 { n: '1 · No Poverty', c: '#ff8a96', b: 'rgba(229,36,59,0.1)', bc: 'rgba(229,36,59,0.3)' },
@@ -189,15 +190,15 @@ export default function Home() {
                 </div>
 
                 {/* Final CTA */}
-                <div className="section-container py-32">
-                    <div className="bg-[var(--ink)] rounded-[40px] p-20 flex flex-col md:flex-row items-center justify-between gap-16 relative overflow-hidden">
-                        <div className="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(26,107,60,0.3),transparent_70%)]"></div>
+                <div className="section-container py-40">
+                    <div className="bg-[var(--surface-alt)] rounded-[48px] p-24 flex flex-col md:flex-row items-center justify-between gap-20 relative overflow-hidden border border-[var(--border)] shadow-2xl">
+                        <div className="absolute -top-20 -left-20 w-[400px] h-[400px] rounded-full bg-[var(--primary)]/5 blur-3xl"></div>
                         <div className="relative z-10 text-center md:text-left">
-                            <h2 className="text-[2.5rem] text-white mb-4">Ready to track your<br/>social impact?</h2>
-                            <p className="text-[1.1rem] text-white/50 font-light leading-relaxed">Join hundreds of faculty and students transforming<br/>academic research into measurable contributions.</p>
+                            <h2 className="text-[3rem] text-[var(--primary)] mb-6 font-heading">Start your <em className="font-serif italic font-normal">impact</em> journey.</h2>
+                            <p className="text-[1.15rem] text-[var(--text-muted)] font-light leading-relaxed max-w-[500px]">Join the global network of researchers transforming academia into a force for sustainable growth.</p>
                         </div>
-                        <Link to="/register" className="btn-primary relative z-10 whitespace-nowrap px-10 py-5 rounded-2xl text-[18px]">
-                            Create your account →
+                        <Link to="/register" className="btn-primary relative z-10 whitespace-nowrap px-12 py-6 rounded-2xl text-[18px] shadow-xl">
+                            Create Institutional Account
                         </Link>
                     </div>
                 </div>

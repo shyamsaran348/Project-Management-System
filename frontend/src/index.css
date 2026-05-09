@@ -1,42 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import "tailwindcss";
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
- * STITCH DESIGN SYSTEM - CORE ARCHITECTURE
+ * STITCH DESIGN SYSTEM - INSTITUTIONAL ELITE
  * ─────────────────────────────────────────────────────────────────────────────
- * This CSS foundation drives the institutional aesthetic of SDGSync. 
- * It prioritizes "sharpness", "neatness", and high-fidelity depth.
+ * Refined for high-fidelity academic research hubs.
  * 
- * CORE PRINCIPLES:
- * 1. High-fidelity neutrals (Cream, Surface, Sand)
- * 2. Institutional Accents (SDG Green #005129)
- * 3. Layered Elevations (Multi-step shadows and border opacities)
- * 4. Academic Typography (Syne + DM Sans)
+ * PALETTE:
+ * - Primary: Deep Forest Green (#003820)
+ * - Accent: Institutional Gold (#9a8b5c)
+ * - Surface: Parchment White (#fcfbf7)
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
 :root {
   /* Brand Palette */
-  --primary:           #005129;
-  --primary-light:     #1a6b3c;
-  --accent:            #2d9e60;
-  --accent-light:      #e8f5ee;
+  --primary:           #003820;
+  --primary-light:     #004d2c;
+  --accent:            #9a8b5c;
+  --accent-light:      #f4f1e8;
   
   /* Neutral Palette */
-  --ink:               #0a0a0f;
-  --ink-light:         #1a1a2e;
-  --text-muted:        #6b6b7a;
-  --surface:           #f5f3ee;
-  --surface-alt:       #eceae3;
-  --cream:             #faf8f3;
+  --ink:               #121212;
+  --ink-light:         #2a2a2a;
+  --text-muted:        #666666;
+  --surface:           #fcfbf7;
+  --surface-alt:       #f5f4ef;
   --white:             #ffffff;
   
   /* Decorative */
-  --sand:              #d4c9a8;
-  --sand-light:        rgba(212, 201, 168, 0.15);
-  --border:            rgba(10, 10, 15, 0.08);
+  --sand:              #d4c1a8;
+  --border:            rgba(0, 56, 32, 0.08);
   
   /* SDG Official Palette */
   --sdg-1: #E5243B; --sdg-2: #DDA63A; --sdg-3: #4C9F38; --sdg-4: #C5192D;
@@ -46,16 +42,13 @@
   --sdg-17:#19486A;
 
   /* Geometry */
-  --radius-sm:  8px;
-  --radius-md:  12px;
-  --radius-lg:  20px;
-  --radius-xl:  28px;
-  --radius-full: 9999px;
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
 
   /* Shadows */
-  --shadow-sm:      0 1px 2px rgba(0,0,0,0.05);
-  --shadow-premium: 0 0 0 1px var(--sand-light), 0 8px 30px rgba(10, 10, 15, 0.04);
-  --shadow-xl:      0 20px 25px -5px rgba(10, 10, 15, 0.05), 0 10px 10px -5px rgba(10, 10, 15, 0.02);
+  --shadow-premium: 0 10px 40px rgba(0, 56, 32, 0.04), 0 0 0 1px rgba(0, 56, 32, 0.02);
 }
 
 /* ─────────────────────────────────────────
@@ -66,122 +59,83 @@
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  background-color: var(--cream);
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--surface);
   color: var(--ink);
-  line-height: 1.5;
+  line-height: 1.6;
   letter-spacing: -0.01em;
-  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, .font-syne {
-  font-family: 'Syne', sans-serif;
-  letter-spacing: -0.03em;
-  font-weight: 700;
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 600;
   line-height: 1.15;
+  color: var(--primary);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.font-serif {
+  font-family: 'Playfair Display', serif;
 }
 
 /* ─────────────────────────────────────────
-   UI COMPONENTS & UTILITIES
-   -----------------------------------------
-   Reusable patterns for institutional UI elements.
+   UI COMPONENTS
    ───────────────────────────────────────── */
 
-/* 
-   Premium Glassmorphism 
-   Uses a combination of saturate and blur for a high-end acrylic effect.
-*/
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 56, 32, 0.05);
   box-shadow: var(--shadow-premium);
 }
 
-/* Input Refining */
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 56, 32, 0.15);
+}
+
 input, select, textarea {
   font-family: inherit;
   font-size: 15px;
   background-color: var(--white);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 56, 32, 0.1);
   border-radius: var(--radius-md);
-  padding: 12px 16px;
+  padding: 14px 18px;
   transition: all 0.2s ease;
   outline: none;
 }
 
 input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(0, 81, 41, 0.05);
-}
-
-/* Buttons */
-.btn-primary {
-  background: var(--primary);
-  color: var(--white);
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 81, 41, 0.2);
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--cream);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--sand);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--sand-dark);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease forwards;
+  box-shadow: 0 0 0 4px rgba(0, 56, 32, 0.04);
 }
 
 /* ─────────────────────────────────────────
-   LAYOUT HELPERS
+   UTILITIES
    ───────────────────────────────────────── */
 .section-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 80px 40px;
+  padding: 100px 40px;
 }
 
-@media (max-width: 768px) {
-  .section-container {
-    padding: 0 20px;
-  }
+.text-balance {
+  text-wrap: balance;
 }

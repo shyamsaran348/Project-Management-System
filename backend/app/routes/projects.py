@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from typing import List, Annotated
 from beanie import PydanticObjectId
 import aiofiles
-import os
 import uuid
 import mimetypes
 from pathlib import Path
+import json
+from loguru import logger
 
 from app.routes.auth import get_current_user
 from app.models.user import User, UserRole
-from app.models.project import Project, ProjectStatus, Team, ProjectTask, ProjectChatMessage, TaskAttachment
+from app.models.project import Project, ProjectStatus, Team, TaskStatus, ProjectTask, ProjectChatMessage, TaskAttachment
 from app.schemas import (
     ProjectCreate,
     ProjectAssign,
@@ -23,47 +24,18 @@ from app.schemas import (
     ProjectChatMessageView,
     TaskAttachmentView,
 )
+from app.core.sockets import manager
+from app.utils import get_link_id as _get_link_id, is_project_participant as _is_project_participant
 
 # Directory where uploaded files are stored
 UPLOAD_ROOT = Path(__file__).resolve().parent.parent.parent / "uploads"
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
-ALLOWED_MIME_PREFIXES = {"image/", "application/pdf", "text/"}
 ALLOWED_EXTENSIONS = {
     ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".webp",
     ".docx", ".xlsx", ".pptx", ".txt", ".csv", ".zip",
 }
 
 router = APIRouter()
-
-def _get_link_id(link_obj):
-    if link_obj is None:
-        return None
-    if hasattr(link_obj, "id"):
-        return link_obj.id
-    if hasattr(link_obj, "ref") and hasattr(link_obj.ref, "id"):
-        return link_obj.ref.id
-    if isinstance(link_obj, dict) and "$id" in link_obj:
-        return link_obj["$id"]
-    if isinstance(link_obj, dict) and "_id" in link_obj:
-        return link_obj["_id"]
-    if isinstance(link_obj, dict) and "id" in link_obj:
-        return link_obj["id"]
-    return None
-
-def _is_project_participant(project: Project, current_user: User) -> bool:
-    faculty_id = _get_link_id(project.faculty)
-    if faculty_id == current_user.id:
-        return True
-    if not project.team:
-        return False
-    leader_id = _get_link_id(project.team.leader)
-    if leader_id == current_user.id:
-        return True
-    if project.team.members:
-        for member in project.team.members:
-            if _get_link_id(member) == current_user.id:
-                return True
-    return False
 
 @router.post("/", response_model=Project)
 async def create_project(
@@ -87,7 +59,7 @@ async def create_project(
         )
     
     # 3. Create Project
-    project = Project(**project_in.dict(), faculty=current_user)
+    project = Project(**project_in.model_dump(), faculty=current_user)
     await project.insert()
     return project
 
@@ -191,6 +163,10 @@ async def list_my_projects_view(
                     if member_doc and member_doc.get("full_name"):
                         member_names.append(member_doc["full_name"])
 
+        tasks = p.tasks or []
+        tasks_count = len(tasks)
+        completed_tasks_count = len([t for t in tasks if t.status == TaskStatus.DONE])
+
         result.append(ProjectView(
             id=str(p.id),
             title=p.title,
@@ -201,7 +177,9 @@ async def list_my_projects_view(
             faculty_name=faculty_name,
             team_name=team_name,
             leader_name=leader_name,
-            member_names=member_names
+            member_names=member_names,
+            tasks_count=tasks_count,
+            completed_tasks_count=completed_tasks_count
         ))
 
     return result
@@ -379,7 +357,7 @@ async def post_project_chat(
     project.chat_messages.append(chat)
     await project.save()
 
-    return ProjectChatMessageView(
+    view_model = ProjectChatMessageView(
         id=chat.id,
         sender_id=chat.sender_id,
         sender_name=chat.sender_name,
@@ -387,6 +365,97 @@ async def post_project_chat(
         message=chat.message,
         created_at=chat.created_at
     )
+
+    # Broadcast to real-time participants
+    await manager.broadcast_to_project(str(project_id), {
+        "type": "new_message",
+        "payload": view_model.dict()
+    })
+
+    return view_model
+
+async def _to_project_view(p: Project) -> ProjectView:
+    faculty_id = _get_link_id(p.faculty)
+    faculty_doc = await User.get(PydanticObjectId(faculty_id)) if faculty_id else None
+    faculty_name = faculty_doc.full_name if faculty_doc else None
+
+    leader_name = None
+    member_names = []
+    team_name = p.team.name if p.team else None
+    if p.team:
+        leader_id = _get_link_id(p.team.leader)
+        leader_doc = await User.get(PydanticObjectId(leader_id)) if leader_id else None
+        leader_name = leader_doc.full_name if leader_doc else None
+        if p.team.members:
+            for m in p.team.members:
+                member_id = _get_link_id(m)
+                if member_id:
+                    member_doc = await User.get(PydanticObjectId(member_id))
+                    if member_doc and member_doc.full_name:
+                        member_names.append(member_doc.full_name)
+
+    tasks = p.tasks or []
+    tasks_count = len(tasks)
+    completed_tasks_count = len([t for t in tasks if t.status == TaskStatus.DONE])
+
+    return ProjectView(
+        id=str(p.id),
+        title=p.title,
+        problem_statement=p.problem_statement,
+        status=p.status.value if hasattr(p.status, "value") else str(p.status),
+        sdg_mapping=p.sdg_mapping or {},
+        faculty_id=str(faculty_id) if faculty_id else None,
+        faculty_name=faculty_name,
+        team_name=team_name,
+        leader_name=leader_name,
+        member_names=member_names,
+        tasks_count=tasks_count,
+        completed_tasks_count=completed_tasks_count
+    )
+
+@router.patch("/{project_id}/status", response_model=ProjectView)
+async def update_project_status(
+    project_id: PydanticObjectId,
+    new_status: ProjectStatus,
+    current_user: Annotated[User, Depends(get_current_user)]
+):
+    project = await Project.get(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    if _get_link_id(project.faculty) != current_user.id:
+        raise HTTPException(status_code=403, detail="Only owner can change status")
+    
+    project.status = new_status
+    await project.save()
+    
+    # Reload with links for view
+    updated_project = await Project.get(project_id, fetch_links=True)
+    return await _to_project_view(updated_project)
+
+@router.websocket("/{project_id}/ws")
+async def project_websocket_endpoint(
+    websocket: WebSocket,
+    project_id: str
+):
+    await manager.connect(websocket, project_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            message_data = json.loads(data)
+            
+            if message_data.get("type") == "typing":
+                await manager.update_typing_status(
+                    project_id, 
+                    message_data.get("user_id"),
+                    message_data.get("user_name"),
+                    message_data.get("is_typing")
+                )
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, project_id)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        manager.disconnect(websocket, project_id)
 
 @router.patch("/{project_id}/tasks/{task_id}", response_model=ProjectTaskView)
 async def update_project_task(
@@ -672,3 +741,81 @@ async def delete_attachment(
     await project.save()
 
     return {"status": "deleted", "attachment_id": attachment_id}
+
+@router.delete("/{project_id}/tasks/{task_id}")
+async def delete_project_task(
+    project_id: PydanticObjectId,
+    task_id: str,
+    current_user: Annotated[User, Depends(get_current_user)]
+):
+    project = await Project.get(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    if not _is_project_participant(project, current_user):
+        raise HTTPException(status_code=403, detail="Not allowed to modify this project")
+
+    tasks = project.tasks or []
+    task_idx = next((idx for idx, t in enumerate(tasks) if t.id == task_id), -1)
+    if task_idx == -1:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    # Clean up attachments from disk
+    task = tasks[task_idx]
+    if task.attachments:
+        task_dir = UPLOAD_ROOT / str(project_id) / task_id
+        if task_dir.exists():
+            import shutil
+            shutil.rmtree(task_dir)
+
+    project.tasks.pop(task_idx)
+    await project.save()
+    return {"status": "deleted", "task_id": task_id}
+
+@router.get("/analytics/institution")
+async def get_institution_analytics(
+    current_user: Annotated[User, Depends(get_current_user)]
+):
+    if current_user.role != UserRole.FACULTY:
+        raise HTTPException(status_code=403, detail="Faculty only")
+
+    all_projects = await Project.find_all().to_list()
+    total_projects = len(all_projects)
+    
+    sdg_dist = {}
+    total_tasks = 0
+    done_tasks = 0
+    
+    for p in all_projects:
+        for sdg_id in (p.sdg_mapping or {}).keys():
+            sdg_dist[sdg_id] = sdg_dist.get(sdg_id, 0) + 1
+        
+        tasks = p.tasks or []
+        total_tasks += len(tasks)
+        done_tasks += len([t for t in tasks if t.status == TaskStatus.DONE])
+
+    # Convert to list for frontend charts
+    sdg_data = [{"id": k, "count": v} for k, v in sorted(sdg_dist.items())]
+
+    return {
+        "total_projects": total_projects,
+        "total_tasks": total_tasks,
+        "completed_tasks": done_tasks,
+        "sdg_distribution": sdg_data,
+        "completion_rate": round((done_tasks / total_tasks * 100) if total_tasks > 0 else 0, 1)
+    }
+
+@router.get("/analytics/public")
+async def get_public_analytics():
+    all_projects = await Project.find_all().to_list()
+    total_projects = len(all_projects)
+    
+    sdg_dist = {}
+    for p in all_projects:
+        for sdg_id in (p.sdg_mapping or {}).keys():
+            sdg_dist[sdg_id] = sdg_dist.get(sdg_id, 0) + 1
+    
+    return {
+        "total_projects": total_projects,
+        "total_sdgs_impacted": len(sdg_dist),
+        "active_researchers": await User.find(User.role == UserRole.STUDENT).count(),
+    }

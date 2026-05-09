@@ -2,7 +2,7 @@ from beanie import Document, Link
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 from .user import User
 
@@ -12,24 +12,28 @@ class ProjectStatus(str, Enum):
     DELAYED = "Delayed"
     COMPLETED = "Completed"
 
+
 class Team(BaseModel):
     name: str = "Team A"
-    leader: Link[User]  # Reference to Student
-    members: List[Link[User]] = [] # References to Students
+    leader: Link[User]       # Reference to a Student User
+    members: List[Link[User]] = []  # References to Student Users
+
 
 class TaskStatus(str, Enum):
     TODO = "TODO"
     IN_PROGRESS = "IN_PROGRESS"
     DONE = "DONE"
 
+
 class TaskAttachment(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     filename: str          # UUID-safe name on disk
-    original_name: str     # original filename shown to user
+    original_name: str     # Original filename shown to user
     content_type: str
     size_bytes: int
     uploaded_by: Optional[str] = None
-    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 
 class ProjectTask(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -37,8 +41,9 @@ class ProjectTask(BaseModel):
     description: Optional[str] = ""
     status: TaskStatus = TaskStatus.TODO
     created_by: Optional[str] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     attachments: List[TaskAttachment] = []
+
 
 class ProjectChatMessage(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -46,22 +51,23 @@ class ProjectChatMessage(BaseModel):
     sender_name: Optional[str] = None
     sender_role: Optional[str] = None
     message: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 
 class Project(Document):
     title: str
     problem_statement: str
     status: ProjectStatus = ProjectStatus.ON_TRACK
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
     # Owner
-    faculty: Link[User] 
-    
+    faculty: Link[User]
+
     # Assignment
     team: Optional[Team] = None
-    
+
     # Analysis
-    sdg_mapping: Dict[str, str] = {} # e.g. {"SDG 4": "Quality Education"}
+    sdg_mapping: Dict[str, str] = {}           # e.g. {"13": "Climate Action"}
     ml_confidence_scores: Dict[str, float] = {}
     tasks: List[ProjectTask] = []
     chat_messages: List[ProjectChatMessage] = []
@@ -73,5 +79,5 @@ class Project(Document):
             "created_at",
             "faculty",
             "team.leader",
-            "team.members"
+            "team.members",
         ]

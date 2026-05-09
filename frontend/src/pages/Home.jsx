@@ -1,118 +1,207 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import MainLayout from '../layouts/MainLayout';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
+import { motion } from 'framer-motion';
+import { getPublicAnalytics } from '../api/projects';
+import ParticleNetwork from '../components/ui/ParticleNetwork';
 
 export default function Home() {
+    const [stats, setStats] = useState({ total_projects: 0, total_sdgs_impacted: 0, active_researchers: 0 });
+
+    useEffect(() => {
+        getPublicAnalytics().then(setStats);
+    }, []);
     return (
         <MainLayout>
-            {/* Hero Section */}
-            <section className="py-24 border-b border-gray-100 dark:border-gray-800">
-                <div className="container">
-                    <div className="max-w-3xl">
-                        <motion.span 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-xs font-bold rounded mb-6 uppercase tracking-wider"
-                        >
-                            Technology for Social Good
-                        </motion.span>
-                        
-                        <motion.h1 
+            <div className="relative overflow-hidden bg-[var(--cream)]">
+                {/* Interactive Particle Background */}
+                <ParticleNetwork />
+
+                {/* Hero Section */}
+                <div className="max-w-[1400px] mx-auto px-10 pt-20 pb-32 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-20 items-center relative">
+                    <div className="hero-left relative z-10">
+                        <div className="max-w-[700px]">
+                        <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            className="text-5xl md:text-6xl font-bold mb-6 leading-tight tracking-tight"
+                            className="inline-flex items-center gap-2 px-3 py-1 bg-[var(--accent-light)] text-[var(--accent)] rounded-full font-mono text-[0.65rem] font-bold tracking-[0.1em] uppercase mb-6"
                         >
-                            Intelligent Project Management for Academic Social Impact.
+                            <span className="w-1 h-1 bg-[var(--accent)] rounded-full animate-pulse"></span>
+                            Institutional Intelligence Hub
+                        </motion.div>
+                        <motion.h1 
+                             initial={{ opacity: 0, y: 30 }}
+                             animate={{ opacity: 1, y: 0 }}
+                             transition={{ duration: 0.8, delay: 0.1, ease: "circOut" }}
+                             className="text-[clamp(2.5rem,5vw,4rem)] mb-10 leading-[1.05]"
+                        >
+                            Academic projects<br/>
+                            aligned with <em className="not-italic text-[var(--primary)]">global</em><br/>
+                            impact.
                         </motion.h1>
-                        
                         <motion.p 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            className="text-xl text-gray-500 mb-10 leading-relaxed max-w-2xl"
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="text-[1.1rem] text-[var(--text-muted)] font-light leading-relaxed mb-10 max-w-[500px]"
                         >
-                            Align your research and technical projects with the UN Sustainable Development Goals using AI-powered classification and literature intelligence.
+                            The premier platform for university research centers to track, analyze, and report their contribution to the UN Sustainable Development Goals.
                         </motion.p>
                         
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                            className="flex flex-wrap gap-4"
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            className="flex flex-wrap items-center gap-6"
                         >
-                            <Button size="lg" onClick={() => window.location.href = '/login'}>
-                                Get Started
-                            </Button>
-                            <Button variant="secondary" size="lg" onClick={() => window.location.href = '/register'}>
-                                View Impact Reports
-                            </Button>
+                            <Link to="/register" className="btn-primary px-10 h-14 rounded-xl text-[16px]">
+                                Start Initiative
+                                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </Link>
+                            <Link to="/analytics" className="font-['Syne'] font-bold text-[15px] text-[var(--ink)] hover:text-[var(--primary)] transition-colors flex items-center gap-2">
+                                View Impact Dashboard
+                            </Link>
                         </motion.div>
                     </div>
-                </div>
-            </section>
+                    </div>
 
-            {/* Features Grid */}
-            <section className="py-24 bg-gray-50 dark:bg-gray-900/50">
-                <div className="container">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    {/* Premium Hero Visual */}
+                    <motion.div 
+                        initial={{ opacity: 0, x: 50, rotate: 2 }}
+                        animate={{ opacity: 1, x: 0, rotate: 0 }}
+                        transition={{ duration: 1, ease: "circOut" }}
+                        className="relative hidden lg:block"
+                    >
+                        <div className="absolute -inset-10 bg-[radial-gradient(circle,rgba(26,107,60,0.1),transparent_70%)] blur-3xl"></div>
+                        <div className="p-1 border border-white/40 ring-1 ring-[rgba(212,201,168,0.2)] shadow-2xl relative overflow-hidden bg-white/40 backdrop-blur-3xl rounded-[40px]">
+                            <div className="relative rounded-[36px] overflow-hidden aspect-[4/5] bg-[var(--ink)]">
+                                <img 
+                                    src="/sdg_institutional_hero_1778334505773.png" 
+                                    className="w-full h-full object-cover"
+                                    alt="Institutional Intelligence"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-transparent to-transparent"></div>
+                                
+                                <div className="absolute bottom-10 left-10 right-10">
+                                    <div className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-white/40 mb-4">Platform Reach</div>
+                                    <div className="flex justify-between items-center px-2 py-4 border-t border-white/10">
+                                        <div className="group transition-all">
+                                            <div className="text-[1.6rem] font-['Syne'] font-bold text-white leading-tight group-hover:text-[var(--accent2)] transition-colors">{stats.total_projects}</div>
+                                            <div className="text-[0.6rem] font-mono text-white/30 uppercase tracking-[0.1em]">Global Projects</div>
+                                        </div>
+                                        <div className="group transition-all">
+                                            <div className="text-[1.6rem] font-['Syne'] font-bold text-white leading-tight group-hover:text-[var(--accent2)] transition-colors">{stats.total_sdgs_impacted}</div>
+                                            <div className="text-[0.6rem] font-mono text-white/30 uppercase tracking-[0.1em]">SDG Targets</div>
+                                        </div>
+                                        <div className="group transition-all">
+                                            <div className="text-[1.6rem] font-['Syne'] font-bold text-white leading-tight group-hover:text-[var(--accent2)] transition-colors">{stats.active_researchers}</div>
+                                            <div className="text-[0.6rem] font-mono text-white/30 uppercase tracking-[0.1em]">Researchers</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Trust Bar */}
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="mt-20 pt-16 border-t border-[var(--border)] flex flex-col items-center pb-24 section-container"
+                >
+                    <p className="text-[0.6rem] font-mono text-[var(--text-muted)] uppercase tracking-[0.4em] mb-12">Institutional Compliance Standards</p>
+                    <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale">
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-3xl">account_balance</span>
+                            <span className="font-['Syne'] font-bold text-[1.1rem]">UN Global</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-3xl">school</span>
+                            <span className="font-['Syne'] font-bold text-[1.1rem]">IEEE Research</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-3xl">public</span>
+                            <span className="font-['Syne'] font-bold text-[1.1rem]">SDG Alliance</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-3xl">verified</span>
+                            <span className="font-['Syne'] font-bold text-[1.1rem]">Institutional Hub</span>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Features Grid */}
+                <div className="max-w-[1200px] mx-auto px-10 py-20">
+                    <div className="font-mono text-[0.7rem] font-light tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">Core capabilities</div>
+                    <h2 className="font-['Syne'] text-[clamp(1.8rem,3vw,2.6rem)] font-bold tracking-tight text-[var(--ink)] mb-14 leading-[1.1]">
+                        Everything your team<br/>needs to drive impact.
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-[1.5px] bg-[var(--surface2)] rounded-[20px] overflow-hidden border border-[var(--surface2)]">
                         {[
-                            {
-                                title: "SDG Classification",
-                                desc: "Automated mapping of project problem statements to the 17 UN SDGs using BERT-based Transformers.",
-                                icon: (
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                )
-                            },
-                            {
-                                title: "Literature Intelligence",
-                                desc: "RAG-based system for querying research papers using Groq LLM for instant academic insights.",
-                                icon: (
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-                                )
-                            },
-                            {
-                                title: "Collaboration Hub",
-                                desc: "Unified workspace with real-time task tracking and smart team assignment validation.",
-                                icon: (
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                                )
-                            }
-                        ].map((feature, i) => (
-                            <div key={i} className="flex flex-col">
-                                <div className="text-blue-600 mb-6">{feature.icon}</div>
-                                <h3 className="text-lg font-bold mb-3">{feature.title}</h3>
-                                <p className="text-gray-500 leading-relaxed text-sm">
-                                    {feature.desc}
-                                </p>
+                            { icon: '🎯', name: 'SDG Classification', desc: 'BERT-based transformer automatically maps your project\'s problem statement to one or more of the 17 UN SDGs with 95%+ accuracy.', tag: 'BERT · Transformers', bg: 'bg-[var(--accent-light)]' },
+                            { icon: '📚', name: 'Literature Intelligence', desc: 'Upload PDFs and TXT research papers. Ask questions in plain language. Get cited answers powered by Groq LLM and RAG retrieval.', tag: 'RAG · Groq LLM', bg: 'bg-[var(--blue-light)]' },
+                            { icon: '⚡', name: 'Real-time Collaboration', desc: 'Integrated workspace with task tracking, file attachments, project chat, and smart availability validation for team assignments.', tag: 'WebSocket · RBAC', bg: 'bg-[var(--amber-light)]' }
+                        ].map((feat, i) => (
+                            <div key={i} className="feature-card bg-[var(--cream)] group">
+                                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-xl mb-5 ${feat.bg}`}>{feat.icon}</div>
+                                <h3 className="font-['Syne'] text-[1rem] font-semibold text-[var(--ink)] mb-2.5 tracking-tight">{feat.name}</h3>
+                                <p className="text-[0.875rem] font-light text-[var(--text-muted)] leading-relaxed">{feat.desc}</p>
+                                <div className="mt-4 font-mono text-[0.65rem] px-2.5 py-1 rounded-full bg-[var(--surface2)] text-[var(--text-muted)] inline-block">{feat.tag}</div>
                             </div>
                         ))}
                     </div>
                 </div>
-            </section>
 
-            {/* Impact Section */}
-            <section className="py-32">
-                <div className="container">
-                    <div className="bg-gray-900 rounded-3xl p-12 md:p-20 text-white relative overflow-hidden">
-                        <div className="max-w-2xl relative z-10">
-                            <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">Built for institutions that prioritize impact.</h2>
-                            <p className="text-gray-400 text-lg mb-10 leading-relaxed">
-                                Join hundreds of faculty and students in transforming academic research into measurable contributions for the UN 2030 Agenda.
-                            </p>
-                            <Button variant="accent" size="lg" onClick={() => window.location.href = '/register'}>
-                                Start Building for Social Good
-                            </Button>
-                        </div>
-                        {/* Subtle Abstract Background Decoration */}
-                        <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-                            <div className="w-full h-full border-l border-white/20 transform skew-x-12 translate-x-20" />
+                {/* SDG Showcase */}
+                <div className="bg-[var(--ink)] py-20">
+                    <div className="max-w-[1200px] mx-auto px-10">
+                        <h2 className="font-['Syne'] text-[clamp(1.8rem,3vw,2.4rem)] font-bold text-white tracking-tighter mb-3">Aligned to all 17 UN SDGs</h2>
+                        <p className="text-[0.9rem] font-light text-white/50 max-w-[480px] leading-relaxed mb-12">Every project in SDGSync is automatically mapped to its relevant goals — making your institution's impact visible and measurable.</p>
+                        <div className="flex flex-wrap gap-2">
+                            {[
+                                { n: '1 · No Poverty', c: '#ff8a96', b: 'rgba(229,36,59,0.1)', bc: 'rgba(229,36,59,0.3)' },
+                                { n: '2 · Zero Hunger', c: '#ffb866', b: 'rgba(221,166,58,0.1)', bc: 'rgba(221,166,58,0.3)' },
+                                { n: '3 · Good Health', c: '#7de87a', b: 'rgba(76,159,56,0.1)', bc: 'rgba(76,159,56,0.3)' },
+                                { n: '4 · Quality Education', c: '#ff8a96', b: 'rgba(197,25,45,0.1)', bc: 'rgba(197,25,45,0.3)' },
+                                { n: '5 · Gender Equality', c: '#ff7a6a', b: 'rgba(255,58,33,0.1)', bc: 'rgba(255,58,33,0.3)' },
+                                { n: '6 · Clean Water', c: '#7ad4f0', b: 'rgba(38,189,226,0.1)', bc: 'rgba(38,189,226,0.3)' },
+                                { n: '7 · Clean Energy', c: '#ffd966', b: 'rgba(252,195,11,0.1)', bc: 'rgba(252,195,11,0.3)' },
+                                { n: '8 · Decent Work', c: '#e08080', b: 'rgba(162,25,66,0.1)', bc: 'rgba(162,25,66,0.3)' },
+                                { n: '9 · Industry', c: '#ffb080', b: 'rgba(253,105,37,0.1)', bc: 'rgba(253,105,37,0.3)' },
+                                { n: '10 · Reduced Inequalities', c: '#ff7ab0', b: 'rgba(221,19,103,0.1)', bc: 'rgba(221,19,103,0.3)' },
+                                { n: '11 · Sustainable Cities', c: '#ffb866', b: 'rgba(253,157,36,0.1)', bc: 'rgba(253,157,36,0.3)' },
+                                { n: '12 · Responsible Consumption', c: '#d4a870', b: 'rgba(191,139,46,0.1)', bc: 'rgba(191,139,46,0.3)' },
+                                { n: '13 · Climate Action', c: '#7de87a', b: 'rgba(63,126,68,0.1)', bc: 'rgba(63,126,68,0.3)' },
+                                { n: '14 · Life Below Water', c: '#7ad4f0', b: 'rgba(10,151,217,0.1)', bc: 'rgba(10,151,217,0.3)' },
+                                { n: '15 · Life on Land', c: '#a0e08a', b: 'rgba(86,192,43,0.1)', bc: 'rgba(86,192,43,0.3)' },
+                                { n: '16 · Peace & Justice', c: '#7ab8e0', b: 'rgba(0,104,157,0.1)', bc: 'rgba(0,104,157,0.3)' },
+                                { n: '17 · Partnerships', c: '#7a9ec0', b: 'rgba(25,72,106,0.1)', bc: 'rgba(25,72,106,0.3)' }
+                            ].map((goal, i) => (
+                                <div key={i} className="px-3.5 py-2 rounded-full text-[0.78rem] font-mono border transition-transform hover:-translate-y-0.5 cursor-default" style={{ color: goal.c, backgroundColor: goal.b, borderColor: goal.bc }}>
+                                    {goal.n}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
-            </section>
+
+                {/* Final CTA */}
+                <div className="max-w-[1200px] mx-auto px-10 py-20">
+                    <div className="bg-[var(--ink)] rounded-[24px] p-16 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden">
+                        <div className="absolute bottom-[-80px] right-[-80px] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(26,107,60,0.25),transparent_70%)]"></div>
+                        <div className="relative z-10 text-center md:text-left">
+                            <h2 className="font-['Syne'] text-[2rem] font-bold text-white tracking-tighter mb-3">Ready to track your<br/>social impact?</h2>
+                            <p className="text-[0.9rem] text-white/50 font-light leading-relaxed">Join hundreds of faculty and students transforming<br/>academic research into measurable contributions.</p>
+                        </div>
+                        <Link to="/register" className="btn-cta relative z-10 whitespace-nowrap bg-[var(--accent2)] text-white px-8 py-3.5 rounded-xl font-medium hover:bg-[#24884e] transition-all hover:-translate-y-1">
+                            Create your account →
+                        </Link>
+                    </div>
+                </div>
+            </div>
         </MainLayout>
     );
 }

@@ -1,4 +1,4 @@
-import { fetchClient } from './client';
+import { fetchClient, API_URL } from './client';
 
 export const getMyProjects = async () => {
     const response = await fetchClient('/projects/my-projects');
@@ -107,6 +107,17 @@ export const updateProjectTask = async (projectId, taskId, payload) => {
     return response.json();
 };
 
+export const deleteProjectTask = async (projectId, taskId) => {
+    const response = await fetchClient(`/projects/${projectId}/tasks/${taskId}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || 'Failed to delete task');
+    }
+    return response.json();
+};
+
 export const getProjectChat = async (projectId) => {
     const response = await fetchClient(`/projects/${projectId}/chat`);
     if (!response.ok) {
@@ -161,7 +172,7 @@ export const uploadLiteratureDocument = async (projectId, file) => {
     formData.append('file', file);
 
     const response = await fetch(
-        `http://localhost:8000/rag/projects/${projectId}/documents`,
+        `${API_URL}/rag/projects/${projectId}/documents`,
         {
             method: 'POST',
             headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -189,7 +200,7 @@ export const deleteLiteratureDocument = async (projectId, documentId) => {
 export const downloadLiteratureDocument = async (projectId, documentId, filename) => {
     const token = localStorage.getItem('token');
     const response = await fetch(
-        `http://localhost:8000/rag/projects/${projectId}/documents/${documentId}/download`,
+        `${API_URL}/rag/projects/${projectId}/documents/${documentId}/download`,
         { headers: token ? { Authorization: `Bearer ${token}` } : {} }
     );
     if (!response.ok) throw new Error('Failed to download literature file');
@@ -204,8 +215,6 @@ export const downloadLiteratureDocument = async (projectId, documentId, filename
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 };
-
-const API_URL = 'http://localhost:8000';
 
 export const uploadAttachment = async (projectId, taskId, file) => {
     const token = localStorage.getItem('token');
@@ -255,4 +264,32 @@ export const downloadAttachment = async (projectId, taskId, attachmentId, origin
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+};
+
+export const getInstitutionAnalytics = async () => {
+    const response = await fetchClient('/projects/analytics/institution');
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || 'Failed to fetch analytics');
+    }
+    return response.json();
+};
+
+export const getPublicAnalytics = async () => {
+    const response = await fetchClient('/projects/analytics/public');
+    if (!response.ok) return { total_projects: 0, total_sdgs_impacted: 0, active_reseachers: 0 };
+    return response.json();
+};
+
+export const updateProjectStatus = async (projectId, status) => {
+    const response = await fetchClient(`/projects/${projectId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(status)
+    });
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || 'Failed to update status');
+    }
+    return response.json();
 };

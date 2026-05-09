@@ -1,25 +1,26 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
-const Card = ({ 
-  children, 
-  className = '', 
-  hover = true, 
-  glass = false,
-  ...props 
-}) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={hover ? { y: -8, transition: { duration: 0.3 } } : {}}
-      className={`card ${glass ? 'glass' : ''} ${hover ? 'card-hover' : ''} ${className}`}
-      {...props}
-    >
-      {children}
-    </motion.div>
-  );
-};
+export default function Card({ 
+    children, 
+    className = '', 
+    hover = false,
+    onClick = null,
+    glass = false,
+    ...props 
+}) {
+    const baseStyles = "rounded-[24px] border border-[rgba(180,168,130,0.15)] bg-white overflow-hidden transition-all duration-400 cubic-bezier(0.4, 0, 0.2, 1)";
+    
+    const interactiveStyles = (hover || onClick) ? "hover:shadow-[0_24px_80px_rgba(10,10,15,0.1)] hover:-translate-y-1.5 cursor-pointer" : "";
+    
+    const glassStyles = glass ? "bg-white/70 backdrop-blur-xl border-white/40 shadow-xl" : "shadow-sm";
 
-export default Card;
+    return (
+        <div 
+            className={`${baseStyles} ${interactiveStyles} ${glassStyles} ${className}`}
+            onClick={onClick}
+            {...props}
+        >
+            {children}
+        </div>
+    );
+}

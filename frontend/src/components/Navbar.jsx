@@ -1,101 +1,97 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useEffect, useState } from 'react';
-import Button from './ui/Button';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const location = useLocation();
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+    const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
-    const toggleTheme = () => {
-        setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    const handleLogout = () => {
+        logout();
+        navigate('/');
     };
 
-    const isActive = (path) => location.pathname === path;
-
     return (
-        <nav className="navbar">
-            <div className="container h-full flex justify-between items-center">
-                <Link to="/" className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-900 dark:bg-white rounded flex items-center justify-center text-white dark:text-gray-900 font-bold text-lg">
+        <nav className="fixed top-0 left-0 right-0 z-[100] h-[64px] flex items-center justify-between px-6 lg:px-10 bg-[rgba(250,248,243,0.88)] backdrop-blur-xl border-b border-[rgba(212,201,168,0.15)] shadow-sm">
+            {/* Brand */}
+            <div className="flex items-center gap-8">
+                <Link
+                    to="/"
+                    className="flex items-center gap-2.5 font-['Syne'] text-[1.1rem] font-bold text-[var(--ink)] no-underline tracking-[-0.03em] hover:opacity-80 transition-opacity"
+                >
+                    <div className="w-8 h-8 rounded-[10px] bg-[var(--primary)] flex items-center justify-center text-white text-[0.85rem] font-extrabold shadow-sm active:scale-95 transition-transform">
                         S
                     </div>
-                    <span className="font-bold text-lg tracking-tight text-gray-900 dark:text-white">
-                        SDGSync
-                    </span>
+                    SDGSync
                 </Link>
 
-                <div className="flex items-center gap-8">
-                    <div className="hidden md:flex items-center gap-6">
-                        <Link to="/" className={`text-sm font-medium transition-colors ${isActive('/') ? 'text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400'}`}>
-                            Overview
-                        </Link>
-                        {user && (
-                            <>
-                                <Link to="/dashboard" className={`text-sm font-medium transition-colors ${isActive('/dashboard') ? 'text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400'}`}>
-                                    Dashboard
-                                </Link>
-                                {user.role === 'FACULTY' && (
-                                    <Link to="/project/new" className={`text-sm font-medium transition-colors ${isActive('/project/new') ? 'text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400'}`}>
-                                        New Project
-                                    </Link>
-                                )}
-                            </>
-                        )}
+                {/* Desktop search — only show when logged in */}
+                {user && (
+                    <div className="hidden lg:flex items-center relative group">
+                        <span className="absolute left-3.5 text-[var(--text-muted)] opacity-40 group-focus-within:opacity-70 transition-opacity">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </span>
+                        <input
+                            type="text"
+                            placeholder="Find research initiatives..."
+                            className="bg-[var(--surface)] border border-[rgba(212,201,168,0.2)] rounded-full py-2 pl-10 pr-4 text-[0.75rem] w-[240px] focus:w-[320px] focus:bg-white focus:ring-4 focus:ring-[var(--primary)]/5 transition-all outline-none placeholder:text-[var(--text-muted)]/50 font-['DM_Sans']"
+                        />
                     </div>
+                )}
+            </div>
 
-                    <div className="flex items-center gap-4">
+            {/* Right nav links */}
+            <div className="flex items-center gap-1">
+                <NavLink to="/" label="Overview" isActive={isActive('/')} exact />
+
+                {user ? (
+                    <>
+                        <NavLink to="/dashboard" label="Dashboard" isActive={isActive('/dashboard')} />
+                        <NavLink to="/analytics" label="Analytics" isActive={isActive('/analytics')} />
+                        <NavLink to="/profile" label="Profile" isActive={isActive('/profile')} />
                         <button
-                            onClick={toggleTheme}
-                            className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
-                            title="Toggle Mode"
+                            onClick={handleLogout}
+                            className="text-[0.875rem] font-['DM_Sans'] font-medium text-[var(--text-mid)] px-3.5 py-1.5 rounded-[10px] hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer ml-1"
                         >
-                            {theme === 'light' ? (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                            ) : (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                            )}
+                            Sign Out
                         </button>
-
-                        {user ? (
-                            <div className="flex items-center gap-4 border-l border-gray-200 dark:border-gray-800 pl-4">
-                                <div className="text-right hidden lg:block">
-                                    <p className="text-xs font-bold text-gray-900 dark:text-white leading-none">{user.full_name}</p>
-                                    <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{user.role}</p>
-                                </div>
-                                <Button 
-                                    variant="secondary" 
-                                    size="sm" 
-                                    onClick={logout}
-                                    className="!py-1.5 !px-3 !text-xs"
-                                >
-                                    Logout
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-3">
-                                <Link to="/login" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-                                    Sign In
-                                </Link>
-                                <Button 
-                                    variant="primary" 
-                                    size="sm" 
-                                    onClick={() => window.location.href = '/register'}
-                                    className="!py-1.5 !px-4 !text-xs"
-                                >
-                                    Get Started
-                                </Button>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            to="/login"
+                            className="text-[0.875rem] font-['DM_Sans'] font-normal text-[var(--text-mid)] no-underline px-3.5 py-1.5 rounded-[10px] hover:bg-[var(--surface)] hover:text-[var(--ink)] transition-colors"
+                        >
+                            Sign In
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="text-[0.875rem] font-['DM_Sans'] font-bold px-4 py-1.5 rounded-[10px] bg-[var(--primary)] text-white no-underline hover:bg-[var(--accent2)] hover:-translate-y-[1px] transition-all shadow-sm"
+                        >
+                            Get Started
+                        </Link>
+                    </>
+                )}
             </div>
         </nav>
+    );
+}
+
+function NavLink({ to, label, isActive }) {
+    return (
+        <Link
+            to={to}
+            className={`text-[0.875rem] font-['DM_Sans'] font-medium no-underline px-3.5 py-1.5 rounded-[10px] transition-colors ${
+                isActive
+                    ? 'bg-[var(--accent-light)] text-[var(--primary)] font-bold'
+                    : 'text-[var(--text-mid)] hover:bg-[var(--surface)] hover:text-[var(--ink)]'
+            }`}
+        >
+            {label}
+        </Link>
     );
 }

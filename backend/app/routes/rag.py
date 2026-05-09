@@ -1,4 +1,5 @@
 import io
+import logging
 import re
 from datetime import datetime
 from pathlib import Path
@@ -6,7 +7,7 @@ from typing import Annotated, List, Tuple
 from uuid import uuid4
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, BackgroundTasks
 from fastapi.responses import FileResponse
 from groq import Groq
 from pydantic import BaseModel
@@ -18,6 +19,7 @@ from app.models.project import Project
 from app.models.user import User
 from app.routes.auth import get_current_user
 from app.schemas import RagQueryRequest
+from app.utils import get_link_id as _get_link_id, is_project_participant as _is_project_participant
 
 router = APIRouter()
 
@@ -29,37 +31,7 @@ CHUNK_OVERLAP = 120
 DEFAULT_TOP_K = 4
 LITERATURE_UPLOAD_ROOT = Path(__file__).resolve().parent.parent.parent / "uploads" / "literature"
 
-
-def _get_link_id(link_obj):
-    if link_obj is None:
-        return None
-    if hasattr(link_obj, "id"):
-        return link_obj.id
-    if hasattr(link_obj, "ref") and hasattr(link_obj.ref, "id"):
-        return link_obj.ref.id
-    if isinstance(link_obj, dict) and "$id" in link_obj:
-        return link_obj["$id"]
-    if isinstance(link_obj, dict) and "_id" in link_obj:
-        return link_obj["_id"]
-    if isinstance(link_obj, dict) and "id" in link_obj:
-        return link_obj["id"]
-    return None
-
-
-def _is_project_participant(project: Project, current_user: User) -> bool:
-    faculty_id = _get_link_id(project.faculty)
-    if faculty_id == current_user.id:
-        return True
-    if not project.team:
-        return False
-    leader_id = _get_link_id(project.team.leader)
-    if leader_id == current_user.id:
-        return True
-    if project.team.members:
-        for member in project.team.members:
-            if _get_link_id(member) == current_user.id:
-                return True
-    return False
+logger = logging.getLogger(__name__)
 
 
 def _extract_text(filename: str, content: bytes) -> str:
@@ -129,11 +101,7 @@ def _score_chunk(query: str, chunk: str) -> int:
 
 
 def _retrieve_top_chunks(query: str, chunks: List[str], top_k: int) -> List[str]:
-    scored = []
-    for chunk in chunks:
-        score = _score_chunk(query, chunk)
-        if score > 0:
-            scored.append((score, chunk))
+    scored = [(self_score, chunk) for chunk in chunks if (self_score := _score_chunk(query, chunk)) > 0]
     scored.sort(key=lambda item: item[0], reverse=True)
     return [chunk for _, chunk in scored[:top_k]]
 
@@ -175,6 +143,7 @@ async def upload_literature_document(
     project_id: PydanticObjectId,
     current_user: Annotated[User, Depends(get_current_user)],
     file: UploadFile = File(...),
+    background_tasks: BackgroundTasks = None,
 ):
     project = await Project.get(project_id)
     if not project:
@@ -193,48 +162,61 @@ async def upload_literature_document(
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(status_code=400, detail="File exceeds 15 MB size limit")
 
-    metadata = {"title": "", "author": "", "subject": "", "keywords": ""}
-    try:
-        if ext == ".pdf":
-            text, metadata = _extract_pdf_text_and_metadata(content)
-        else:
-            text = _extract_text(filename, content)
-    except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"Failed to parse file: {exc}") from exc
-
-    chunks = _chunk_text(text)
-    if not chunks:
-        raise HTTPException(status_code=400, detail="No readable text found in file")
-    chunks.insert(0, _metadata_chunk(filename, metadata))
-
+    storage_name = f"{uuid4()}{ext}"
     doc = LiteratureDocument(
         project_id=str(project_id),
         filename=filename,
         content_type=file.content_type or "application/octet-stream",
         size_bytes=len(content),
         uploaded_by=current_user.full_name,
-        storage_filename=f"{uuid4()}{ext}",
-        paper_title=(metadata.get("title") or "").strip(),
-        paper_author=(metadata.get("author") or "").strip(),
-        paper_subject=(metadata.get("subject") or "").strip(),
-        paper_keywords=(metadata.get("keywords") or "").strip(),
-        chunks=chunks,
+        storage_filename=storage_name,
+        status="processing",
     )
 
     project_dir = LITERATURE_UPLOAD_ROOT / str(project_id)
     project_dir.mkdir(parents=True, exist_ok=True)
-    file_path = project_dir / doc.storage_filename
+    file_path = project_dir / storage_name
     file_path.write_bytes(content)
 
     await doc.insert()
 
+    if background_tasks:
+        background_tasks.add_task(process_document_task, str(doc.id), content, filename, ext)
+
     return RagUploadResponse(
         document_id=str(doc.id),
         filename=doc.filename,
-        chunks_indexed=len(chunks),
-        paper_title=doc.paper_title or filename,
-        paper_author=doc.paper_author or "Unknown",
+        chunks_indexed=0,
+        paper_title=filename,
+        paper_author="Processing...",
     )
+
+
+async def process_document_task(doc_id: str, content: bytes, filename: str, ext: str):
+    try:
+        metadata: dict = {"title": "", "author": "", "subject": "", "keywords": ""}
+        if ext == ".pdf":
+            text, metadata = _extract_pdf_text_and_metadata(content)
+        else:
+            text = _extract_text(filename, content)
+
+        chunks = _chunk_text(text)
+        if chunks:
+            chunks.insert(0, _metadata_chunk(filename, metadata))
+
+        doc = await LiteratureDocument.get(PydanticObjectId(doc_id))
+        if doc:
+            doc.chunks = chunks
+            doc.paper_title = (metadata.get("title") or "").strip() or filename
+            doc.paper_author = (metadata.get("author") or "").strip() or "Unknown"
+            doc.status = "indexed"
+            await doc.save()
+    except Exception as e:
+        logger.error(f"Failed to process document {doc_id}: {e}")
+        doc = await LiteratureDocument.get(PydanticObjectId(doc_id))
+        if doc:
+            doc.status = "failed"
+            await doc.save()
 
 
 @router.get("/projects/{project_id}/documents", response_model=List[RagDocumentView])
@@ -287,7 +269,6 @@ async def delete_literature_document(
         file_path.unlink()
 
     await doc.delete()
-
     return {"message": "Document deleted successfully"}
 
 
@@ -344,7 +325,7 @@ async def literature_query(
     if not docs:
         raise HTTPException(status_code=400, detail="No literature uploaded for this project yet")
 
-    all_chunks = []
+    all_chunks: List[str] = []
     for doc in docs:
         all_chunks.extend(doc.chunks or [])
 

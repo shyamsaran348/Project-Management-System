@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+export { API_URL };
 
 export async function fetchClient(endpoint, options = {}) {
     const token = localStorage.getItem('token');
@@ -20,7 +22,6 @@ export async function fetchClient(endpoint, options = {}) {
     const response = await fetch(`${API_URL}${endpoint}`, config);
 
     if (response.status === 401) {
-        // Handle token expiration
         localStorage.removeItem('token');
         window.location.href = '/login';
     }

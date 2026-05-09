@@ -32,6 +32,8 @@ class UserResponse(BaseModel):
     student_profile: Optional[StudentProfile] = None
     is_assigned: bool = False
     assigned_project_id: Optional[str] = None
+    assigned_project_title: Optional[str] = None
+    completion_rate: int = 0
 
 class ProjectCreate(BaseModel):
     title: str
@@ -55,6 +57,8 @@ class ProjectView(BaseModel):
     team_name: Optional[str] = None
     leader_name: Optional[str] = None
     member_names: List[str] = []
+    tasks_count: int = 0
+    completed_tasks_count: int = 0
 
 class ProjectTaskCreate(BaseModel):
     title: str

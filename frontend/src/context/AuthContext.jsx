@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -11,8 +12,8 @@ export const AuthProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:8000/auth/me', {
-                        headers: { 'Authorization': `Bearer ${token}` }
+                    const response = await fetch(`${API_URL}/auth/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` },
                     });
                     if (response.ok) {
                         const userData = await response.json();
@@ -21,7 +22,7 @@ export const AuthProvider = ({ children }) => {
                         localStorage.removeItem('token');
                     }
                 } catch (error) {
-                    console.error("Auth check failed", error);
+                    console.error('Auth check failed', error);
                 }
             }
             setLoading(false);
@@ -34,21 +35,21 @@ export const AuthProvider = ({ children }) => {
         formData.append('username', email);
         formData.append('password', password);
 
-        const response = await fetch('http://localhost:8000/auth/login', {
+        const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             body: formData,
         });
 
         if (!response.ok) {
-            throw new Error('Login failed');
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.detail || 'Login failed. Check your credentials.');
         }
 
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
 
-        // Fetch user details immediately
-        const userRes = await fetch('http://localhost:8000/auth/me', {
-            headers: { 'Authorization': `Bearer ${data.access_token}` }
+        const userRes = await fetch(`${API_URL}/auth/me`, {
+            headers: { 'Authorization': `Bearer ${data.access_token}` },
         });
         const userData = await userRes.json();
         setUser(userData);

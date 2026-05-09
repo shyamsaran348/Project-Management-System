@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { getMyProjectsView } from '../api/projects';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import Badge from '../components/ui/Badge';
+import { getMyProjects } from '../api/projects';
+import { SkeletonCard } from '../components/ui/Skeleton';
+import MainLayout from '../layouts/MainLayout';
 
 export default function StudentDashboard() {
     const [projects, setProjects] = useState([]);
@@ -17,7 +15,7 @@ export default function StudentDashboard() {
 
     const loadProjects = async () => {
         try {
-            const data = await getMyProjectsView();
+            const data = await getMyProjects();
             setProjects(data);
         } catch (error) {
             console.error(error);
@@ -27,77 +25,144 @@ export default function StudentDashboard() {
     };
 
     if (loading) return (
-        <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        </div>
+        <MainLayout>
+            <div className="max-w-[1280px] mx-auto px-6 lg:ml-64 pt-24 pb-12">
+                <div className="relative rounded-[32px] mb-12 bg-[var(--surface)] h-[280px] skeleton"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                </div>
+            </div>
+        </MainLayout>
     );
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h2 className="text-xl font-bold">Assigned Projects</h2>
-                <p className="text-sm text-gray-500">Projects you are actively contributing to</p>
-            </div>
+        <MainLayout>
+            <main className="lg:ml-64 pt-24 px-6 pb-12 max-w-[1280px] mx-auto">
+            <header className="mb-10">
+                <h2 className="font-['Syne'] text-[48px] font-bold text-[var(--primary)] mb-2">Welcome back</h2>
+                <p className="text-[var(--on-surface-variant)] font-['DM_Sans'] text-[16px]">Here's what's happening across your SDG impact initiatives.</p>
+            </header>
 
-            {projects.length === 0 ? (
-                <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                    <p className="text-gray-500">You have not been assigned to any projects yet.</p>
-                    <p className="text-xs text-gray-400 mt-1">Please contact your faculty advisor for project assignment.</p>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <AnimatePresence>
-                        {projects.map(project => {
-                            const projectId = project.id;
-                            const facultyName = project.faculty_name || project.faculty_id || 'N/A';
-                            
-                            return (
-                                <motion.div
-                                    key={projectId}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                >
-                                    <Card className="h-full flex flex-col p-6 border-t-4 border-t-gray-900" hover={true} onClick={() => navigate(`/project/${projectId}/workspace`)}>
-                                        <div className="flex-1">
-                                            <div className="flex justify-between items-start mb-4">
-                                                <Badge variant="sdg-3">
-                                                    Active Member
-                                                </Badge>
-                                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                                    ID: {projectId.slice(-4)}
-                                                </span>
+            <div className="grid grid-cols-12 gap-8">
+                {/* Projects Grid */}
+                <section className="col-span-12 xl:col-span-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="font-['Syne'] text-[24px] font-bold text-[var(--on-surface)]">My Projects</h3>
+                        <button className="text-[var(--primary)] font-bold hover:underline font-['DM_Sans'] text-[14px]">View All</button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {projects.length === 0 ? (
+                            <div className="col-span-full border-2 border-dashed border-[var(--sand)]/50 rounded-[28px] p-10 flex flex-col items-center justify-center text-[var(--on-surface-variant)] text-center">
+                                <span className="material-symbols-outlined text-4xl mb-2 animate-float">folder_off</span>
+                                <h3 className="font-bold mb-2 text-lg">Awaiting Assignment</h3>
+                                <p className="text-[14px]">You haven't been assigned to any projects yet. Contact your faculty advisor.</p>
+                            </div>
+                        ) : (
+                            projects.map((project, idx) => {
+                                const projectId = project.id || project._id;
+                                const firstSdg = Object.keys(project.sdg_mapping)[0] || '1';
+                                const completion = project.tasks?.length ? Math.round((project.tasks.filter(t => t.status === 'DONE').length / project.tasks.length) * 100) : 0;
+                                
+                                return (
+                                    <div key={projectId} className="bg-white rounded-[28px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)] border border-[var(--sand)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl p-6 flex flex-col">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <span className={`px-3 py-1 text-white text-[12px] font-['DM_Mono'] font-medium rounded-full bg-[var(--sdg-${firstSdg})]`}>
+                                                SDG {firstSdg}
+                                            </span>
+                                            <span className="material-symbols-outlined text-[var(--sand)] cursor-pointer hover:text-[var(--on-surface)]">more_vert</span>
+                                        </div>
+                                        <h4 className="font-['Syne'] text-[24px] font-bold text-[var(--on-surface)] mb-2 line-clamp-2">{project.title}</h4>
+                                        <p className="text-[14px] font-['DM_Sans'] text-[var(--on-surface-variant)] mb-6 flex-grow line-clamp-3">
+                                        {project.problem_statement || "Research initiative mapping to the UN Sustainable Development Goals."}
+                                        </p>
+                                        
+                                        <div className="mb-6">
+                                            <div className="flex justify-between font-['DM_Mono'] text-[12px] font-medium text-[var(--on-surface-variant)] mb-2">
+                                                <span>COMPLETION</span>
+                                                <span>{completion}%</span>
                                             </div>
-
-                                            <h3 className="text-lg font-bold mb-4 line-clamp-2">{project.title}</h3>
-                                            
-                                            <div className="space-y-3 mb-6">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-xs text-gray-500">Faculty:</span>
-                                                    <span className="text-xs font-semibold">{facultyName}</span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {Object.values(project.sdg_mapping).map((sdg, idx) => (
-                                                        <span key={idx} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-gray-100 rounded text-gray-600">
-                                                            {sdg}
-                                                        </span>
-                                                    ))}
-                                                </div>
+                                            <div className="h-2 w-full bg-[var(--surface-container)] rounded-full overflow-hidden">
+                                                <div className={`h-full rounded-full bg-[var(--sdg-${firstSdg})]`} style={{ width: `${completion}%` }}></div>
                                             </div>
                                         </div>
+                                        
+                                        <div className="flex items-center justify-between mt-auto">
+                                            <div className="flex -space-x-2">
+                                                <div className="w-8 h-8 rounded-full bg-[var(--surface-alt)] border-2 border-white flex items-center justify-center text-[10px] font-bold text-[var(--on-surface)]">+{project.team?.member_ids?.length || 1}</div>
+                                            </div>
+                                            <button 
+                                                onClick={() => navigate(`/project/${projectId}/workspace`)}
+                                                className="bg-[var(--primary)] text-white px-5 py-2 rounded-xl text-[14px] font-bold font-['DM_Sans'] active:scale-95 transition-transform"
+                                            >
+                                                Open Workspace
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        )}
+                        
+                        {/* Start New Project (Hidden for Students, just here as a placeholder or can be removed if they don't have access) */}
+                        <button 
+                            className="border-2 border-dashed border-[var(--sand)]/50 rounded-[28px] p-6 flex flex-col items-center justify-center text-[var(--on-surface-variant)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all group"
+                            onClick={() => navigate('/project/new')}
+                        >
+                            <span className="material-symbols-outlined text-4xl mb-2 group-hover:scale-110 transition-transform">add_circle</span>
+                            <span className="font-bold font-['DM_Sans']">Propose Initiative</span>
+                        </button>
+                    </div>
+                </section>
 
-                                        <Button 
-                                            variant="secondary" 
-                                            className="w-full !py-2 !text-xs mt-auto"
-                                        >
-                                            Enter Workspace
-                                        </Button>
-                                    </Card>
-                                </motion.div>
-                            )
-                        })}
-                    </AnimatePresence>
-                </div>
-            )}
-        </div>
+                {/* Sidebar */}
+                <aside className="col-span-12 xl:col-span-4 space-y-8">
+                    {/* Upcoming Deadlines Placeholder */}
+                    <div className="bg-white rounded-[28px] shadow-sm border border-[var(--sand)] p-6">
+                        <h3 className="font-['Syne'] text-[24px] font-bold text-[var(--on-surface)] mb-6">Upcoming Deadlines</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-start space-x-4 p-3 rounded-xl hover:bg-[var(--surface-container)] transition-colors">
+                                <div className="bg-[var(--amber-light)] text-[var(--secondary)] w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold">
+                                    <span className="text-[10px] leading-none">NOV</span>
+                                    <span className="text-xl">12</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-[var(--on-surface)]">Milestone Review</p>
+                                    <p className="text-[14px] text-[var(--on-surface-variant)]">Research Track 1</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start space-x-4 p-3 rounded-xl hover:bg-[var(--surface-container)] transition-colors">
+                                <div className="bg-[var(--blue-light)] text-[var(--blue)] w-12 h-12 rounded-xl flex flex-col items-center justify-center font-bold">
+                                    <span className="text-[10px] leading-none">DEC</span>
+                                    <span className="text-xl">05</span>
+                                </div>
+                                <div>
+                                    <p className="font-bold text-[var(--on-surface)]">Final Report Submission</p>
+                                    <p className="text-[14px] text-[var(--on-surface-variant)]">Institutional Committee</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Recent Activity Placeholder */}
+                    <div className="bg-white rounded-[28px] shadow-sm border border-[var(--sand)] p-6">
+                        <h3 className="font-['Syne'] text-[24px] font-bold text-[var(--on-surface)] mb-6">Recent Activity</h3>
+                        <div className="space-y-6">
+                            <div className="flex space-x-3">
+                                <div className="w-10 h-10 rounded-full flex-shrink-0 bg-[var(--surface-dim)] flex items-center justify-center text-xs font-bold">PT</div>
+                                <div>
+                                    <p className="text-[14px] font-bold text-[var(--on-surface)]">Project Team <span className="font-normal text-[var(--on-surface-variant)] ml-2">2h ago</span></p>
+                                    <div className="bg-[var(--surface)] p-3 rounded-2xl rounded-tl-none mt-1">
+                                        <p className="text-[14px]">The literature review document has been updated in the RAG system.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+        </MainLayout>
     );
 }

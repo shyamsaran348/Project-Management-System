@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
+import ParticleNetwork from '../components/ui/ParticleNetwork';
+import { API_URL } from '../api/client';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -36,18 +36,18 @@ export default function Register() {
         if (formData.role === 'FACULTY') {
             payload.faculty_profile = {
                 department: formData.department,
-                interests: formData.interests.split(',').map(s => s.trim())
+                interests: formData.interests ? formData.interests.split(',').map(s => s.trim()) : []
             };
         } else {
             payload.student_profile = {
                 department: formData.department,
                 year: formData.year,
-                skills: formData.skills.split(',').map(s => s.trim())
+                skills: formData.skills ? formData.skills.split(',').map(s => s.trim()) : []
             };
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/signup', {
+            const response = await fetch(`${API_URL}/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -69,103 +69,150 @@ export default function Register() {
 
     return (
         <MainLayout>
-            <div className="flex flex-col items-center justify-center py-20 px-4">
-                <div className="w-full max-w-xl">
-                    <div className="text-center mb-10">
-                        <h1 className="text-2xl font-bold tracking-tight mb-2">Create your account</h1>
-                        <p className="text-sm text-gray-500">Join the ecosystem of technology for social good</p>
-                    </div>
+            <div className="bg-[var(--cream)] min-h-screen flex flex-col items-center pt-24 pb-16 px-6 relative overflow-hidden">
+                <ParticleNetwork />
+                <div className="absolute -top-12 -left-12 w-24 h-24 bg-[var(--primary)]/10 rounded-full blur-3xl z-0"></div>
+                <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-[var(--sdg-3)]/10 rounded-full blur-3xl z-0"></div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <Input
-                                label="Full Name"
-                                name="full_name"
-                                placeholder="John Doe"
-                                onChange={handleChange}
-                                required
-                            />
-                            <Input
-                                label="University Email"
-                                name="email"
-                                type="email"
-                                placeholder="john@university.edu"
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <Input
-                                label="Password"
-                                name="password"
-                                type="password"
-                                placeholder="••••••••"
-                                onChange={handleChange}
-                                required
-                            />
-                            <div className="form-group">
-                                <label className="form-label">Role</label>
-                                <select 
-                                    name="role" 
-                                    className="form-control" 
-                                    onChange={handleChange} 
-                                    value={formData.role}
-                                >
-                                    <option value="STUDENT">Student</option>
-                                    <option value="FACULTY">Faculty Member</option>
-                                </select>
+                <main className="w-full max-w-[500px] relative z-10 my-12">
+                    {/* Central Glassmorphic Card */}
+                    <section className="glass-panel rounded-[32px] overflow-hidden p-10">
+                        {/* Brand Header */}
+                        <header className="text-center mb-8">
+                            <div className="flex justify-center mb-4">
+                                <div className="w-14 h-14 bg-[var(--primary)] rounded-2xl flex items-center justify-center shadow-lg ring-2 ring-[var(--primary)]/10">
+                                    <span className="material-symbols-outlined text-white text-[1.8rem]">verified_user</span>
+                                </div>
                             </div>
-                        </div>
-
-                        <Input
-                            label="Department"
-                            name="department"
-                            placeholder="e.g. Computer Science"
-                            onChange={handleChange}
-                            required
-                        />
-
-                        {formData.role === 'FACULTY' ? (
-                            <Input
-                                label="Research Interests"
-                                name="interests"
-                                placeholder="AI, Sustainability, Healthcare (comma separated)"
-                                onChange={handleChange}
-                            />
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <Input
-                                    label="Current Year"
-                                    name="year"
-                                    placeholder="e.g. 3rd Year"
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <Input
-                                    label="Skills"
-                                    name="skills"
-                                    placeholder="Python, React, ML (comma separated)"
-                                    onChange={handleChange}
-                                />
+                            <h1 className="font-['Syne'] text-[1.5rem] font-bold text-[var(--ink)] tracking-tight mb-1">Institutional Onboarding</h1>
+                            <p className="font-['DM_Sans'] text-[0.85rem] text-[var(--text-muted)] font-light">Join the global network of researchers aligning science with impact.</p>
+                        </header>
+                        
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Toggle Roles */}
+                            <div className="bg-[var(--surface-alt)] p-1 rounded-xl flex mb-10 border border-[var(--border)]">
+                                <div className="flex-1">
+                                    <input 
+                                        type="radio" 
+                                        id="student" 
+                                        name="role" 
+                                        className="hidden peer"
+                                        checked={formData.role === 'STUDENT'}
+                                        onChange={() => setFormData({...formData, role: 'STUDENT'})}
+                                    />
+                                    <label htmlFor="student" className="block text-center py-2 px-4 rounded-lg font-['DM_Sans'] text-[14px] text-[var(--on-surface-variant)] cursor-pointer transition-all duration-200 peer-checked:bg-[var(--primary)] peer-checked:text-white peer-checked:shadow-sm">
+                                        Student
+                                    </label>
+                                </div>
+                                <div className="flex-1">
+                                    <input 
+                                        type="radio" 
+                                        id="faculty" 
+                                        name="role" 
+                                        className="hidden peer"
+                                        checked={formData.role === 'FACULTY'}
+                                        onChange={() => setFormData({...formData, role: 'FACULTY'})}
+                                    />
+                                    <label htmlFor="faculty" className="block text-center py-2 px-4 rounded-lg font-['DM_Sans'] text-[14px] text-[var(--on-surface-variant)] cursor-pointer transition-all duration-200 peer-checked:bg-[var(--primary)] peer-checked:text-white peer-checked:shadow-sm">
+                                        Faculty
+                                    </label>
+                                </div>
                             </div>
-                        )}
 
-                        <Button 
-                            type="submit" 
-                            className="w-full py-2.5 text-sm" 
-                            isLoading={isLoading}
-                        >
-                            Create Account
-                        </Button>
-                    </form>
+                            {/* Input Fields */}
+                            <div className="grid grid-cols-1 gap-4">
+                                {/* Full Name */}
+                                <div className="space-y-2">
+                                    <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="full_name">Full Name</label>
+                                    <div className="relative group">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">person</span>
+                                        <input className="w-full pl-12" id="full_name" name="full_name" placeholder="e.g. John Doe" type="text" required onChange={handleChange}/>
+                                    </div>
+                                </div>
 
-                    <div className="mt-8 pt-8 border-t border-gray-100 text-center">
-                        <p className="text-gray-500 text-sm">
-                            Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline">Sign in instead</Link>
-                        </p>
-                    </div>
-                </div>
+                                {/* Institutional Email */}
+                                <div className="space-y-2">
+                                    <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="email">Institutional Email</label>
+                                    <div className="relative group">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">mail</span>
+                                        <input className="w-full pl-12" id="email" name="email" placeholder="name@university.edu" type="email" required onChange={handleChange}/>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="password">Password</label>
+                                        <div className="relative group">
+                                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">lock</span>
+                                            <input className="w-full pl-12" id="password" name="password" placeholder="••••••••" type="password" required onChange={handleChange}/>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="department">Department</label>
+                                        <div className="relative group">
+                                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">account_balance</span>
+                                            <input className="w-full pl-12" id="department" name="department" placeholder="e.g. CS / AI" type="text" required onChange={handleChange}/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {formData.role === 'FACULTY' ? (
+                                    <div className="space-y-2">
+                                        <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="interests">Research Interests</label>
+                                        <div className="relative group">
+                                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">science</span>
+                                            <input className="w-full pl-12" id="interests" name="interests" placeholder="e.g. AI, Sustainability" type="text" onChange={handleChange}/>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="year">Current Year</label>
+                                            <div className="relative group">
+                                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">school</span>
+                                                <input className="w-full pl-12" id="year" name="year" placeholder="e.g. 3rd Year" type="text" required onChange={handleChange}/>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="font-mono text-[10px] uppercase text-[var(--text-muted)] font-bold tracking-[0.1em] ml-1" htmlFor="skills">Skills</label>
+                                            <div className="relative group">
+                                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]/40 group-focus-within:text-[var(--primary)] transition-colors text-[20px]">code</span>
+                                                <input className="w-full pl-12" id="skills" name="skills" placeholder="e.g. React, Python" type="text" onChange={handleChange}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* CTA Button */}
+                            <button 
+                                className="btn-primary w-full py-4 text-[16px] mt-6" 
+                                type="submit"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Creating Account...' : 'Create Account'}
+                                <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                            </button>
+
+                            {/* Redirect Link */}
+                            <p className="text-center mt-6 font-['DM_Sans'] text-[14px] text-[var(--on-surface-variant)]">
+                                Already have an account? 
+                                <Link to="/login" className="text-[var(--primary)] font-bold hover:text-[var(--accent-hover)] transition-colors underline-offset-4 hover:underline ml-1">Log in</Link>
+                            </p>
+                        </form>
+                    </section>
+
+                    {/* Footer Visual Reference */}
+                    <footer className="mt-12 flex flex-col items-center">
+                        <p className="text-[0.6rem] font-mono text-[var(--text-muted)] uppercase tracking-[0.2em] mb-6">Aligning with Global Frameworks</p>
+                        <div className="flex justify-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all cursor-default">
+                            <div className="w-10 h-10 bg-[var(--sdg-1)] rounded-lg shadow-sm" title="No Poverty"></div>
+                            <div className="w-10 h-10 bg-[var(--sdg-4)] rounded-lg shadow-sm" title="Quality Education"></div>
+                            <div className="w-10 h-10 bg-[var(--sdg-13)] rounded-lg shadow-sm" title="Climate Action"></div>
+                            <div className="w-10 h-10 bg-[var(--sdg-17)] rounded-lg shadow-sm" title="Partnerships"></div>
+                        </div>
+                    </footer>
+                </main>
             </div>
         </MainLayout>
     );

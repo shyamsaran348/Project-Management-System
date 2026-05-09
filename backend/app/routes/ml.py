@@ -56,6 +56,7 @@ class AnalysisRequest(BaseModel):
 
 class SdgSuggestion(BaseModel):
     sdg: str
+    sdg_number: int
     confidence: float
 
 
@@ -133,6 +134,7 @@ def predict_sdgs(text: str):
     applied_sdgs = [
         SdgSuggestion(
             sdg=SDG_NAMES[i],
+            sdg_number=i + 1,
             confidence=round(conf * 100, 1)
         )
         for i, conf in applied
@@ -141,6 +143,7 @@ def predict_sdgs(text: str):
     strong_sdgs = [
         SdgSuggestion(
             sdg=SDG_NAMES[i],
+            sdg_number=i + 1,
             confidence=round(conf * 100, 1)
         )
         for i, conf in strong

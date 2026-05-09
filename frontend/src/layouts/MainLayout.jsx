@@ -1,31 +1,19 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-import { motion } from 'framer-motion';
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[var(--cream)] selection:bg-[var(--accent-light)] selection:text-[var(--accent)]">
       <Navbar />
-      <motion.main 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex-1"
-      >
-        {children}
-      </motion.main>
-      <footer className="py-8 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
-            © 2024 SDGSync. Technology for Social Good.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors">Privacy</a>
-            <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors">Terms</a>
-            <a href="#" className="text-gray-400 hover:text-indigo-500 transition-colors">Contact</a>
-          </div>
-        </div>
-      </footer>
+      {children}
+
+      {/* SDG 17-colour rainbow strip pinned to the bottom */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-[90] h-[4px]"
+        style={{
+          background: 'linear-gradient(90deg,#e5243b 0%,#dda63a 6.5%,#4c9f38 12%,#c5192d 18%,#ff3a21 23.5%,#26bde2 29%,#fcc30b 35%,#a21942 41%,#fd6925 47%,#dd1367 53%,#fd9d24 59%,#bf8b2e 65%,#3f7e44 71%,#0a97d9 77%,#56c02b 83%,#00689d 89%,#19486a 100%)',
+        }}
+      />
     </div>
   );
 };

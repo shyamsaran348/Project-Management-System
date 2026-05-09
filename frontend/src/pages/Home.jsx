@@ -18,7 +18,7 @@ export default function Home() {
                 <ParticleNetwork />
 
                 {/* Hero Section */}
-                <div className="max-w-[1400px] mx-auto px-10 pt-20 pb-32 grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-20 items-center relative">
+                <div className="max-w-[1400px] mx-auto px-10 pt-32 pb-48 grid grid-cols-1 lg:grid-cols-[1.2fr_480px] gap-20 items-center relative">
                     <div className="hero-left relative z-10">
                         <div className="max-w-[700px]">
                         <motion.div 
@@ -77,7 +77,7 @@ export default function Home() {
                             <div className="relative rounded-[36px] overflow-hidden aspect-[4/5] bg-[var(--ink)]">
                                 <img 
                                     src="/sdg_institutional_hero_1778334505773.png" 
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover opacity-90"
                                     alt="Institutional Intelligence"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--ink)] via-transparent to-transparent"></div>
@@ -109,10 +109,10 @@ export default function Home() {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    className="mt-20 pt-16 border-t border-[var(--border)] flex flex-col items-center pb-24 section-container"
+                    className="mt-48 pt-24 border-t border-[var(--border)] flex flex-col items-center pb-48 section-container"
                 >
-                    <p className="text-[0.6rem] font-mono text-[var(--text-muted)] uppercase tracking-[0.4em] mb-12">Institutional Compliance Standards</p>
-                    <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-30 grayscale">
+                    <p className="text-[0.65rem] font-mono text-[var(--text-muted)] uppercase tracking-[0.5em] mb-20">Institutional Compliance Standards</p>
+                    <div className="flex flex-wrap justify-center gap-16 md:gap-40 opacity-30 grayscale">
                         <div className="flex items-center gap-2">
                             <span className="material-symbols-outlined text-3xl">account_balance</span>
                             <span className="font-['Syne'] font-bold text-[1.1rem]">UN Global</span>
@@ -133,33 +133,33 @@ export default function Home() {
                 </motion.div>
 
                 {/* Features Grid */}
-                <div className="max-w-[1200px] mx-auto px-10 py-20">
-                    <div className="font-mono text-[0.7rem] font-light tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">Core capabilities</div>
-                    <h2 className="font-['Syne'] text-[clamp(1.8rem,3vw,2.6rem)] font-bold tracking-tight text-[var(--ink)] mb-14 leading-[1.1]">
+                <div className="max-w-[1280px] mx-auto px-10 py-32">
+                    <div className="font-mono text-[0.7rem] font-light tracking-[0.14em] uppercase text-[var(--text-muted)] mb-6">Core capabilities</div>
+                    <h2 className="text-[clamp(1.8rem,3vw,3rem)] mb-20 leading-[1.1]">
                         Everything your team<br/>needs to drive impact.
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-[1.5px] bg-[var(--surface2)] rounded-[20px] overflow-hidden border border-[var(--surface2)]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
                             { icon: '🎯', name: 'SDG Classification', desc: 'BERT-based transformer automatically maps your project\'s problem statement to one or more of the 17 UN SDGs with 95%+ accuracy.', tag: 'BERT · Transformers', bg: 'bg-[var(--accent-light)]' },
-                            { icon: '📚', name: 'Literature Intelligence', desc: 'Upload PDFs and TXT research papers. Ask questions in plain language. Get cited answers powered by Groq LLM and RAG retrieval.', tag: 'RAG · Groq LLM', bg: 'bg-[var(--blue-light)]' },
-                            { icon: '⚡', name: 'Real-time Collaboration', desc: 'Integrated workspace with task tracking, file attachments, project chat, and smart availability validation for team assignments.', tag: 'WebSocket · RBAC', bg: 'bg-[var(--amber-light)]' }
+                            { icon: '📚', name: 'Literature Intelligence', desc: 'Upload PDFs and TXT research papers. Ask questions in plain language. Get cited answers powered by Groq LLM and RAG retrieval.', tag: 'RAG · Groq LLM', bg: 'bg-[var(--accent-light)]' },
+                            { icon: '⚡', name: 'Real-time Collaboration', desc: 'Integrated workspace with task tracking, file attachments, project chat, and smart availability validation for team assignments.', tag: 'WebSocket · RBAC', bg: 'bg-[var(--accent-light)]' }
                         ].map((feat, i) => (
-                            <div key={i} className="feature-card bg-[var(--cream)] group">
-                                <div className={`w-11 h-11 rounded-lg flex items-center justify-center text-xl mb-5 ${feat.bg}`}>{feat.icon}</div>
-                                <h3 className="font-['Syne'] text-[1rem] font-semibold text-[var(--ink)] mb-2.5 tracking-tight">{feat.name}</h3>
-                                <p className="text-[0.875rem] font-light text-[var(--text-muted)] leading-relaxed">{feat.desc}</p>
-                                <div className="mt-4 font-mono text-[0.65rem] px-2.5 py-1 rounded-full bg-[var(--surface2)] text-[var(--text-muted)] inline-block">{feat.tag}</div>
+                            <div key={i} className="glass-panel p-8 rounded-3xl group">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6 ${feat.bg}`}>{feat.icon}</div>
+                                <h3 className="text-[1.1rem] mb-3">{feat.name}</h3>
+                                <p className="text-[0.9rem] text-[var(--text-muted)] font-light leading-relaxed mb-6">{feat.desc}</p>
+                                <div className="font-mono text-[10px] px-3 py-1 rounded-full bg-[var(--surface-alt)] text-[var(--text-muted)] inline-block uppercase tracking-wider">{feat.tag}</div>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* SDG Showcase */}
-                <div className="bg-[var(--ink)] py-20">
-                    <div className="max-w-[1200px] mx-auto px-10">
-                        <h2 className="font-['Syne'] text-[clamp(1.8rem,3vw,2.4rem)] font-bold text-white tracking-tighter mb-3">Aligned to all 17 UN SDGs</h2>
-                        <p className="text-[0.9rem] font-light text-white/50 max-w-[480px] leading-relaxed mb-12">Every project in SDGSync is automatically mapped to its relevant goals — making your institution's impact visible and measurable.</p>
+                <div className="bg-[var(--ink)] py-32">
+                    <div className="section-container">
+                        <h2 className="text-[clamp(1.8rem,3vw,2.8rem)] text-white mb-4">Aligned to all 17 UN SDGs</h2>
+                        <p className="text-[1rem] font-light text-white/50 max-w-[520px] leading-relaxed mb-16">Every project in SDGSync is automatically mapped to its relevant goals — making your institution's impact visible and measurable.</p>
                         <div className="flex flex-wrap gap-2">
                             {[
                                 { n: '1 · No Poverty', c: '#ff8a96', b: 'rgba(229,36,59,0.1)', bc: 'rgba(229,36,59,0.3)' },
@@ -189,14 +189,14 @@ export default function Home() {
                 </div>
 
                 {/* Final CTA */}
-                <div className="max-w-[1200px] mx-auto px-10 py-20">
-                    <div className="bg-[var(--ink)] rounded-[24px] p-16 flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden">
-                        <div className="absolute bottom-[-80px] right-[-80px] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(26,107,60,0.25),transparent_70%)]"></div>
+                <div className="section-container py-32">
+                    <div className="bg-[var(--ink)] rounded-[40px] p-20 flex flex-col md:flex-row items-center justify-between gap-16 relative overflow-hidden">
+                        <div className="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(26,107,60,0.3),transparent_70%)]"></div>
                         <div className="relative z-10 text-center md:text-left">
-                            <h2 className="font-['Syne'] text-[2rem] font-bold text-white tracking-tighter mb-3">Ready to track your<br/>social impact?</h2>
-                            <p className="text-[0.9rem] text-white/50 font-light leading-relaxed">Join hundreds of faculty and students transforming<br/>academic research into measurable contributions.</p>
+                            <h2 className="text-[2.5rem] text-white mb-4">Ready to track your<br/>social impact?</h2>
+                            <p className="text-[1.1rem] text-white/50 font-light leading-relaxed">Join hundreds of faculty and students transforming<br/>academic research into measurable contributions.</p>
                         </div>
-                        <Link to="/register" className="btn-cta relative z-10 whitespace-nowrap bg-[var(--accent2)] text-white px-8 py-3.5 rounded-xl font-medium hover:bg-[#24884e] transition-all hover:-translate-y-1">
+                        <Link to="/register" className="btn-primary relative z-10 whitespace-nowrap px-10 py-5 rounded-2xl text-[18px]">
                             Create your account →
                         </Link>
                     </div>

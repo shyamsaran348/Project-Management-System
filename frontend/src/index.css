@@ -80,9 +80,9 @@ body {
 
 h1, h2, h3, h4, .font-syne {
   font-family: 'Syne', sans-serif;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 a {
@@ -177,7 +177,7 @@ input:focus {
 .section-container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 80px 40px;
 }
 
 @media (max-width: 768px) {

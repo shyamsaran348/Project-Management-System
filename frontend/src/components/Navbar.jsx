@@ -14,7 +14,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-[100] h-[64px] flex items-center justify-between px-6 lg:px-10 bg-[rgba(250,248,243,0.88)] backdrop-blur-xl border-b border-[rgba(212,201,168,0.15)] shadow-sm">
+        <nav className="fixed top-0 left-0 right-0 z-[100] h-[72px] flex items-center justify-between px-8 lg:px-16 bg-[rgba(250,248,243,0.92)] backdrop-blur-2xl border-b border-[var(--border)] shadow-sm">
             {/* Brand */}
             <div className="flex items-center gap-8">
                 <Link
@@ -45,7 +45,7 @@ export default function Navbar() {
             </div>
 
             {/* Right nav links */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-4">
                 <NavLink to="/" label="Overview" isActive={isActive('/')} exact />
 
                 {user ? (

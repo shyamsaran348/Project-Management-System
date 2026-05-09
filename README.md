@@ -6,138 +6,196 @@ Developed for the **SRM VDP Hackathon**, SDGSync transforms academic projects in
 
 ---
 
-## ✨ Institutional Excellence Features
+## 🏗️ System Architecture
 
-### 🧠 1. SDG-BERT Intelligence Layer
-At the heart of SDGSync is a specialized **BERT-based Transformer** model. 
-- **Automated Mapping**: When a researcher submits a project proposal, the AI analyzes the "Problem Statement" and "Proposed Solution."
-- **Precision Classification**: It predicts the primary and secondary SDG targets (out of all 17 goals) with **95%+ accuracy**.
-- **Impact Visualization**: Faculty can view a real-time distribution of their institution’s contribution to global frameworks.
+### **High-Level Data Flow**
+```mermaid
+graph TD
+    User((Researcher/Student)) -->|Interacts| Frontend[React + Vite + Stitch UI]
+    Frontend -->|API Requests| Backend[FastAPI Async Engine]
+    
+    subgraph "AI Core Layer"
+        Backend -->|Extracts Text| BERT[SDG-BERT Classifier]
+        Backend -->|Embeddings| RAG[Literature RAG System]
+        RAG -->|Queries| Groq[Groq Llama-3 LLM]
+    end
+    
+    subgraph "Storage Layer"
+        Backend -->|ODM Mapping| MongoDB[(MongoDB + Beanie)]
+    end
+    
+    BERT -->|SDG Prediction| Backend
+    RAG -->|Contextual Answers| Backend
+    MongoDB -->|Persistent Data| Backend
+```
 
-### 📚 2. Literature Intelligence Repository (LIR)
-Accelerate research cycles with an integrated **Retrieval-Augmented Generation (RAG)** system.
-- **Deep Retrieval**: Upload PDF/TXT research papers directly into the project workspace.
-- **Neural Search**: Query the repository in plain natural language.
-- **Groq Acceleration**: Powered by the **Groq Llama-3 LLM**, providing cited answers with sub-second latency.
+---
 
-### 🏢 3. Institutional Analytics Dashboard
-A high-end, data-driven overview for department heads and directors.
-- **Cross-Departmental Metrics**: Track active researchers, project completion rates, and SDG coverage.
-- **Global Compliance**: Exportable reports for accreditation and international ranking submissions (e.g., THE Impact Rankings).
+## 🚀 Key Modules & Innovation
 
-### 🤝 4. Professional Research Workspace
-A refined collaboration environment following the **Stitch Design System**.
-- **Smart Kanban**: Institutional-grade task management with milestone tracking.
-- **Availability Guard**: Intelligent resource allocation that prevents student double-booking.
-- **Project Pulse**: Real-time WebSocket-based chat for instant team communication.
+### **1. AI-Driven SDG Alignment**
+Every project proposal is subjected to a deep-learning analysis to ensure institutional alignment.
+- **BERT Transformer**: A fine-tuned `bert-base-uncased` model trained on humanitarian and scientific project descriptions.
+- **Classification Flow**:
+  ```mermaid
+  sequenceDiagram
+      participant R as Researcher
+      participant B as Backend
+      participant A as SDG-BERT Model
+      
+      R->>B: Submits Project Proposal
+      B->>A: Passes Problem Statement & Goals
+      A-->>A: Tokenization & Encoding
+      A->>B: Returns Top-N Predicted SDGs
+      B->>R: Displays Visual SDG Badges
+  ```
+
+### **2. Literature Intelligence Repository (LIR)**
+The LIR module accelerates the literature review phase by using a RAG (Retrieval-Augmented Generation) pipeline.
+- **Vector Search**: Processes PDFs into high-dimensional vectors.
+- **Sub-second Inference**: Leverages the **Groq LPU (Language Processing Unit)** for near-instant responses.
+- **Query Flow**:
+  ```mermaid
+  graph LR
+      Q[User Query] --> E[Embedding Model]
+      E --> V[Vector Search - PDF Context]
+      V --> LLM[Groq Llama-3 70B]
+      LLM --> Ans[Cited Research Answer]
+  ```
+
+---
+
+## 🛠️ Technical Stack (Deep Dive)
+
+### **Frontend Architecture**
+- **Core Framework**: React 18 (Functional Components, Hooks)
+- **Styling**: **Stitch Design System** (Tailwind CSS v3/v4 + Custom HSL Tokens)
+- **State & Transitions**: 
+    - **Framer Motion**: Smooth institutional-grade transitions.
+    - **Context API**: Global Authentication and Project state.
+- **Visualizations**: Lucide React + Custom SVG Graphing layers.
+
+### **Backend Architecture**
+- **Runtime**: Python 3.10+ (FastAPI)
+- **Database Layer**: **Beanie ODM** (Asynchronous MongoDB wrapper)
+- **WebSocket Layer**: Bidirectional communication for real-time project chat.
+- **Validation**: Pydantic v2 (Strict typing and serialization).
+- **Processing**: PyPDF for research paper ingestion.
+
+### **Database Schema (ER Summary)**
+```mermaid
+erDiagram
+    USER ||--o{ PROJECT : "manages/belongs"
+    PROJECT ||--o{ TASK : "contains"
+    PROJECT ||--o{ MESSAGE : "has chat history"
+    PROJECT ||--o{ LITERATURE : "associated papers"
+    USER {
+        string id
+        string email
+        string role
+        object profile
+    }
+    PROJECT {
+        string id
+        string title
+        string[] predicted_sdgs
+        string status
+    }
+    TASK {
+        string id
+        string title
+        string status
+        string assignee_id
+    }
+```
 
 ---
 
 ## 🎨 Design System: Stitch 💎
 SDGSync implements the **Stitch Design System**, characterized by:
-- **Premium Aesthetics**: High-fidelity glassmorphism, multi-layered shadows, and sophisticated neutrals (`#f5f3ee`, `#005129`).
-- **Institutional Typography**: Leveraging **Syne** for impactful headings and **DM Sans** for scholarly readability.
-- **Micro-interactions**: Fluid Framer Motion animations that reinforce a state-of-the-art feel.
+- **Aesthetic**: Institutional Premium (Deep greens, soft creams, glassmorphism).
+- **Typography**: 
+    - **Syne**: Headings for impact and clarity.
+    - **DM Sans**: Body for academic readability.
+- **Tokens**:
+    - `Primary`: `#005129` (Stability & Growth)
+    - `Surface`: `#f5f3ee` (Neutral Sophistication)
+    - `Glass`: `rgba(255,255,255,0.7)` with `blur(20px)`
 
 ---
 
-## 🛠️ Technical Architecture
+## 📁 Detailed Project Topology
 
-### **Backend (Python / FastAPI)**
-- **Async Engine**: Built on FastAPI for high-concurrency request handling.
-- **Database**: MongoDB with **Beanie ODM** for document-object mapping and schema enforcement.
-- **Security**: JWT-based authentication with role-specific (Faculty/Student) middleware.
-- **Real-time**: FastAPI WebSockets for collaborative chat.
+### **Backend (`/backend`)**
+| Path | Responsibility |
+| :--- | :--- |
+| `app/core/auth.py` | JWT generation, password hashing, RBAC logic. |
+| `app/core/sockets.py` | WebSocket manager for real-time collaboration. |
+| `app/models/project.py` | Project & Task Beanie document definitions. |
+| `app/routes/ml.py` | BERT inference endpoint for SDG classification. |
+| `app/routes/rag.py` | PDF processing and Groq LLM integration. |
+| `app/utils.py` | Shared AI/ML utilities and file handlers. |
 
-### **Frontend (React / Vite)**
-- **Logic**: React 18 with modern Hooks and custom context providers.
-- **Styling**: Tailwind CSS v3/v4 utilizing the Stitch Design System tokens.
-- **Visualization**: Custom SVG-based and Framer Motion chart components.
-
-### **AI Stack**
-- **Inference**: Hugging Face `transformers` for BERT.
-- **LLM**: Groq Cloud API for high-speed RAG inference.
-- **Embeddings**: Sentence-Transformers for semantic similarity in literature search.
+### **Frontend (`/frontend`)**
+| Path | Responsibility |
+| :--- | :--- |
+| `src/layouts/MainLayout.jsx` | Global institutional wrapper with SDG bottom-bar. |
+| `src/pages/Home.jsx` | Institutional Overview (Entry point). |
+| `src/pages/ProjectWorkspace.jsx` | Kanban, LIR Assistant, and Real-time Chat. |
+| `src/pages/Analytics.jsx` | Data-driven impact metrics and SDG distribution. |
+| `src/index.css` | Stitch Design System core CSS (Tokens & Glass). |
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Production Grade)
 
 ### Prerequisites
 - Python 3.10+
 - Node.js 18+
-- MongoDB (Local or Atlas)
-- Groq API Key
+- MongoDB Instance
+- Groq Cloud API Key
 
-### 🐳 Option 1: Docker (Recommended)
+### **Step 1: Containerized Deployment (Recommended)**
 ```bash
+# Clone the repository
+git clone https://github.com/shyamsaran348/Project-Management-System.git
+cd Project-Management-System
+
+# Start the full stack
 docker-compose up --build
 ```
 
-### 💻 Option 2: Manual Setup
-
-#### 1. Backend Configuration
+### **Step 2: Manual Backend Setup**
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
-Create a `.env` file in `backend/`:
-```env
-MONGODB_URL=your_mongodb_uri
-JWT_SECRET=your_super_secret_key
-GROQ_API_KEY=your_groq_api_key
-```
-Run the server:
-```bash
-uvicorn main:app --reload
+# Configure .env with MONGODB_URL and GROQ_API_KEY
+uvicorn main:app --reload --port 8000
 ```
 
-#### 2. Frontend Configuration
+### **Step 3: Manual Frontend Setup**
 ```bash
 cd frontend
 npm install
-```
-Create a `.env` file in `frontend/`:
-```env
-VITE_API_URL=http://localhost:8000
-```
-Run the dev server:
-```bash
+# Configure .env with VITE_API_URL=http://localhost:8000
 npm run dev
 ```
 
 ---
 
-## 📁 Project Structure
-
-```text
-SRMVDPHackathon/
-├── backend/
-│   ├── app/
-│   │   ├── core/           # Auth, Config, Sockets
-│   │   ├── models/         # Beanie ODM Models
-│   │   ├── routes/         # API Endpoints (Auth, Projects, RAG)
-│   │   ├── utils.py        # AI/ML Helper functions
-│   │   └── schemas.py      # Pydantic v2 validation
-│   └── main.py             # Entry point
-├── frontend/
-│   ├── src/
-│   │   ├── api/            # API Client layers
-│   │   ├── components/     # UI & Navbar
-│   │   ├── layouts/        # MainLayout (Institutional Wrapper)
-│   │   ├── pages/          # Home, Login, Dashboards, Workspace
-│   │   └── index.css       # Stitch Design System foundation
-│   └── package.json
-└── docker-compose.yml
-```
+## 🗺️ Future Roadmap
+1. **Multi-Institutional Sync**: Allow different universities to cross-collaborate on SDG targets.
+2. **Blockchain Verification**: Issue verifiable impact credentials on-chain for research validation.
+3. **Automated Grant Alignment**: Match projects with global funding opportunities based on SDG output.
 
 ---
 
-## 🎖️ Institutional Impact
+## 📊 Institutional Impact
 - **95%** accuracy in research-to-SDG alignment.
 - **60%** faster literature review cycles for students.
 - **Real-time** visibility into institutional social responsibility (ISR).
 
 Developed by **Antigravity** for the **SRM VDP Hackathon**.
+🌍 *Aligning Science with Impact.*
